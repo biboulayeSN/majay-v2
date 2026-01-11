@@ -5,79 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Majay - Catalogue en Ligne</title>
-    <link rel="stylesheet" href="css/design-system.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/output.css">
 </head>
-<body>
+<body class="min-h-screen bg-gradient-to-br from-primary via-primary-light to-secondary pb-24">
     <!-- HEADER -->
-    <header class="header">
-        <div class="header-content">
-            <h1 class="logo">🛍️ MAJAY</h1>
-            <p class="tagline">La plateforme tout-en-un pour booster vos ventes sur WhAtsapp et Telegram</p>
+    <header class="bg-gradient-to-r from-primary to-primary-dark text-white py-10 px-5 text-center shadow-xl">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-black mb-2.5 drop-shadow-md tracking-wide">🛍️ MAJAY</h1>
+            <p class="text-lg md:text-xl opacity-90 font-light">La plateforme tout-en-un pour booster vos ventes sur WhAtsapp et Telegram</p>
         </div>
     </header>
 
     <!-- NAVIGATION CATEGORIES -->
-    <nav class="categories">
-        <button class="category-btn active" data-category="tous">
-            <span class="icon">🌟</span>
-            <span class="text">Tous</span>
+    <nav class="bg-white py-3 px-4 flex gap-3 overflow-x-auto shadow-sm sticky top-0 z-100">
+        <button class="category-btn active flex items-center gap-2 px-4 py-2 border-2 border-border rounded-full bg-white text-gray-600 font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-md hover:border-primary min-h-[44px]" data-category="tous">
+            <span class="text-lg">🌟</span>
+            <span class="hidden md:inline">Tous</span>
         </button>
-        <button class="category-btn" data-category="montres">
-            <span class="icon">⌚</span>
-            <span class="text">Montres</span>
+        <button class="category-btn flex items-center gap-2 px-4 py-2 border-2 border-border rounded-full bg-white text-gray-600 font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-md hover:border-primary min-h-[44px]" data-category="montres">
+            <span class="text-lg">⌚</span>
+            <span class="hidden md:inline">Montres</span>
         </button>
-        <button class="category-btn" data-category="chaussures">
-            <span class="icon">👟</span>
-            <span class="text">Chaussures</span>
+        <button class="category-btn flex items-center gap-2 px-4 py-2 border-2 border-border rounded-full bg-white text-gray-600 font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-md hover:border-primary min-h-[44px]" data-category="chaussures">
+            <span class="text-lg">👟</span>
+            <span class="hidden md:inline">Chaussures</span>
         </button>
-        <button class="category-btn" data-category="sacs">
-            <span class="icon">👜</span>
-            <span class="text">Sacs</span>
+        <button class="category-btn flex items-center gap-2 px-4 py-2 border-2 border-border rounded-full bg-white text-gray-600 font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-md hover:border-primary min-h-[44px]" data-category="sacs">
+            <span class="text-lg">👜</span>
+            <span class="hidden md:inline">Sacs</span>
         </button>
-        <button class="category-btn" data-category="accessoires">
-            <span class="icon">🕶️</span>
-            <span class="text">Accessoires</span>
+        <button class="category-btn flex items-center gap-2 px-4 py-2 border-2 border-border rounded-full bg-white text-gray-600 font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-md hover:border-primary min-h-[44px]" data-category="accessoires">
+            <span class="text-lg">🕶️</span>
+            <span class="hidden md:inline">Accessoires</span>
         </button>
-        <button class="category-btn" data-category="electronique">
-            <span class="icon">📱</span>
-            <span class="text">Électronique</span>
+        <button class="category-btn flex items-center gap-2 px-4 py-2 border-2 border-border rounded-full bg-white text-gray-600 font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-md hover:border-primary min-h-[44px]" data-category="electronique">
+            <span class="text-lg">📱</span>
+            <span class="hidden md:inline">Électronique</span>
         </button>
     </nav>
 
     <!-- GRILLE PRODUITS -->
-    <main class="container">
-        <div class="products-grid" id="productsGrid">
+    <main class="max-w-6xl mx-auto py-6 px-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="productsGrid">
             <!-- Les produits seront chargés ici par JavaScript -->
         </div>
     </main>
 
     <!-- BOUTON PANIER FLOTTANT -->
-    <button class="cart-floating" id="cartBtn">
-        <span class="cart-icon">🛒</span>
-        <span class="cart-text">Panier</span>
-        <span class="cart-badge" id="cartBadge">0</span>
+    <button class="fixed bottom-6 right-6 bg-gradient-to-r from-accent to-primary-light text-white border-none py-3 px-5 rounded-full text-base font-bold cursor-pointer shadow-lg transition-all duration-200 z-999 flex items-center gap-2 hover:scale-105 hover:shadow-xl min-h-[44px] min-w-[44px]" id="cartBtn">
+        <span class="text-lg">🛒</span>
+        <span class="hidden md:inline">Panier</span>
+        <span class="bg-danger rounded-full py-0.5 px-2 text-xs min-w-[20px] text-center" id="cartBadge">0</span>
     </button>
 
     <!-- MODAL PANIER -->
-    <div class="modal" id="cartModal">
-        <div class="modal-overlay" id="modalOverlay"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Mon Panier</h2>
-                <button class="close-btn" id="closeBtn">&times;</button>
+    <div class="hidden fixed top-0 left-0 w-screen h-screen z-[9999] items-center justify-center p-4" id="cartModal">
+        <div class="fixed top-0 left-0 w-full h-full bg-black/75 backdrop-blur-sm -z-10" id="modalOverlay"></div>
+        <div class="relative bg-white rounded-xl w-[90%] max-w-[500px] max-h-[85vh] flex flex-col shadow-xl z-10 mx-auto">
+            <div class="flex justify-between items-center py-4 px-5 border-b border-border">
+                <h2 class="text-2xl text-text font-black">Mon Panier</h2>
+                <button class="bg-none border-none text-3xl text-text-light cursor-pointer transition-all duration-200 leading-none hover:text-danger min-w-[44px] min-h-[44px] flex items-center justify-center" id="closeBtn">&times;</button>
             </div>
             
-            <div class="cart-items" id="cartItems">
+            <div class="flex-1 overflow-y-auto py-4 px-5" id="cartItems">
                 <!-- Items du panier ici -->
             </div>
 
-            <div class="cart-footer">
-                <div class="cart-total">
+            <div class="py-4 px-5 border-t border-border bg-bg">
+                <div class="flex justify-between items-center mb-4 text-xl font-bold text-text">
                     <span>Total:</span>
-                    <span class="total-amount" id="totalAmount">0 CFA</span>
+                    <span class="bg-gradient-to-r from-accent to-primary-light bg-clip-text text-transparent text-xl" id="totalAmount">0 CFA</span>
                 </div>
-                <button class="whatsapp-btn" id="whatsappBtn">
+                <button class="w-full bg-gradient-to-r from-accent to-primary-light text-white border-none py-3 rounded-xl text-base font-bold cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 min-h-[44px]" id="whatsappBtn">
                     <span>📲</span>
                     <span>Commander sur WhatsApp</span>
                 </button>
@@ -86,23 +85,23 @@
     </div>
 
     <!-- MODAL CONTACT CLIENT -->
-    <div class="modal" id="contactModal">
-        <div class="modal-overlay" id="contactOverlay"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>📝 Vos coordonnées</h2>
-                <button class="close-btn" id="contactCloseBtn">&times;</button>
+    <div class="hidden fixed top-0 left-0 w-screen h-screen z-[9999] items-center justify-center p-4" id="contactModal">
+        <div class="fixed top-0 left-0 w-full h-full bg-black/75 backdrop-blur-sm -z-10" id="contactOverlay"></div>
+        <div class="relative bg-white rounded-xl w-[90%] max-w-[500px] max-h-[85vh] flex flex-col shadow-xl z-10 mx-auto">
+            <div class="flex justify-between items-center py-4 px-5 border-b border-border">
+                <h2 class="text-2xl text-text font-black">📝 Vos coordonnées</h2>
+                <button class="bg-none border-none text-3xl text-text-light cursor-pointer transition-all duration-200 leading-none hover:text-danger min-w-[44px] min-h-[44px] flex items-center justify-center" id="contactCloseBtn">&times;</button>
             </div>
             
-            <div style="padding: 30px;">
-                <p style="color: #718096; margin-bottom: 25px; line-height: 1.6;">
+            <div class="p-5">
+                <p class="text-text-light mb-5 leading-relaxed text-base">
                     Pour finaliser votre commande, merci de nous fournir vos coordonnées. 
                     Elles seront utilisées uniquement pour traiter votre commande.
                 </p>
 
                 <form id="contactForm">
-                    <div style="margin-bottom: 20px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #2d3748;">
+                    <div class="mb-4">
+                        <label class="block font-semibold mb-2 text-text text-sm">
                             Prénom *
                         </label>
                         <input 
@@ -110,60 +109,51 @@
                             id="clientFirstName" 
                             required
                             placeholder="Ex: Mamadou"
-                            style="width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1em; transition: all 0.3s;"
-                            onfocus="this.style.borderColor='#25D366'"
-                            onblur="this.style.borderColor='#e2e8f0'">
+                            class="w-full py-3 px-4 border-2 border-border rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent min-h-[44px]">
                     </div>
 
-                    <div style="margin-bottom: 20px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #2d3748;">
+                    <div class="mb-5">
+                        <label class="block font-semibold mb-2 text-text">
                             Nom
                         </label>
                         <input 
                             type="text" 
                             id="clientLastName" 
                             placeholder="Ex: Diallo"
-                            style="width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1em; transition: all 0.3s;"
-                            onfocus="this.style.borderColor='#25D366'"
-                            onblur="this.style.borderColor='#e2e8f0'">
+                            class="w-full py-3.5 px-4 border-2 border-border rounded-xl text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent">
                     </div>
 
-                    <div style="margin-bottom: 20px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #2d3748;">
+                    <div class="mb-5">
+                        <label class="block font-semibold mb-2 text-text">
                             Téléphone / WhatsApp *
                         </label>
-                        <div style="position: relative;">
+                        <div class="relative">
                             <input 
                                 type="tel" 
                                 id="clientPhone" 
                                 required
                                 placeholder="Ex: 77 123 45 67"
-                                style="width: 100%; padding: 14px; padding-left: 60px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1em; transition: all 0.3s;"
-                                onfocus="this.style.borderColor='#25D366'"
-                                onblur="this.style.borderColor='#e2e8f0'">
+                                class="w-full py-3.5 pl-15 pr-4 border-2 border-border rounded-xl text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent">
                         </div>
-                        <small id="clientPhoneHint" style="color: #718096; font-size: 0.85em; display: block; margin-top: 5px;">
+                        <small id="clientPhoneHint" class="text-text-light text-sm block mt-1.5">
                             Le préfixe est détecté automatiquement
                         </small>
                     </div>
 
-                    <div style="margin-bottom: 25px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #2d3748;">
+                    <div class="mb-6">
+                        <label class="block font-semibold mb-2 text-text">
                             Adresse de livraison
                         </label>
                         <textarea 
                             id="clientAddress" 
                             rows="2"
                             placeholder="Ex: Quartier Liberté 6, près de la station Total"
-                            style="width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1em; resize: vertical; transition: all 0.3s;"
-                            onfocus="this.style.borderColor='#25D366'"
-                            onblur="this.style.borderColor='#e2e8f0'"></textarea>
+                            class="w-full py-3.5 px-4 border-2 border-border rounded-xl text-base resize-y transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"></textarea>
                     </div>
 
                     <button 
                         type="submit" 
-                        class="whatsapp-btn" 
-                        style="width: 100%; margin-top: 10px;">
+                        class="w-full bg-gradient-to-r from-accent to-primary-light text-white border-none py-4.5 rounded-xl text-lg font-bold cursor-pointer transition-all duration-300 flex items-center justify-center gap-2.5 hover:-translate-y-1 hover:shadow-xl active:translate-y-0 mt-2.5">
                         <span>✅</span>
                         <span>Valider et commander</span>
                     </button>
@@ -173,18 +163,12 @@
     </div>
 
     <!-- FOOTER -->
-    <footer class="footer">
+    <footer class="bg-gray-900 text-white text-center py-6 mt-12">
         <p>&copy; 2024 Majay - Tous droits réservés</p>
     </footer>
 
     <!-- SCRIPTS -->
-    
-
-<!-- À la fin du body, AVANT </body> -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script type="module" src="js/app.js"></script>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>

@@ -1,0 +1,22 @@
+{
+  "name": "majay-v2",
+  "version": "2.0.0",
+  "description": "Plateforme e-commerce multi-vendeurs MAJAY",
+  "scripts": {
+    "build:css": "tailwindcss -i ./css/input.css -o ./css/output.css --minify",
+    "watch:css": "tailwindcss -i ./css/input.css -o ./css/output.css --watch"
+  },
+  "keywords": [
+    "ecommerce",
+    "marketplace",
+    "whatsapp",
+    "telegram"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.35",
+    "autoprefixer": "^10.4.17"
+  }
+}

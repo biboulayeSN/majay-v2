@@ -31,6 +31,9 @@ node_modules/
 .temp/
 tmp/
 
+# CSS généré par Tailwind
+css/output.css
+
 # Fichiers de sauvegarde
 *.bak
 *.backup

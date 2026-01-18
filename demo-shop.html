@@ -3,161 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boutiques de démonstration - MAJAY STORE</title>
+    <title>Boutiques de démonstration - MA-JAY STORE</title>
     <link rel="stylesheet" href="css/output.css">
-    <style>
-        /* Design moderne et compact pour shop cards */
-        .shop-card {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .shop-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #075E54 0%, #25D366 100%);
-            transition: height 0.2s ease;
-        }
-
-        .shop-card:hover::before {
-            height: 4px;
-        }
-
-        .shop-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
-            transform: translate(-50%, -50%);
-            transition: width 0.3s ease, height 0.3s ease;
-            pointer-events: none;
-        }
-
-        .shop-btn:hover::before {
-            width: 150px;
-            height: 150px;
-        }
-    </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-primary via-primary-light to-secondary py-6 px-4 font-sans">
-    <div class="max-w-5xl mx-auto">
-        <div class="text-center text-white mb-6 animate-fade-in-down">
-            <a href="index.html" class="inline-flex items-center justify-center text-white no-underline text-sm mb-3 py-2 px-3 border-2 border-white rounded-full transition-all duration-200 hover:bg-white hover:text-primary min-h-[40px]">← Retour</a>
-            <h1 class="text-2xl md:text-3xl font-black mb-2 drop-shadow-lg">🛍️ Boutiques de démonstration</h1>
-            <p class="text-base md:text-lg opacity-90">Découvrez comment d'autres vendeurs utilisent MAJAY STORE</p>
-        </div>
+    <div class="max-w-6xl mx-auto">
+        <!-- HEADER -->
+        <header class="text-center text-white mb-8">
+            <a href="index.html" class="inline-flex items-center justify-center text-white no-underline text-base mb-4 py-2.5 px-4 border-2 border-white rounded-full transition-all duration-200 hover:bg-white hover:text-primary min-h-[44px]" aria-label="Retour à la page d'accueil">
+                <span aria-hidden="true">←</span>
+                <span>Retour</span>
+            </a>
+            <h1 class="text-3xl md:text-4xl font-black mb-3 drop-shadow-lg flex items-center justify-center gap-3">
+                <span aria-hidden="true">🛍️</span>
+                <span>Boutiques de démonstration</span>
+            </h1>
+            <p class="text-lg md:text-xl opacity-90">Découvrez comment d'autres vendeurs utilisent MA-JAY STORE</p>
+        </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <!-- SHOP CARDS GRID -->
+        <main class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" role="main" aria-label="Liste des boutiques de démonstration">
             <!-- Boutique 1 : Mode -->
-            <div class="shop-card bg-white rounded-xl overflow-hidden shadow-md transition-all duration-200 cursor-pointer relative animate-fade-in-up hover:-translate-y-0.5 hover:shadow-lg" style="animation-delay: 0.1s; animation-fill-mode: backwards;" onclick="window.location.href='catalogue.html?shop=fashion-store-demo'">
-                <div class="flex gap-3 p-4">
-                    <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-3xl">
-                        👗
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-start justify-between gap-2 mb-1">
-                            <div class="flex-1 min-w-0">
-                                <span class="inline-block bg-gradient-to-r from-primary to-primary-light text-white py-0.5 px-2 rounded text-xs font-bold uppercase mb-1">Mode</span>
-                                <h2 class="text-lg font-black text-text truncate">Fashion Store</h2>
+            <article class="bg-white rounded-xl overflow-hidden shadow-md transition-all duration-200 hover:shadow-lg" role="article" aria-labelledby="fashion-store-title">
+                <div class="relative">
+                    <!-- Top accent bar -->
+                    <div class="h-1 bg-gradient-to-r from-primary to-accent" aria-hidden="true"></div>
+                    
+                    <!-- Card content -->
+                    <div class="p-5">
+                        <!-- Icon and category -->
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center text-4xl flex-shrink-0" aria-hidden="true">
+                                👗
                             </div>
+                            <span class="inline-block bg-gradient-to-r from-primary to-primary-light text-white py-1 px-3 rounded-full text-xs font-bold uppercase leading-none" aria-label="Catégorie: Mode">
+                                MODE
+                            </span>
                         </div>
-                        <p class="text-xs text-text-light line-clamp-2 mb-2 leading-relaxed">Vêtements tendance pour femmes et hommes</p>
-                        <div class="flex gap-3 text-xs text-text-light mb-2">
-                            <span class="font-semibold">45 produits</span>
-                            <span>•</span>
+                        
+                        <!-- Title -->
+                        <h2 id="fashion-store-title" class="text-xl font-black text-text mb-2">Fashion Store</h2>
+                        
+                        <!-- Description -->
+                        <p class="text-sm text-text-light mb-4 leading-relaxed min-h-[40px]">
+                            Vêtements tendance pour femmes et hommes
+                        </p>
+                        
+                        <!-- Stats -->
+                        <div class="flex items-center gap-3 mb-5 text-sm text-text-light" aria-label="5 produits, note 4.8 étoiles">
+                            <span class="font-semibold">5 produits</span>
+                            <span aria-hidden="true">•</span>
                             <span>4.8★</span>
                         </div>
                     </div>
+                    
+                    <!-- Button -->
+                    <a href="catalogue.html?shop=fashion-store-demo" class="block w-full bg-accent text-white text-center py-3 font-semibold text-sm no-underline transition-all duration-200 hover:bg-accent-dark min-h-[44px] flex items-center justify-center gap-2" aria-label="Voir la boutique Fashion Store">
+                        <span>Voir la boutique</span>
+                        <span aria-hidden="true">→</span>
+                    </a>
                 </div>
-                <a href="catalogue.html?shop=fashion-store-demo" class="shop-btn block w-full py-2 bg-accent text-white text-center rounded-b-xl font-semibold text-sm no-underline transition-all duration-200 relative overflow-hidden hover:bg-accent-dark min-h-[40px] flex items-center justify-center" onclick="event.stopPropagation()">Voir la boutique →</a>
-            </div>
+            </article>
 
             <!-- Boutique 2 : Électronique -->
-            <div class="shop-card bg-white rounded-xl overflow-hidden shadow-md transition-all duration-200 cursor-pointer relative animate-fade-in-up hover:-translate-y-0.5 hover:shadow-lg" style="animation-delay: 0.2s; animation-fill-mode: backwards;" onclick="window.location.href='catalogue.html?shop=tech-shop-demo'">
-                <div class="flex gap-3 p-4">
-                    <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-3xl">
-                        📱
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-start justify-between gap-2 mb-1">
-                            <div class="flex-1 min-w-0">
-                                <span class="inline-block bg-gradient-to-r from-primary to-primary-light text-white py-0.5 px-2 rounded text-xs font-bold uppercase mb-1">Électronique</span>
-                                <h2 class="text-lg font-black text-text truncate">Tech Shop</h2>
+            <article class="bg-white rounded-xl overflow-hidden shadow-md transition-all duration-200 hover:shadow-lg" role="article" aria-labelledby="tech-shop-title">
+                <div class="relative">
+                    <!-- Top accent bar -->
+                    <div class="h-1 bg-gradient-to-r from-primary to-accent" aria-hidden="true"></div>
+                    
+                    <!-- Card content -->
+                    <div class="p-5">
+                        <!-- Icon and category -->
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center text-4xl flex-shrink-0" aria-hidden="true">
+                                📱
                             </div>
+                            <span class="inline-block bg-gradient-to-r from-primary to-primary-light text-white py-1 px-3 rounded-full text-xs font-bold uppercase leading-none" aria-label="Catégorie: Électronique">
+                                ÉLECTRONIQUE
+                            </span>
                         </div>
-                        <p class="text-xs text-text-light line-clamp-2 mb-2 leading-relaxed">Smartphones, accessoires et gadgets high-tech</p>
-                        <div class="flex gap-3 text-xs text-text-light mb-2">
-                            <span class="font-semibold">67 produits</span>
-                            <span>•</span>
+                        
+                        <!-- Title -->
+                        <h2 id="tech-shop-title" class="text-xl font-black text-text mb-2">Tech Shop</h2>
+                        
+                        <!-- Description -->
+                        <p class="text-sm text-text-light mb-4 leading-relaxed min-h-[40px]">
+                            Smartphones, accessoires et gadgets high-tech
+                        </p>
+                        
+                        <!-- Stats -->
+                        <div class="flex items-center gap-3 mb-5 text-sm text-text-light" aria-label="5 produits, note 4.9 étoiles">
+                            <span class="font-semibold">5 produits</span>
+                            <span aria-hidden="true">•</span>
                             <span>4.9★</span>
                         </div>
                     </div>
+                    
+                    <!-- Button -->
+                    <a href="catalogue.html?shop=tech-shop-demo" class="block w-full bg-accent text-white text-center py-3 font-semibold text-sm no-underline transition-all duration-200 hover:bg-accent-dark min-h-[44px] flex items-center justify-center gap-2" aria-label="Voir la boutique Tech Shop">
+                        <span>Voir la boutique</span>
+                        <span aria-hidden="true">→</span>
+                    </a>
                 </div>
-                <a href="catalogue.html?shop=tech-shop-demo" class="shop-btn block w-full py-2 bg-accent text-white text-center rounded-b-xl font-semibold text-sm no-underline transition-all duration-200 relative overflow-hidden hover:bg-accent-dark min-h-[40px] flex items-center justify-center" onclick="event.stopPropagation()">Voir la boutique →</a>
-            </div>
+            </article>
 
             <!-- Boutique 3 : Beauté -->
-            <div class="shop-card bg-white rounded-xl overflow-hidden shadow-md transition-all duration-200 cursor-pointer relative animate-fade-in-up hover:-translate-y-0.5 hover:shadow-lg" style="animation-delay: 0.3s; animation-fill-mode: backwards;" onclick="window.location.href='catalogue.html?shop=beauty-corner-demo'">
-                <div class="flex gap-3 p-4">
-                    <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-3xl">
-                        💄
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-start justify-between gap-2 mb-1">
-                            <div class="flex-1 min-w-0">
-                                <span class="inline-block bg-gradient-to-r from-primary to-primary-light text-white py-0.5 px-2 rounded text-xs font-bold uppercase mb-1">Beauté</span>
-                                <h2 class="text-lg font-black text-text truncate">Beauty Corner</h2>
+            <article class="bg-white rounded-xl overflow-hidden shadow-md transition-all duration-200 hover:shadow-lg" role="article" aria-labelledby="beauty-corner-title">
+                <div class="relative">
+                    <!-- Top accent bar -->
+                    <div class="h-1 bg-gradient-to-r from-primary to-accent" aria-hidden="true"></div>
+                    
+                    <!-- Card content -->
+                    <div class="p-5">
+                        <!-- Icon and category -->
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center text-4xl flex-shrink-0" aria-hidden="true">
+                                💄
                             </div>
+                            <span class="inline-block bg-gradient-to-r from-primary to-primary-light text-white py-1 px-3 rounded-full text-xs font-bold uppercase leading-none" aria-label="Catégorie: Beauté">
+                                BEAUTÉ
+                            </span>
                         </div>
-                        <p class="text-xs text-text-light line-clamp-2 mb-2 leading-relaxed">Produits de beauté authentiques et soins</p>
-                        <div class="flex gap-3 text-xs text-text-light mb-2">
-                            <span class="font-semibold">52 produits</span>
-                            <span>•</span>
+                        
+                        <!-- Title -->
+                        <h2 id="beauty-corner-title" class="text-xl font-black text-text mb-2">Beauty Corner</h2>
+                        
+                        <!-- Description -->
+                        <p class="text-sm text-text-light mb-4 leading-relaxed min-h-[40px]">
+                            Produits de beauté authentiques et soins
+                        </p>
+                        
+                        <!-- Stats -->
+                        <div class="flex items-center gap-3 mb-5 text-sm text-text-light" aria-label="5 produits, note 4.7 étoiles">
+                            <span class="font-semibold">5 produits</span>
+                            <span aria-hidden="true">•</span>
                             <span>4.7★</span>
                         </div>
                     </div>
+                    
+                    <!-- Button -->
+                    <a href="catalogue.html?shop=beauty-corner-demo" class="block w-full bg-accent text-white text-center py-3 font-semibold text-sm no-underline transition-all duration-200 hover:bg-accent-dark min-h-[44px] flex items-center justify-center gap-2" aria-label="Voir la boutique Beauty Corner">
+                        <span>Voir la boutique</span>
+                        <span aria-hidden="true">→</span>
+                    </a>
                 </div>
-                <a href="catalogue.html?shop=beauty-corner-demo" class="shop-btn block w-full py-2 bg-accent text-white text-center rounded-b-xl font-semibold text-sm no-underline transition-all duration-200 relative overflow-hidden hover:bg-accent-dark min-h-[40px] flex items-center justify-center" onclick="event.stopPropagation()">Voir la boutique →</a>
-            </div>
+            </article>
+        </main>
 
-            <!-- Boutique 4 : Alimentation -->
-            <div class="shop-card bg-white rounded-xl overflow-hidden shadow-md transition-all duration-200 cursor-pointer relative animate-fade-in-up hover:-translate-y-0.5 hover:shadow-lg" style="animation-delay: 0.4s; animation-fill-mode: backwards;" onclick="window.location.href='catalogue.html?shop=food-market-demo'">
-                <div class="flex gap-3 p-4">
-                    <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center text-3xl">
-                        🍔
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-start justify-between gap-2 mb-1">
-                            <div class="flex-1 min-w-0">
-                                <span class="inline-block bg-gradient-to-r from-primary to-primary-light text-white py-0.5 px-2 rounded text-xs font-bold uppercase mb-1">Alimentation</span>
-                                <h2 class="text-lg font-black text-text truncate">Food Market</h2>
-                            </div>
-                        </div>
-                        <p class="text-xs text-text-light line-clamp-2 mb-2 leading-relaxed">Plats faits maison et pâtisseries</p>
-                        <div class="flex gap-3 text-xs text-text-light mb-2">
-                            <span class="font-semibold">34 produits</span>
-                            <span>•</span>
-                            <span>5.0★</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="catalogue.html?shop=food-market-demo" class="shop-btn block w-full py-2 bg-accent text-white text-center rounded-b-xl font-semibold text-sm no-underline transition-all duration-200 relative overflow-hidden hover:bg-accent-dark min-h-[40px] flex items-center justify-center" onclick="event.stopPropagation()">Voir la boutique →</a>
+        <!-- CTA SECTION -->
+        <section class="bg-white rounded-xl py-8 px-6 shadow-md text-center" aria-label="Appel à l'action">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <span class="text-3xl" aria-hidden="true">🚀</span>
+                <h2 class="text-2xl md:text-3xl font-black text-text">Prêt à créer votre boutique ?</h2>
             </div>
-        </div>
-
-        <div class="text-center bg-white py-6 px-5 rounded-xl shadow-md animate-fade-in-up" style="animation-delay: 0.5s; animation-fill-mode: backwards;">
-            <h2 class="text-xl md:text-2xl font-black text-text mb-3">🚀 Prêt à créer votre boutique ?</h2>
-            <p class="text-sm md:text-base text-text-light mb-5">Rejoignez ces vendeurs à succès et commencez à vendre dès aujourd'hui</p>
-            <a href="vendeur/inscription.html" class="inline-flex items-center justify-center py-2.5 px-6 bg-accent text-white rounded-full font-bold text-sm no-underline transition-all duration-200 hover:bg-accent-dark hover:-translate-y-0.5 hover:shadow-md min-h-[44px]">Créer ma boutique gratuitement</a>
-        </div>
+            <p class="text-base md:text-lg text-text-light mb-6">Rejoignez ces vendeurs à succès et commencez à vendre dès aujourd'hui</p>
+            <a href="vendeur/inscription.html" class="inline-flex items-center justify-center py-3 px-8 bg-accent text-white rounded-full font-bold text-base no-underline transition-all duration-200 hover:bg-accent-dark hover:-translate-y-0.5 hover:shadow-lg min-h-[44px]" aria-label="Créer ma boutique gratuitement">
+                Créer ma boutique gratuitement
+            </a>
+        </section>
     </div>
 </body>
 </html>

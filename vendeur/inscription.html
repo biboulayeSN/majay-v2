@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription - MAJAY</title>
+    <title>Inscription - MA-JAY</title>
     <link rel="stylesheet" href="../css/output.css">
 </head>
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-header">
-            <h1 class="logo">🛍️ MAJAY</h1>
-            <p class="tagline">Créez votre boutique en ligne</p>
+            <h1 class="logo">🛍️ <span class="text-primary">MA-JAY</span></h1>
+            <p class="tagline">Créez votre boutique en ligne en 2 minutes</p>
         </div>
 
         <div class="auth-card">
@@ -20,46 +20,50 @@
             <!-- Étape 1 : Informations boutique -->
             <form id="inscriptionForm" class="auth-form" style="display: block;">
                 <div class="form-group">
-                    <label>Nom de votre boutique *</label>
-                    <input type="text" id="nom" required placeholder="Ex: Fashion Store">
+                    <label for="nom" class="form-label">Nom de votre boutique *</label>
+                    <input type="text" id="nom" class="form-control" required placeholder="Ex: Fashion Store" aria-required="true" aria-label="Nom de votre boutique">
                 </div>
 
                 <div class="form-group">
-                    <label>Adresse de votre boutique *</label>
+                    <label for="slug" class="form-label">Adresse de votre boutique *</label>
                     <div class="input-with-prefix">
-                        <span class="prefix">majay.com/</span>
-                        <input type="text" id="slug" required placeholder="ma-boutique">
+                        <span class="prefix" aria-hidden="true">ma-jay.com/</span>
+                        <input type="text" id="slug" class="form-control" required placeholder="ma-boutique" aria-required="true" aria-label="Adresse de votre boutique" aria-describedby="slugHint slugExample">
                     </div>
-                    <span class="form-hint">Lettres minuscules et tirets uniquement</span>
+                    <span class="form-hint" id="slugHint">Lettres minuscules, chiffres et tirets uniquement</span>
+                    <span class="form-hint" style="color: #25D366; font-weight: 600; margin-top: 4px; display: block;" id="slugExample">
+                        Exemple : ma-jay.com/<span id="slugPreview">ma-boutique</span>
+                    </span>
                 </div>
 
                 <div class="form-group">
-                    <label>Votre nom complet *</label>
-                    <input type="text" id="full_name" required placeholder="Ex: Amadou Diallo">
+                    <label for="full_name" class="form-label">Votre nom complet *</label>
+                    <input type="text" id="full_name" class="form-control" required placeholder="Ex: Amadou Diallo" aria-required="true" aria-label="Votre nom complet">
                 </div>
 
                 <div class="form-group">
-                    <label>Pays *</label>
-                    <div id="countrySelectContainer"></div>
+                    <label for="country" class="form-label">Pays *</label>
+                    <div id="countrySelectContainer" role="group" aria-label="Sélection du pays"></div>
                 </div>
 
                 <div class="form-group">
-                    <label>Numéro de téléphone *</label>
-                    <div style="position: relative;">
-                        <input type="tel" id="telephone" required placeholder="77 123 45 67" style="padding-left: 60px;">
+                    <label for="telephone" class="form-label">Numéro de téléphone *</label>
+                    <div class="input-with-prefix">
+                        <span class="prefix" id="phonePrefix" aria-hidden="true">+221</span>
+                        <input type="tel" id="telephone" class="form-control" required placeholder="77 123 45 67" aria-required="true" aria-label="Numéro de téléphone" aria-describedby="phoneHint">
                     </div>
                     <span class="form-hint" id="phoneHint">Le préfixe est détecté automatiquement selon votre pays</span>
                 </div>
 
                 <div class="form-group">
-                    <label>WhatsApp</label>
-                    <input type="tel" id="whatsapp" placeholder="Même numéro ou autre">
+                    <label for="whatsapp" class="form-label">WhatsApp</label>
+                    <input type="tel" id="whatsapp" class="form-control" placeholder="Même numéro ou autre" aria-label="Numéro WhatsApp">
                 </div>
 
                 <div class="form-group checkbox-group">
-                    <label>
-                        <input type="checkbox" id="cgu" required>
-                        <span>J'accepte les conditions</span>
+                    <label for="cgu" class="flex items-center gap-3 cursor-pointer min-h-[44px]">
+                        <input type="checkbox" id="cgu" required aria-required="true" class="w-5 h-5 cursor-pointer" style="min-width: 20px; min-height: 20px;">
+                        <span class="text-base">J'accepte les <a href="../cgu.html" target="_blank" class="text-primary font-semibold underline hover:text-primary-dark">conditions d'utilisation</a></span>
                     </label>
                 </div>
 
@@ -72,9 +76,9 @@
             <!-- Étape 2 : Code OTP -->
             <form id="otpForm" class="auth-form" style="display: none;">
                 <div class="form-group">
-                    <label>Code de vérification</label>
-                    <input type="text" id="otpCode" required placeholder="123456" maxlength="6" pattern="[0-9]{6}">
-                    <span class="form-hint">Entrez le code reçu par SMS</span>
+                    <label for="otpCode" class="form-label">Code de vérification</label>
+                    <input type="text" id="otpCode" class="form-control" required placeholder="123456" maxlength="6" pattern="[0-9]{6}" aria-required="true" aria-label="Code de vérification" aria-describedby="otpHint">
+                    <span class="form-hint" id="otpHint">Entrez le code reçu par SMS</span>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-lg" id="btnVerify" style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
@@ -93,7 +97,7 @@
         </div>
     </div>
 <script type="module">
-import { authMajay } from "../js/auth.js";
+import { authMaJay } from "../js/auth.js";
 import { detectUserLocation, createCountrySelector, formatPhoneWithPrefix, saveUserLocation } from "../js/geolocation.js";
 
 // Variables globales pour la géolocalisation
@@ -149,6 +153,30 @@ let userLocation = null;
     }
 })();
 
+// Prévisualisation de l'URL de la boutique en temps réel
+document.getElementById('slug').addEventListener('input', function(e) {
+    const slugPreview = document.getElementById('slugPreview');
+    const value = e.target.value.trim();
+    
+    if (value) {
+        slugPreview.textContent = value;
+    } else {
+        slugPreview.textContent = 'ma-boutique';
+    }
+    
+    // Validation en temps réel : seulement lettres minuscules, chiffres et tirets
+    const validPattern = /^[a-z0-9-]*$/;
+    if (!validPattern.test(value)) {
+        e.target.style.borderColor = '#ff4757';
+        document.getElementById('slugHint').style.color = '#ff4757';
+        document.getElementById('slugHint').textContent = '⚠️ Uniquement lettres minuscules, chiffres et tirets';
+    } else {
+        e.target.style.borderColor = '#25D366';
+        document.getElementById('slugHint').style.color = '#25D366';
+        document.getElementById('slugHint').textContent = '✓ Adresse valide';
+    }
+});
+
 document.getElementById('inscriptionForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -168,10 +196,18 @@ document.getElementById('inscriptionForm').addEventListener('submit', async func
             const selectedCountry = countrySelector.value;
             const selectedPrefix = countrySelector.selectedOptions[0].dataset.prefix;
             
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:197',message:'BEFORE formatting in form',data:{telephone_raw:telephone,selectedPrefix:selectedPrefix},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A'})}).catch(()=>{});
+            // #endregion
+            
             // Ajouter le préfixe si nécessaire
             if (!telephone.startsWith('+')) {
                 telephone = selectedPrefix + telephone.replace(/^0+/, '');
             }
+            
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:210',message:'AFTER formatting in form',data:{telephone_formatted:telephone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A'})}).catch(()=>{});
+            // #endregion
             
             // Sauvegarder la localisation pour analytics
             if (userLocation) {
@@ -187,7 +223,7 @@ document.getElementById('inscriptionForm').addEventListener('submit', async func
             }
         }
         
-        const result = await authMajay.inscrireVendeur({
+        const result = await authMaJay.inscrireVendeur({
             nom: document.getElementById('nom').value.trim(),
             slug: document.getElementById('slug').value.trim(),
             full_name: document.getElementById('full_name').value.trim(),
@@ -202,6 +238,18 @@ document.getElementById('inscriptionForm').addEventListener('submit', async func
         if (result.success) {
             const { showSuccess } = await import("../js/notifications.js");
             showSuccess("Code envoyé ! Vérifiez votre téléphone.");
+            
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:236',message:'STORING phone in sessionStorage',data:{phone_to_store:result.phone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
+            // #endregion
+            
+            // Stocker le numéro formaté pour la vérification OTP
+            sessionStorage.setItem('majay_otp_phone', result.phone);
+            
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:245',message:'STORED phone verification',data:{stored_value:sessionStorage.getItem('majay_otp_phone')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
+            // #endregion
+            
             // Afficher le formulaire OTP
             document.getElementById("inscriptionForm").style.display = 'none';
             document.getElementById("otpForm").style.display = 'block';
@@ -228,10 +276,15 @@ document.getElementById('otpForm').addEventListener('submit', async function(e) 
     btn.querySelector('.btn-loader').style.display = 'inline';
 
     try {
-        const telephone = document.getElementById('telephone').value.trim();
+        // Récupérer le numéro formaté utilisé lors de l'envoi du code
+        const telephone = sessionStorage.getItem('majay_otp_phone') || document.getElementById('telephone').value.trim();
         const code = document.getElementById('otpCode').value.trim();
 
-        const result = await authMajay.finaliserInscription(telephone, code);
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:267',message:'BEFORE finaliserInscription call',data:{telephone_retrieved:telephone,code_length:code.length,from_sessionStorage:!!sessionStorage.getItem('majay_otp_phone')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'D'})}).catch(()=>{});
+        // #endregion
+
+        const result = await authMaJay.finaliserInscription(telephone, code);
 
         if (result.success) {
             const { showSuccess } = await import("../js/notifications.js");

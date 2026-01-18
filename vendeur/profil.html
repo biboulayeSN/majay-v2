@@ -74,23 +74,41 @@
     </style>
 </head>
 <body class="dashboard-page">
-    <header class="dashboard-header">
-        <div class="dashboard-header-content">
-            <div class="dashboard-logo">🛍️ MAJAY</div>
-            <nav class="dashboard-nav" id="mainNav">
-                <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="nav-link">📦 Produits</a>
-                <a href="commandes.html" class="nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="nav-link">👥 Clients</a>
-                <a href="analytics.html" class="nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="nav-link">💳 Abonnements</a>
-                <a href="profil.html" class="nav-link active">⚙️ Profil</a>
-            </nav>
-            <button onclick="window.authMajay.deconnexion()" style="background: none; border: none; cursor: pointer; font-size: 1.2em;">🚪</button>
-        </div>
-    </header>
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <span id="toggleIcon">☰</span>
+    </button>
 
-    <div class="dashboard-container">
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- Dashboard Wrapper -->
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="dashboardSidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">🛍️ MA-JAY</div>
+            </div>
+            
+            <nav class="sidebar-nav" id="mainNav">
+                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
+                <a href="profil.html" class="sidebar-nav-link active">⚙️ Profil</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <button onclick="window.authMaJay.deconnexion()" class="btn btn-outline btn-sm w-full" title="Déconnexion" aria-label="Se déconnecter">🚪 Déconnexion</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-main-content">
         <div class="profile-card">
             <div class="profile-header">
                 <div class="profile-icon">👤</div>
@@ -136,14 +154,23 @@
                 🗑️ Supprimer mon compte
             </button>
         </div>
+            </div>
+        </main>
     </div>
 
     <script type="module">
         import { supabase } from "../js/config.js";
-        import { authMajay } from "../js/auth.js";
+        import { authMaJay } from "../js/auth.js";
 
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session) window.location.href = 'connexion.html';
+
+        // Mettre à jour le badge du plan dans la sidebar
+        const userPlan = document.getElementById('userPlan');
+        if (userPlan) {
+            userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
+            userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
+        }
 
         // Afficher les liens conditionnels selon le plan
         const plan = session.subscription_plan || 'free';
@@ -151,16 +178,43 @@
             const nav = document.getElementById('mainNav');
             const equipeLink = document.createElement('a');
             equipeLink.href = 'equipe.html';
-            equipeLink.className = 'nav-link';
+            equipeLink.className = 'sidebar-nav-link';
             equipeLink.textContent = '👥 Équipe';
             nav.insertBefore(equipeLink, nav.lastElementChild);
             
             const multiLink = document.createElement('a');
             multiLink.href = 'multi-boutiques.html';
-            multiLink.className = 'nav-link';
+            multiLink.className = 'sidebar-nav-link';
             multiLink.textContent = '🏪 Multi-Boutiques';
             nav.insertBefore(multiLink, nav.lastElementChild);
         }
+
+        // Sidebar toggle functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isOpen = sidebar.classList.contains('open');
+            
+            if (isOpen) {
+                closeSidebar();
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '✕';
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '☰';
+        }
+
+        // Expose functions globally
+        window.toggleSidebar = toggleSidebar;
+        window.closeSidebar = closeSidebar;
 
         // Charger les données de la boutique
         async function chargerProfil() {
@@ -219,7 +273,7 @@
                 // Mettre à jour la session
                 session.store_name = document.getElementById('nom').value.trim();
                 session.whatsapp_number = document.getElementById('whatsapp').value.trim();
-                authMajay.sauvegarderSession(session);
+                authMaJay.sauvegarderSession(session);
                 chargerProfil();
             }
         });
@@ -244,7 +298,7 @@
                 const { showSuccess } = await import('../js/notifications.js');
                 showSuccess('Compte désactivé. Redirection...');
                 setTimeout(() => {
-                    authMajay.deconnexion();
+                    authMaJay.deconnexion();
                 }, 1500);
             }
         };

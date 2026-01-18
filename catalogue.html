@@ -9,53 +9,53 @@
 </head>
 <body class="min-h-screen bg-gradient-to-br from-primary via-primary-light to-secondary pb-24">
     <!-- HEADER -->
-    <header class="bg-gradient-to-r from-primary to-primary-dark text-white py-10 px-5 text-center shadow-xl">
+    <header class="header bg-gradient-to-r from-primary to-primary-dark text-white py-10 px-5 text-center shadow-xl">
         <div class="max-w-6xl mx-auto">
-            <h1 class="text-4xl md:text-5xl font-black mb-2.5 drop-shadow-md tracking-wide">🛍️ MAJAY</h1>
-            <p class="text-lg md:text-xl opacity-90 font-light">La plateforme tout-en-un pour booster vos ventes sur WhAtsapp et Telegram</p>
+            <h1 class="logo text-4xl md:text-5xl font-black mb-2.5 drop-shadow-md tracking-wide">🛍️ MA-JAY</h1>
+            <p class="tagline text-lg md:text-xl opacity-90 font-light">La plateforme tout-en-un pour booster vos ventes sur WhAtsapp et Telegram</p>
         </div>
     </header>
 
     <!-- NAVIGATION CATEGORIES -->
-    <nav class="bg-white py-3 px-4 flex gap-3 overflow-x-auto shadow-sm sticky top-0 z-100">
-        <button class="category-btn active flex items-center gap-2 px-4 py-2 border-2 border-border rounded-full bg-white text-gray-600 font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-md hover:border-primary min-h-[44px]" data-category="tous">
-            <span class="text-lg">🌟</span>
+    <nav class="bg-white py-3 px-4 flex gap-3 overflow-x-auto shadow-sm sticky top-0 z-100" role="navigation" aria-label="Filtres de catégories">
+        <button class="category-btn active" data-category="tous" aria-label="Afficher tous les produits" aria-pressed="true">
+            <span class="text-lg" aria-hidden="true">🌟</span>
             <span class="hidden md:inline">Tous</span>
         </button>
-        <button class="category-btn flex items-center gap-2 px-4 py-2 border-2 border-border rounded-full bg-white text-gray-600 font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-md hover:border-primary min-h-[44px]" data-category="montres">
-            <span class="text-lg">⌚</span>
+        <button class="category-btn" data-category="montres" aria-label="Filtrer par catégorie Montres" aria-pressed="false">
+            <span class="text-lg" aria-hidden="true">⌚</span>
             <span class="hidden md:inline">Montres</span>
         </button>
-        <button class="category-btn flex items-center gap-2 px-4 py-2 border-2 border-border rounded-full bg-white text-gray-600 font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-md hover:border-primary min-h-[44px]" data-category="chaussures">
-            <span class="text-lg">👟</span>
+        <button class="category-btn" data-category="chaussures" aria-label="Filtrer par catégorie Chaussures" aria-pressed="false">
+            <span class="text-lg" aria-hidden="true">👟</span>
             <span class="hidden md:inline">Chaussures</span>
         </button>
-        <button class="category-btn flex items-center gap-2 px-4 py-2 border-2 border-border rounded-full bg-white text-gray-600 font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-md hover:border-primary min-h-[44px]" data-category="sacs">
-            <span class="text-lg">👜</span>
+        <button class="category-btn" data-category="sacs" aria-label="Filtrer par catégorie Sacs" aria-pressed="false">
+            <span class="text-lg" aria-hidden="true">👜</span>
             <span class="hidden md:inline">Sacs</span>
         </button>
-        <button class="category-btn flex items-center gap-2 px-4 py-2 border-2 border-border rounded-full bg-white text-gray-600 font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-md hover:border-primary min-h-[44px]" data-category="accessoires">
-            <span class="text-lg">🕶️</span>
+        <button class="category-btn" data-category="accessoires" aria-label="Filtrer par catégorie Accessoires" aria-pressed="false">
+            <span class="text-lg" aria-hidden="true">🕶️</span>
             <span class="hidden md:inline">Accessoires</span>
         </button>
-        <button class="category-btn flex items-center gap-2 px-4 py-2 border-2 border-border rounded-full bg-white text-gray-600 font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap hover:-translate-y-0.5 hover:shadow-md hover:border-primary min-h-[44px]" data-category="electronique">
-            <span class="text-lg">📱</span>
+        <button class="category-btn" data-category="electronique" aria-label="Filtrer par catégorie Électronique" aria-pressed="false">
+            <span class="text-lg" aria-hidden="true">📱</span>
             <span class="hidden md:inline">Électronique</span>
         </button>
     </nav>
 
     <!-- GRILLE PRODUITS -->
     <main class="max-w-6xl mx-auto py-6 px-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="productsGrid">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 items-stretch" id="productsGrid">
             <!-- Les produits seront chargés ici par JavaScript -->
         </div>
     </main>
 
     <!-- BOUTON PANIER FLOTTANT -->
-    <button class="fixed bottom-6 right-6 bg-gradient-to-r from-accent to-primary-light text-white border-none py-3 px-5 rounded-full text-base font-bold cursor-pointer shadow-lg transition-all duration-200 z-999 flex items-center gap-2 hover:scale-105 hover:shadow-xl min-h-[44px] min-w-[44px]" id="cartBtn">
-        <span class="text-lg">🛒</span>
+    <button class="fixed bottom-6 right-6 bg-gradient-to-r from-accent to-primary-light text-white border-none py-3 px-5 rounded-full text-base font-bold cursor-pointer shadow-lg transition-all duration-200 z-999 flex items-center gap-2 hover:scale-105 hover:shadow-xl min-h-[44px] min-w-[44px]" id="cartBtn" aria-label="Voir le panier" aria-describedby="cartBadge">
+        <span class="text-lg" aria-hidden="true">🛒</span>
         <span class="hidden md:inline">Panier</span>
-        <span class="bg-danger rounded-full py-0.5 px-2 text-xs min-w-[20px] text-center" id="cartBadge">0</span>
+        <span class="bg-danger rounded-full py-0.5 px-2 text-xs min-w-[20px] text-center font-bold" id="cartBadge" aria-label="Nombre d'articles dans le panier">0</span>
     </button>
 
     <!-- MODAL PANIER -->
@@ -64,7 +64,7 @@
         <div class="relative bg-white rounded-xl w-[90%] max-w-[500px] max-h-[85vh] flex flex-col shadow-xl z-10 mx-auto">
             <div class="flex justify-between items-center py-4 px-5 border-b border-border">
                 <h2 class="text-2xl text-text font-black">Mon Panier</h2>
-                <button class="bg-none border-none text-3xl text-text-light cursor-pointer transition-all duration-200 leading-none hover:text-danger min-w-[44px] min-h-[44px] flex items-center justify-center" id="closeBtn">&times;</button>
+                <button class="bg-none border-none text-3xl text-text-light cursor-pointer transition-all duration-200 leading-none hover:text-danger min-w-[44px] min-h-[44px] flex items-center justify-center" id="closeBtn" aria-label="Fermer le panier">&times;</button>
             </div>
             
             <div class="flex-1 overflow-y-auto py-4 px-5" id="cartItems">
@@ -76,8 +76,8 @@
                     <span>Total:</span>
                     <span class="bg-gradient-to-r from-accent to-primary-light bg-clip-text text-transparent text-xl" id="totalAmount">0 CFA</span>
                 </div>
-                <button class="w-full bg-gradient-to-r from-accent to-primary-light text-white border-none py-3 rounded-xl text-base font-bold cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 min-h-[44px]" id="whatsappBtn">
-                    <span>📲</span>
+                <button class="w-full bg-gradient-to-r from-accent to-primary-light text-white border-none py-3 rounded-xl text-base font-bold cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 min-h-[44px]" id="whatsappBtn" aria-label="Commander sur WhatsApp">
+                    <span aria-hidden="true">📲</span>
                     <span>Commander sur WhatsApp</span>
                 </button>
             </div>
@@ -90,7 +90,7 @@
         <div class="relative bg-white rounded-xl w-[90%] max-w-[500px] max-h-[85vh] flex flex-col shadow-xl z-10 mx-auto">
             <div class="flex justify-between items-center py-4 px-5 border-b border-border">
                 <h2 class="text-2xl text-text font-black">📝 Vos coordonnées</h2>
-                <button class="bg-none border-none text-3xl text-text-light cursor-pointer transition-all duration-200 leading-none hover:text-danger min-w-[44px] min-h-[44px] flex items-center justify-center" id="contactCloseBtn">&times;</button>
+                <button class="bg-none border-none text-3xl text-text-light cursor-pointer transition-all duration-200 leading-none hover:text-danger min-w-[44px] min-h-[44px] flex items-center justify-center" id="contactCloseBtn" aria-label="Fermer le formulaire de contact">&times;</button>
             </div>
             
             <div class="p-5">
@@ -100,64 +100,119 @@
                 </p>
 
                 <form id="contactForm">
-                    <div class="mb-4">
-                        <label class="block font-semibold mb-2 text-text text-sm">
+                    <div class="form-group">
+                        <label for="clientFirstName" class="form-label">
                             Prénom *
                         </label>
                         <input 
                             type="text" 
                             id="clientFirstName" 
+                            class="form-control"
                             required
                             placeholder="Ex: Mamadou"
-                            class="w-full py-3 px-4 border-2 border-border rounded-xl text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent min-h-[44px]">
+                            aria-required="true"
+                            aria-label="Prénom">
                     </div>
 
-                    <div class="mb-5">
-                        <label class="block font-semibold mb-2 text-text">
+                    <div class="form-group">
+                        <label for="clientLastName" class="form-label">
                             Nom
                         </label>
                         <input 
                             type="text" 
                             id="clientLastName" 
+                            class="form-control"
                             placeholder="Ex: Diallo"
-                            class="w-full py-3.5 px-4 border-2 border-border rounded-xl text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent">
+                            aria-label="Nom">
                     </div>
 
-                    <div class="mb-5">
-                        <label class="block font-semibold mb-2 text-text">
+                    <div class="form-group">
+                        <label for="clientPhone" class="form-label">
                             Téléphone / WhatsApp *
                         </label>
-                        <div class="relative">
+                        <div class="input-with-prefix">
+                            <span class="prefix" id="clientPhonePrefix" aria-hidden="true">+221</span>
                             <input 
                                 type="tel" 
                                 id="clientPhone" 
+                                class="form-control"
                                 required
-                                placeholder="Ex: 77 123 45 67"
-                                class="w-full py-3.5 pl-15 pr-4 border-2 border-border rounded-xl text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent">
+                                placeholder="77 123 45 67"
+                                aria-required="true"
+                                aria-label="Téléphone / WhatsApp"
+                                aria-describedby="clientPhoneHint">
                         </div>
-                        <small id="clientPhoneHint" class="text-text-light text-sm block mt-1.5">
+                        <span class="form-hint" id="clientPhoneHint">
                             Le préfixe est détecté automatiquement
-                        </small>
+                        </span>
                     </div>
 
-                    <div class="mb-6">
-                        <label class="block font-semibold mb-2 text-text">
+                    <div class="form-group">
+                        <label for="clientAddress" class="form-label">
                             Adresse de livraison
                         </label>
                         <textarea 
                             id="clientAddress" 
+                            class="form-control"
                             rows="2"
                             placeholder="Ex: Quartier Liberté 6, près de la station Total"
-                            class="w-full py-3.5 px-4 border-2 border-border rounded-xl text-base resize-y transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"></textarea>
+                            aria-label="Adresse de livraison"></textarea>
                     </div>
 
                     <button 
                         type="submit" 
-                        class="w-full bg-gradient-to-r from-accent to-primary-light text-white border-none py-4.5 rounded-xl text-lg font-bold cursor-pointer transition-all duration-300 flex items-center justify-center gap-2.5 hover:-translate-y-1 hover:shadow-xl active:translate-y-0 mt-2.5">
-                        <span>✅</span>
+                        class="btn btn-primary btn-lg w-full mt-3"
+                        aria-label="Valider et commander">
+                        <span aria-hidden="true">✅</span>
                         <span>Valider et commander</span>
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DÉTAILS PRODUIT -->
+    <div class="hidden fixed top-0 left-0 w-screen h-screen z-[9999] items-center justify-center p-4" id="productDetailModal" role="dialog" aria-labelledby="productDetailTitle" aria-modal="true">
+        <div class="fixed top-0 left-0 w-full h-full bg-black/75 backdrop-blur-sm -z-10 cursor-pointer" id="productDetailOverlay"></div>
+        <div class="relative bg-white rounded-xl w-[90%] max-w-[900px] max-h-[90vh] flex flex-col shadow-xl z-10 mx-auto overflow-hidden">
+            <div class="flex justify-between items-center py-4 px-5 border-b border-border flex-shrink-0">
+                <h2 class="text-2xl text-text font-black" id="productDetailTitle">Détails du produit</h2>
+                <button class="bg-none border-none text-3xl text-text-light cursor-pointer transition-all duration-200 leading-none hover:text-danger min-w-[44px] min-h-[44px] flex items-center justify-center" id="productDetailCloseBtn" aria-label="Fermer les détails du produit">&times;</button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Galerie d'images -->
+                    <div class="space-y-3">
+                        <div class="relative">
+                            <img id="productDetailMainImage" src="" alt="" class="w-full h-80 object-cover rounded-xl bg-gradient-to-br from-gray-100 to-gray-200">
+                        </div>
+                        <div id="productDetailThumbnails" class="grid grid-cols-4 gap-2">
+                            <!-- Miniatures des images -->
+                        </div>
+                    </div>
+                    
+                    <!-- Informations produit -->
+                    <div class="space-y-4">
+                        <div>
+                            <span id="productDetailCategory" class="inline-block bg-gradient-to-r from-primary to-primary-light text-white py-1 px-3 rounded-full text-xs font-bold uppercase mb-3"></span>
+                            <h3 id="productDetailName" class="text-3xl font-black text-text mb-3"></h3>
+                            <p id="productDetailDescription" class="text-base text-text-light leading-relaxed mb-4"></p>
+                        </div>
+                        
+                        <div class="border-t border-border pt-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-lg font-semibold text-text">Prix:</span>
+                                <span id="productDetailPrice" class="text-3xl font-black bg-gradient-to-r from-accent to-primary-light bg-clip-text text-transparent"></span>
+                            </div>
+                            
+                            <button id="productDetailAddBtn" class="w-full bg-gradient-to-r from-accent to-primary-light text-white border-none py-4 rounded-xl text-lg font-bold cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 min-h-[48px]" aria-label="Ajouter au panier">
+                                <span aria-hidden="true">🛒</span>
+                                <span>Ajouter au panier</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

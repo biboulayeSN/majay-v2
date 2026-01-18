@@ -54,6 +54,7 @@ async function chargerProduits() {
             demoBadge.textContent = '🎭 Mode Démonstration - Ces produits sont des exemples';
             header.insertAdjacentElement('afterend', demoBadge);
 
+            genererBoutonsCategories();
             afficherProduits(categorieActive);
             initialiserEvenements();
             return;
@@ -100,6 +101,7 @@ async function chargerProduits() {
             });
         }
 
+        genererBoutonsCategories();
         afficherProduits(categorieActive);
         initialiserEvenements();
 
@@ -107,6 +109,51 @@ async function chargerProduits() {
         console.error("Erreur:", error);
         afficherErreur(error.message);
     }
+}
+
+// ==================== GÉNÉRATION DYNAMIQUE DES CATÉGORIES ====================
+function genererBoutonsCategories() {
+    // Extraire les catégories uniques des produits
+    const categories = ['tous', ...new Set(produits.map(p => p.category).filter(Boolean))];
+    
+    // Icônes par catégorie
+    const categoryIcons = {
+        'tous': '🌟',
+        'Femme': '👗',
+        'Homme': '👔',
+        'Chaussures': '👟',
+        'Sacs': '👜',
+        'Audio': '🎧',
+        'Accessoires': '🔌',
+        'Wearable': '⌚',
+        'Maquillage': '💄',
+        'Soins': '✨',
+        'montres': '⌚',
+        'chaussures': '👟',
+        'sacs': '👜',
+        'accessoires': '🕶️',
+        'electronique': '📱'
+    };
+    
+    // Conteneur des boutons
+    const nav = document.querySelector('nav[role="navigation"]');
+    if (!nav) return;
+    
+    // Générer les boutons HTML
+    nav.innerHTML = categories.map((cat, index) => {
+        const isActive = index === 0 ? 'active' : '';
+        const icon = categoryIcons[cat] || '📦';
+        const label = cat === 'tous' ? 'Tous' : cat;
+        const ariaLabel = cat === 'tous' ? 'Afficher tous les produits' : `Filtrer par catégorie ${cat}`;
+        const ariaPressed = index === 0 ? 'true' : 'false';
+        
+        return `
+            <button class="category-btn ${isActive}" data-category="${cat}" aria-label="${ariaLabel}" aria-pressed="${ariaPressed}">
+                <span class="text-lg" aria-hidden="true">${icon}</span>
+                <span class="hidden md:inline">${label}</span>
+            </button>
+        `;
+    }).join('');
 }
 
 // ==================== ENREGISTREMENT CLICKS POUR ANALYTICS ====================
@@ -132,10 +179,10 @@ async function enregistrerClickEvent(productId, storeId, eventType) {
 }
 
 function getSessionId() {
-    let sessionId = sessionStorage.getItem('majay_session_id');
+    let sessionId = sessionStorage.getItem('ma-jay_session_id');
     if (!sessionId) {
         sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        sessionStorage.setItem('majay_session_id', sessionId);
+        sessionStorage.setItem('ma-jay_session_id', sessionId);
     }
     return sessionId;
 }
@@ -196,9 +243,21 @@ function afficherProduits(categorie) {
 
     // Ajouter les événements sur les boutons
     document.querySelectorAll('.add-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation(); // Empêcher l'ouverture de la modal
             const id = parseInt(this.dataset.id);
             ajouterAuPanier(id, this);
+        });
+    });
+
+    // Ajouter les événements pour ouvrir la modal de détails au clic sur la carte
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Ne pas ouvrir si on clique sur le bouton "Ajouter"
+            if (e.target.closest('.add-btn')) return;
+            
+            const id = parseInt(this.dataset.id);
+            ouvrirModalDetails(id);
         });
     });
 }
@@ -369,7 +428,7 @@ async function envoyerVersWhatsApp() {
         const confirmation = confirm(
             `🎭 MODE DÉMONSTRATION\n\n` +
             `Vous avez ${totalItems} article(s) dans votre panier.\n\n` +
-            `Pour passer une vraie commande, vous devez créer votre compte vendeur.\n\n` +
+            `Vous etes a la fin de la démonstration. Vous pouvez maintenant vous inscrire pour passer une vraie commande.\n\n` +
             `Voulez-vous vous inscrire maintenant ?`
         );
         
@@ -621,6 +680,80 @@ function fermerPanier() {
     document.body.style.overflow = 'auto';
 }
 
+// ==================== MODAL DÉTAILS PRODUIT ====================
+function ouvrirModalDetails(idProduit) {
+    const produit = produits.find(p => p.id === idProduit);
+    if (!produit) return;
+
+    // Récupérer toutes les images
+    let images = [];
+    if (isDemo) {
+        images = produit.image_url ? [produit.image_url] : ['https://via.placeholder.com/300'];
+    } else {
+        images = produit.images && produit.images.length > 0 
+            ? produit.images 
+            : ['https://via.placeholder.com/300'];
+    }
+
+    // Remplir les informations
+    document.getElementById('productDetailTitle').textContent = produit.name;
+    document.getElementById('productDetailName').textContent = produit.name;
+    document.getElementById('productDetailCategory').textContent = produit.category || 'Non catégorisé';
+    document.getElementById('productDetailDescription').textContent = produit.description || 'Aucune description disponible.';
+    
+    const currency = produit.currency || 'FCFA';
+    document.getElementById('productDetailPrice').textContent = `${formaterPrix(produit.price)} ${currency}`;
+
+    // Afficher la première image
+    document.getElementById('productDetailMainImage').src = images[0];
+    document.getElementById('productDetailMainImage').alt = produit.name;
+
+    // Créer les miniatures
+    const thumbnailsContainer = document.getElementById('productDetailThumbnails');
+    thumbnailsContainer.innerHTML = images.map((img, index) => `
+        <img src="${img}" 
+             alt="${produit.name} - Image ${index + 1}" 
+             class="w-full h-20 object-cover rounded-lg cursor-pointer transition-all duration-200 hover:opacity-75 border-2 ${index === 0 ? 'border-accent' : 'border-transparent'}"
+             onclick="changerImagePrincipale('${img}', this)"
+             loading="lazy">
+    `).join('');
+
+    // Événement pour le bouton "Ajouter au panier"
+    const addBtn = document.getElementById('productDetailAddBtn');
+    addBtn.onclick = function() {
+        ajouterAuPanier(idProduit, addBtn);
+        fermerModalDetails();
+    };
+
+    // Afficher la modal
+    const modal = document.getElementById('productDetailModal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function changerImagePrincipale(imageUrl, thumbnail) {
+    document.getElementById('productDetailMainImage').src = imageUrl;
+    
+    // Mettre à jour la bordure des miniatures
+    document.querySelectorAll('#productDetailThumbnails img').forEach(img => {
+        img.classList.remove('border-accent');
+        img.classList.add('border-transparent');
+    });
+    thumbnail.classList.remove('border-transparent');
+    thumbnail.classList.add('border-accent');
+}
+
+function fermerModalDetails() {
+    const modal = document.getElementById('productDetailModal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Exposer la fonction globalement pour les miniatures
+window.changerImagePrincipale = changerImagePrincipale;
+
 // ==================== ÉVÉNEMENTS ====================
 function initialiserEvenements() {
     document.getElementById('cartBtn').addEventListener('click', ouvrirPanier);
@@ -633,12 +766,20 @@ function initialiserEvenements() {
     document.getElementById('contactOverlay').addEventListener('click', fermerModalContact);
     document.getElementById('contactForm').addEventListener('submit', finaliserCommande);
     
+    // Événements pour le modal de détails produit
+    const productDetailModal = document.getElementById('productDetailModal');
+    if (productDetailModal) {
+        document.getElementById('productDetailCloseBtn').addEventListener('click', fermerModalDetails);
+        document.getElementById('productDetailOverlay').addEventListener('click', fermerModalDetails);
+    }
+    
     initialiserFiltres();
     
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             fermerPanier();
             fermerModalContact();
+            fermerModalDetails();
         }
     });
 }

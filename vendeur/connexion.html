@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - MAJAY</title>
+    <title>Connexion - MA-JAY</title>
     <link rel="stylesheet" href="../css/output.css">
 </head>
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-header">
-            <h1 class="logo">🛍️ MAJAY</h1>
-            <p class="tagline">Connectez-vous</p>
+            <h1 class="logo">🛍️ <span class="text-primary">MA-JAY</span></h1>
+            <p class="tagline">Gérez votre boutique en ligne</p>
         </div>
 
         <div class="auth-card">
@@ -20,9 +20,12 @@
             <!-- Étape 1 : Entrer le téléphone -->
             <form id="connexionForm" class="auth-form" style="display: block;">
                 <div class="form-group">
-                    <label>Numéro de téléphone</label>
-                    <input type="tel" id="telephone" required placeholder="+221 77 123 45 67">
-                    <span class="form-hint">Format : +221 77 123 45 67</span>
+                    <label for="telephone" class="form-label">Numéro de téléphone</label>
+                    <div class="input-with-prefix">
+                        <span class="prefix" id="phonePrefix" aria-hidden="true">+221</span>
+                        <input type="tel" id="telephone" class="form-control" required placeholder="77 123 45 67" aria-required="true" aria-label="Numéro de téléphone" aria-describedby="telHint">
+                    </div>
+                    <span class="form-hint" id="telHint">Le préfixe est détecté automatiquement selon votre pays</span>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-lg" id="btnSubmit" style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
@@ -34,9 +37,9 @@
             <!-- Étape 2 : Entrer le code OTP -->
             <form id="otpForm" class="auth-form" style="display: none;">
                 <div class="form-group">
-                    <label>Code de vérification</label>
-                    <input type="text" id="otpCode" required placeholder="123456" maxlength="6" pattern="[0-9]{6}">
-                    <span class="form-hint">Entrez le code reçu par SMS</span>
+                    <label for="otpCode" class="form-label">Code de vérification</label>
+                    <input type="text" id="otpCode" class="form-control" required placeholder="123456" maxlength="6" pattern="[0-9]{6}" aria-required="true" aria-label="Code de vérification" aria-describedby="otpHint">
+                    <span class="form-hint" id="otpHint">Entrez le code reçu par SMS</span>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-lg" id="btnVerify" style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
@@ -57,6 +60,38 @@
 
     <script type="module">
 import { authMajay } from "../js/auth.js";
+import { detectUserLocation } from "../js/geolocation.js";
+
+// Variable pour stocker la localisation
+let userLocation = null;
+
+// Initialiser la détection de géolocalisation au chargement
+(async function initGeolocation() {
+    try {
+        // Détecter la localisation
+        userLocation = await detectUserLocation();
+        
+        // Mettre à jour le préfixe dans le span
+        const phonePrefix = document.getElementById('phonePrefix');
+        if (phonePrefix && userLocation) {
+            phonePrefix.textContent = userLocation.prefix;
+        }
+        
+        // Mettre à jour le placeholder
+        const phoneInput = document.getElementById('telephone');
+        if (phoneInput) {
+            phoneInput.placeholder = 'Ex: 77 123 45 67';
+        }
+        
+        // Mettre à jour le hint
+        const telHint = document.getElementById('telHint');
+        if (telHint && userLocation) {
+            telHint.innerHTML = `<span style="color: #25D366;">✓</span> Pays détecté: ${userLocation.flag} ${userLocation.countryName}`;
+        }
+    } catch (error) {
+        console.error('Erreur initialisation géolocalisation:', error);
+    }
+})();
 
 let phoneNumber = '';
 
@@ -68,7 +103,17 @@ document.getElementById("connexionForm").addEventListener("submit", async (e) =>
   btn.querySelector('.btn-text').style.display = 'none';
   btn.querySelector('.btn-loader').style.display = 'inline';
 
+  // Récupérer le numéro saisi
   phoneNumber = document.getElementById("telephone").value.trim();
+  
+  // Récupérer le préfixe depuis le span ou la localisation détectée
+  const phonePrefix = document.getElementById('phonePrefix');
+  const prefix = phonePrefix ? phonePrefix.textContent.trim() : (userLocation?.prefix || '+221');
+  
+  // Ajouter le préfixe si nécessaire
+  if (phoneNumber && !phoneNumber.startsWith('+')) {
+    phoneNumber = prefix + phoneNumber.replace(/^0+/, '');
+  }
 
   const result = await authMajay.connexionVendeur(phoneNumber);
 

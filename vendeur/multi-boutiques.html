@@ -43,19 +43,43 @@
     </style>
 </head>
 <body class="dashboard-page">
-    <header class="dashboard-header">
-        <div class="dashboard-header-content">
-            <div class="dashboard-logo">🛍️ MAJAY</div>
-            <nav class="dashboard-nav">
-                <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
-                <a href="multi-boutiques.html" class="nav-link active">🏪 Multi-Boutiques</a>
-                <a href="profil.html" class="nav-link">⚙️ Profil</a>
-            </nav>
-            <button onclick="window.authMajay.deconnexion()" style="background: none; border: none; cursor: pointer; font-size: 1.2em;">🚪</button>
-        </div>
-    </header>
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <span id="toggleIcon">☰</span>
+    </button>
 
-    <div class="dashboard-container">
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- Dashboard Wrapper -->
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="dashboardSidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">🛍️ MA-JAY</div>
+            </div>
+            
+            <nav class="sidebar-nav" id="mainNav">
+                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
+                <a href="equipe.html" class="sidebar-nav-link">👥 Équipe</a>
+                <a href="multi-boutiques.html" class="sidebar-nav-link active">🏪 Multi-Boutiques</a>
+                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <button onclick="window.authMaJay.deconnexion()" class="btn btn-outline btn-sm w-full" title="Déconnexion" aria-label="Se déconnecter">🚪 Déconnexion</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-main-content">
         <h1 style="font-size: 2em; margin-bottom: 30px;">Mes Boutiques</h1>
         <div id="planWarning" style="display: none; background: #fff3cd; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
             ⚠️ Cette fonctionnalité est disponible uniquement avec le plan Entreprise
@@ -67,10 +91,43 @@
 
     <script type="module">
         import { storesUtils } from "../js/stores.js";
-        import { authMajay } from "../js/auth.js";
+        import { authMaJay } from "../js/auth.js";
 
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session) window.location.href = 'connexion.html';
+
+        // Sidebar toggle functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isOpen = sidebar.classList.contains('open');
+            
+            if (isOpen) {
+                closeSidebar();
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '✕';
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '☰';
+        }
+
+        window.toggleSidebar = toggleSidebar;
+        window.closeSidebar = closeSidebar;
+
+        // Mettre à jour le badge du plan dans la sidebar
+        const userPlan = document.getElementById('userPlan');
+        if (userPlan) {
+            userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
+            userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
+        }
 
         if (session.subscription_plan !== 'entreprise') {
             document.getElementById('planWarning').style.display = 'block';
@@ -122,6 +179,9 @@
 
         chargerBoutiques();
     </script>
+            </div>
+        </main>
+    </div>
 </body>
 </html>
 

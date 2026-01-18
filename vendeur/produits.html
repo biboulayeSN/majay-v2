@@ -3,82 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Produits - MAJAY</title>
+    <title>Stock et Catalogue - MAJAY</title>
     <link rel="stylesheet" href="../css/output.css">
-    <style>
-        .modal-backdrop {
-            display: none;
-        }
-        .modal-backdrop.active {
-            display: block;
-        }
-        .modal {
-            display: none;
-        }
-        .modal.active {
-            display: block;
-        }
-    </style>
 </head>
-<body class="dashboard-page">
-    <header class="dashboard-header">
-        <div class="dashboard-header-content">
-            <div class="dashboard-logo">🛍️ MAJAY</div>
-            <nav class="dashboard-nav" id="mainNav">
-                <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="nav-link active">📦 Produits</a>
-                <a href="commandes.html" class="nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="nav-link">👥 Clients</a>
-                <a href="analytics.html" class="nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="nav-link">💳 Abonnements</a>
-                <a href="profil.html" class="nav-link">⚙️ Profil</a>
-            </nav>
-            <button onclick="window.authMajay.deconnexion()" class="btn btn-outline btn-sm" title="Déconnexion">🚪 Déconnexion</button>
-        </div>
-    </header>
+<body class="dashboard-page bg-bg">
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <span id="toggleIcon">☰</span>
+    </button>
 
-    <div class="dashboard-container">
-        <div class="page-header">
-            <div>
-                <h1 class="page-title">Mes Produits</h1>
-                <p class="page-subtitle"><span id="productCount">0</span> / <span id="productLimit">10</span> produits</p>
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- Dashboard Wrapper -->
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="dashboardSidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">🛍️ MA-JAY</div>
             </div>
-            <button class="btn btn-primary btn-lg" onclick="ouvrirModalAjout()">+ Ajouter un produit</button>
+            
+            <nav class="sidebar-nav" id="mainNav">
+                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link active">📦 Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
+                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <button onclick="window.authMaJay.deconnexion()" class="btn btn-outline btn-sm w-full" title="Déconnexion" aria-label="Se déconnecter">🚪 Déconnexion</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-main-content">
+        <!-- PUBLIC CATALOGUE LINK -->
+        <div class="bg-gradient-to-r from-primary-light to-accent rounded-xl p-5 mb-4 relative overflow-hidden">
+            <div class="relative z-10">
+                <h2 class="text-base font-black text-white mb-1">Lien du catalogue public</h2>
+                <p class="text-sm text-white/90 mb-3">Partagez votre boutique sur WhatsApp et Instagram</p>
+                <div class="flex gap-2 items-center">
+                    <input type="text" readonly class="flex-1 bg-white/20 backdrop-blur-sm text-white rounded-lg px-3 py-2 text-sm border-none outline-none placeholder-white/70" id="catalogueLink">
+                    <button class="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm min-h-[44px] hover:bg-white/90 transition-all" onclick="copierLien()">Copier</button>
+                </div>
+            </div>
         </div>
 
-        <div class="products-grid" id="productsGrid">
-            <div style="grid-column: 1/-1; text-align: center; padding: var(--spacing-2xl);" class="fade-in">
-                <div class="loader"></div>
-                <p style="margin-top: var(--spacing-md); color: var(--color-text-light);">Chargement des produits...</p>
+        <!-- STATS CARDS -->
+        <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="stat-card">
+                <div class="stat-label">TOTAL PRODUITS</div>
+                <div class="stat-value" id="totalProduits">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">STOCK FAIBLE</div>
+                <div class="stat-value text-warning" id="stockFaible">0</div>
+            </div>
+        </div>
+
+        <!-- SEARCH BAR -->
+        <div class="search-bar mb-3">
+            <span class="text-text-light">🔍</span>
+            <input type="text" placeholder="Rechercher un produit..." id="searchInput">
+        </div>
+
+        <!-- FILTER BUTTONS -->
+        <div class="flex gap-2 mb-4 overflow-x-auto pb-2">
+            <button class="filter-btn active" data-filter="tous">Tous</button>
+            <button class="filter-btn" data-filter="en-stock">En stock</button>
+            <button class="filter-btn" data-filter="stock-faible">Stock faible</button>
+            <button class="filter-btn" data-filter="rupture">Rupture</button>
+        </div>
+
+        <!-- PRODUCTS LIST -->
+        <div class="mb-4">
+            <h2 class="text-lg font-black text-text mb-3">Liste des produits</h2>
+            <div id="productsList" class="space-y-3">
+                <!-- Products will be loaded here -->
             </div>
         </div>
     </div>
 
+    <!-- FAB -->
+    <button class="fab" onclick="ouvrirModalAjout()" title="Ajouter un produit">+</button>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <div class="max-w-6xl mx-auto flex justify-around">
+            <a href="dashboard.html" class="bottom-nav-item">
+                <span class="icon">📊</span>
+                <span>Tableau</span>
+            </a>
+            <a href="produits.html" class="bottom-nav-item active">
+                <span class="icon">📦</span>
+                <span>Stock</span>
+            </a>
+            <a href="commandes.html" class="bottom-nav-item">
+                <span class="icon">🛒</span>
+                <span>Commandes</span>
+            </a>
+            <a href="profil.html" class="bottom-nav-item">
+                <span class="icon">👤</span>
+                <span>Compte</span>
+            </a>
+        </div>
+    </nav>
+
     <!-- MODAL AJOUT/ÉDITION -->
-    <div class="modal-backdrop" id="productModalBackdrop"></div>
-    <div class="modal" id="productModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">Ajouter un produit</h2>
-                <button class="modal-close" onclick="fermerModal()">&times;</button>
+    <div class="hidden fixed inset-0 bg-black/50 z-50 items-center justify-center p-4" id="productModalBackdrop" onclick="fermerModal()"></div>
+    <div class="hidden fixed inset-0 z-50 items-center justify-center p-4 pointer-events-none" id="productModal">
+        <div class="bg-white rounded-2xl w-full max-w-md p-6 pointer-events-auto max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-5">
+                <h2 class="text-2xl font-black text-text" id="modalTitle">Ajouter un produit</h2>
+                <button class="text-3xl text-text-light hover:text-danger" onclick="fermerModal()">&times;</button>
             </div>
-            <form id="productForm" class="auth-form">
+            <form id="productForm">
                 <input type="hidden" id="productId">
                 <div class="form-group">
-                    <label>Nom du produit *</label>
-                    <input type="text" id="productName" required>
+                    <label class="form-label">Nom du produit *</label>
+                    <input type="text" class="form-control" id="productName" required>
                 </div>
                 <div class="form-group">
-                    <label>Description</label>
-                    <input type="text" id="productDesc">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" id="productDesc" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Prix (FCFA) *</label>
-                    <input type="number" id="productPrice" required min="0">
+                    <label class="form-label">Prix (FCFA) *</label>
+                    <input type="number" class="form-control" id="productPrice" required min="0">
                 </div>
                 <div class="form-group">
-                    <label>Catégorie *</label>
-                    <select id="productCategory" required>
+                    <label class="form-label">Stock *</label>
+                    <input type="number" class="form-control" id="productStock" required min="0" value="0">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Catégorie *</label>
+                    <select class="form-control" id="productCategory" required>
                         <option value="chaussures">👟 Chaussures</option>
                         <option value="sacs">👜 Sacs</option>
                         <option value="montres">⌚ Montres</option>
@@ -87,12 +151,12 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>URL de l'image</label>
-                    <input type="url" id="productImage" placeholder="https://...">
+                    <label class="form-label">URL de l'image</label>
+                    <input type="url" class="form-control" id="productImage" placeholder="https://...">
                 </div>
-                <div style="display: flex; gap: var(--spacing-md); margin-top: var(--spacing-lg);">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">💾 Enregistrer</button>
-                    <button type="button" class="btn btn-outline" style="flex: 1;" onclick="fermerModal()">Annuler</button>
+                <div class="flex gap-3 mt-6">
+                    <button type="submit" class="btn btn-primary flex-1">💾 Enregistrer</button>
+                    <button type="button" class="btn btn-outline flex-1" onclick="fermerModal()">Annuler</button>
                 </div>
             </form>
         </div>
@@ -100,51 +164,16 @@
 
     <script type="module">
         import { supabase } from "../js/config.js";
-        import { authMajay } from "../js/auth.js";
+        import { authMaJay } from "../js/auth.js";
 
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session) window.location.href = 'connexion.html';
 
-        // Afficher les liens conditionnels selon le plan
-        const plan = session.subscription_plan || 'free';
-        if (plan === 'entreprise') {
-            const nav = document.getElementById('mainNav');
-            const equipeLink = document.createElement('a');
-            equipeLink.href = 'equipe.html';
-            equipeLink.className = 'nav-link';
-            equipeLink.textContent = '👥 Équipe';
-            nav.insertBefore(equipeLink, nav.lastElementChild);
-            
-            const multiLink = document.createElement('a');
-            multiLink.href = 'multi-boutiques.html';
-            multiLink.className = 'nav-link';
-            multiLink.textContent = '🏪 Multi-Boutiques';
-            nav.insertBefore(multiLink, nav.lastElementChild);
-        }
-
         let produits = [];
-        
-        // Récupérer la limite du plan
-        async function getProductLimit() {
-            const { data: store } = await supabase
-                .from('stores')
-                .select('subscription_plan')
-                .eq('id', session.store_id)
-                .single();
-            
-            if (!store) return 7;
-            
-            const { data: plan } = await supabase
-                .from('plans')
-                .select('max_products')
-                .eq('name', store.subscription_plan)
-                .single();
-            
-            return plan?.max_products === -1 ? 999999 : (plan?.max_products || 7);
-        }
+        let filterActif = 'tous';
+        let searchTerm = '';
 
-        const limite = await getProductLimit();
-
+        // Charger les produits
         async function chargerProduits() {
             const { data, error } = await supabase
                 .from('products')
@@ -158,146 +187,247 @@
             }
 
             produits = data || [];
-            document.getElementById('productCount').textContent = produits.length;
-            document.getElementById('productLimit').textContent = limite;
+            afficherProduits();
+            mettreAJourStats();
+        }
 
-            if (produits.length === 0) {
-                document.getElementById('productsGrid').innerHTML = `
-                    <div class="empty-state" style="grid-column: 1/-1;">
+        function mettreAJourStats() {
+            document.getElementById('totalProduits').textContent = produits.length;
+            const stockFaible = produits.filter(p => (p.stock || 0) < 10 && (p.stock || 0) > 0).length;
+            document.getElementById('stockFaible').textContent = stockFaible;
+        }
+
+        function afficherProduits() {
+            const container = document.getElementById('productsList');
+            
+            let produitsFiltres = produits.filter(p => {
+                // Filtre par statut
+                if (filterActif === 'en-stock' && (p.stock || 0) <= 0) return false;
+                if (filterActif === 'stock-faible' && ((p.stock || 0) >= 10 || (p.stock || 0) <= 0)) return false;
+                if (filterActif === 'rupture' && (p.stock || 0) > 0) return false;
+                
+                // Recherche
+                if (searchTerm && !p.name.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+                
+                return true;
+            });
+
+            if (produitsFiltres.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
                         <div class="empty-state-icon">📦</div>
-                        <h3>Aucun produit</h3>
-                        <p>Ajoutez votre premier produit pour commencer à vendre !</p>
-                        <button onclick="ouvrirModalAjout()" class="btn btn-primary" style="margin-top: var(--spacing-md);">+ Ajouter mon premier produit</button>
+                        <p class="empty-state-text">Aucun produit trouvé</p>
                     </div>
                 `;
                 return;
             }
 
-            document.getElementById('productsGrid').innerHTML = produits.map((p, index) => {
-                const imageUrl = p.images && p.images.length > 0 ? p.images[0] : 'https://via.placeholder.com/300';
+            container.innerHTML = produitsFiltres.map(produit => {
+                const stock = produit.stock || 0;
+                const stockBadge = stock === 0 
+                    ? '<span class="status-badge badge-danger">RUPTURE DE STOCK</span>'
+                    : stock < 10 
+                    ? `<span class="text-xs text-warning font-semibold">Stock: ${stock}</span>`
+                    : `<span class="text-xs text-text-light">Stock: ${stock}</span>`;
+
+                const imageUrl = produit.images && produit.images.length > 0 
+                    ? produit.images[0] 
+                    : 'https://via.placeholder.com/100';
+
                 return `
-                <div class="product-card slide-up" style="animation-delay: ${index * 0.1}s;">
-                    <img src="${imageUrl}" class="product-image" alt="${p.name}" loading="lazy">
-                    <div class="product-info">
-                        <div class="product-name">${p.name}</div>
-                        ${p.description ? `<p style="color: var(--color-text-light); font-size: var(--font-size-sm); margin-bottom: var(--spacing-sm);">${p.description.substring(0, 60)}${p.description.length > 60 ? '...' : ''}</p>` : ''}
-                        <div class="product-price">${parseInt(p.price || 0).toLocaleString()} ${p.currency || 'XOF'}</div>
-                        <div class="product-actions">
-                            <button class="btn btn-primary btn-sm" onclick="window.editerProduit('${p.id}')" style="flex: 1;">✏️ Modifier</button>
-                            <button class="btn btn-danger btn-sm" onclick="window.supprimerProduit('${p.id}')" style="flex: 1;">🗑️ Supprimer</button>
+                    <div class="product-card-horizontal" onclick="editerProduit(${produit.id})">
+                        <img src="${imageUrl}" alt="${produit.name}" onerror="this.src='https://via.placeholder.com/100'">
+                        <div class="product-info">
+                            <div class="product-name">${produit.name}</div>
+                            <div class="product-desc">${produit.description || ''}</div>
+                            <div class="product-price">${parseInt(produit.price).toLocaleString('fr-FR')} FCFA</div>
+                            ${stockBadge}
                         </div>
+                        <button class="text-text-light text-xl" onclick="event.stopPropagation(); supprimerProduit(${produit.id})">⋯</button>
                     </div>
-                </div>
-            `;
+                `;
             }).join('');
         }
-        window.editerProduit = function(id) {
+
+        // Filtres
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                filterActif = this.dataset.filter;
+                afficherProduits();
+            });
+        });
+
+        // Recherche
+        document.getElementById('searchInput').addEventListener('input', function() {
+            searchTerm = this.value;
+            afficherProduits();
+        });
+
+        // Modal
+        window.ouvrirModalAjout = function() {
+            document.getElementById('productModal').classList.remove('hidden');
+            document.getElementById('productModal').classList.add('flex');
+            document.getElementById('productModalBackdrop').classList.remove('hidden');
+            document.getElementById('productModalBackdrop').classList.add('flex');
+            document.getElementById('productId').value = '';
+            document.getElementById('productForm').reset();
+            document.getElementById('modalTitle').textContent = 'Ajouter un produit';
+        };
+
+        window.fermerModal = function() {
+            document.getElementById('productModal').classList.add('hidden');
+            document.getElementById('productModal').classList.remove('flex');
+            document.getElementById('productModalBackdrop').classList.add('hidden');
+            document.getElementById('productModalBackdrop').classList.remove('flex');
+        };
+
+        window.editerProduit = async function(id) {
             const produit = produits.find(p => p.id === id);
-            document.getElementById('modalTitle').textContent = 'Modifier le produit';
+            if (!produit) return;
+
             document.getElementById('productId').value = produit.id;
             document.getElementById('productName').value = produit.name;
             document.getElementById('productDesc').value = produit.description || '';
             document.getElementById('productPrice').value = produit.price;
-            document.getElementById('productCategory').value = produit.category || '';
-            document.getElementById('productImage').value = (produit.images && produit.images.length > 0) ? produit.images[0] : '';
-            document.getElementById('productModal').classList.add('active');
-            document.getElementById('productModalBackdrop').classList.add('active');
-            document.body.style.overflow = 'hidden';
+            document.getElementById('productStock').value = produit.stock || 0;
+            document.getElementById('productCategory').value = produit.category;
+            document.getElementById('productImage').value = produit.images && produit.images.length > 0 ? produit.images[0] : '';
+            document.getElementById('modalTitle').textContent = 'Modifier le produit';
+
+            document.getElementById('productModal').classList.remove('hidden');
+            document.getElementById('productModal').classList.add('flex');
+            document.getElementById('productModalBackdrop').classList.remove('hidden');
+            document.getElementById('productModalBackdrop').classList.add('flex');
         };
 
-    window.supprimerProduit = async function(id) {
-        if (!confirm('Voulez-vous vraiment supprimer ce produit ?')) return;
+        window.supprimerProduit = async function(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) return;
 
-        // Soft delete : mettre is_active à false
-        const { error } = await supabase
-            .from('products')
-            .update({ is_active: false })
-            .eq('id', id);
+            const { error } = await supabase
+                .from('products')
+                .delete()
+                .eq('id', id)
+                .eq('store_id', session.store_id);
 
-        if (error) {
-            const { showError } = await import('../js/notifications.js');
-            showError('Erreur : ' + error.message);
-        } else {
-            const { showSuccess } = await import('../js/notifications.js');
-            showSuccess('Produit supprimé avec succès !');
+            if (error) {
+                alert('Erreur lors de la suppression');
+                return;
+            }
+
             chargerProduits();
-        }
-    };
+        };
 
-    window.fermerModal = function() {
-        document.getElementById('productModal').classList.remove('active');
-        document.getElementById('productModalBackdrop').classList.remove('active');
-        document.body.style.overflow = 'auto';
-    };
+        window.copierLien = function() {
+            const input = document.getElementById('catalogueLink');
+            input.select();
+            document.execCommand('copy');
+            alert('Lien copié !');
+        };
 
-    window.ouvrirModalAjout = async function() {
-        const currentLimit = await getProductLimit();
-        if (produits.length >= currentLimit) {
-            const { showError } = await import('../js/notifications.js');
-            showError(`Limite atteinte : ${currentLimit} produits pour le plan ${(session.subscription_plan || 'free').toUpperCase()}`);
-            return;
-        }
-        document.getElementById('modalTitle').textContent = 'Ajouter un produit';
-        document.getElementById('productForm').reset();
-        document.getElementById('productId').value = '';
-        document.getElementById('productModal').classList.add('active');
-        document.getElementById('productModalBackdrop').classList.add('active');
-        document.body.style.overflow = 'hidden';
-    };
-
+        // Formulaire
         document.getElementById('productForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const id = document.getElementById('productId').value;
-            const imageUrl = document.getElementById('productImage').value.trim();
-            
-            const data = {
-                name: document.getElementById('productName').value.trim(),
-                description: document.getElementById('productDesc').value.trim() || null,
-                price: parseFloat(document.getElementById('productPrice').value),
+            const productData = {
+                name: document.getElementById('productName').value,
+                description: document.getElementById('productDesc').value,
+                price: parseInt(document.getElementById('productPrice').value),
+                stock: parseInt(document.getElementById('productStock').value),
                 category: document.getElementById('productCategory').value,
-                images: imageUrl ? [imageUrl] : [],
-                stock: 99, // Stock par défaut
-                currency: 'XOF',
-                is_active: true
+                store_id: session.store_id,
+                images: document.getElementById('productImage').value ? [document.getElementById('productImage').value] : []
             };
 
-            if (id) {
-                // Modification
-                const { error } = await supabase
+            const productId = document.getElementById('productId').value;
+
+            let error;
+            if (productId) {
+                const { error: updateError } = await supabase
                     .from('products')
-                    .update(data)
-                    .eq('id', id);
+                    .update(productData)
+                    .eq('id', productId)
+                    .eq('store_id', session.store_id);
+                error = updateError;
+            } else {
+                const { error: insertError } = await supabase
+                    .from('products')
+                    .insert([productData]);
+                error = insertError;
+            }
 
             if (error) {
-                const { showError } = await import('../js/notifications.js');
-                showError(error.message);
-            } else {
-                const { showSuccess } = await import('../js/notifications.js');
-                showSuccess('Produit modifié avec succès !');
-                fermerModal();
-                chargerProduits();
+                alert('Erreur lors de l\'enregistrement');
+                return;
             }
-        } else {
-            // Ajout
-            const { error } = await supabase
-                .from('products')
-                .insert({ ...data, store_id: session.store_id });
 
-            if (error) {
-                const { showError } = await import('../js/notifications.js');
-                showError(error.message);
-            } else {
-                const { showSuccess } = await import('../js/notifications.js');
-                showSuccess('Produit ajouté avec succès !');
-                fermerModal();
-                chargerProduits();
-            }
-        }
+            fermerModal();
+            chargerProduits();
         });
 
-    chargerProduits();
-</script>
+        // Initialiser
+        // Mettre à jour le lien du catalogue avec le slug dynamique
+        if (session && session.store_slug) {
+            const shopLink = window.location.origin + '/' + session.store_slug;
+            document.getElementById('catalogueLink').value = shopLink;
+        }
+
+        // Mettre à jour le badge du plan
+        const userPlan = document.getElementById('userPlan');
+        if (userPlan && session) {
+            userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
+            userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
+        }
+
+        // Afficher les liens conditionnels selon le plan
+        const plan = session?.subscription_plan || 'free';
+        if (plan === 'entreprise') {
+            const nav = document.getElementById('mainNav');
+            const equipeLink = document.createElement('a');
+            equipeLink.href = 'equipe.html';
+            equipeLink.className = 'sidebar-nav-link';
+            equipeLink.textContent = '👥 Équipe';
+            nav.insertBefore(equipeLink, nav.lastElementChild);
+            
+            const multiLink = document.createElement('a');
+            multiLink.href = 'multi-boutiques.html';
+            multiLink.className = 'sidebar-nav-link';
+            multiLink.textContent = '🏪 Multi-Boutiques';
+            nav.insertBefore(multiLink, nav.lastElementChild);
+        }
+
+        // Sidebar toggle functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isOpen = sidebar.classList.contains('open');
+            
+            if (isOpen) {
+                closeSidebar();
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '✕';
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '☰';
+        }
+
+        // Expose functions globally
+        window.toggleSidebar = toggleSidebar;
+        window.closeSidebar = closeSidebar;
+
+        chargerProduits();
+    </script>
+            </div>
+        </main>
+    </div>
 </body>
 </html>
-````

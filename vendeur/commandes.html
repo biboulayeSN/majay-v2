@@ -3,78 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Commandes - MAJAY</title>
+    <title>Commandes - MAJAY</title>
     <link rel="stylesheet" href="../css/output.css">
 </head>
-<body class="dashboard-page">
-    <header class="dashboard-header">
-        <div class="dashboard-header-content">
-            <div class="dashboard-logo">🛍️ MAJAY</div>
-            <nav class="dashboard-nav" id="mainNav">
-                <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="nav-link">📦 Produits</a>
-                <a href="commandes.html" class="nav-link active">🛒 Commandes</a>
-                <a href="clients.html" class="nav-link">👥 Clients</a>
-                <a href="analytics.html" class="nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="nav-link">💳 Abonnements</a>
-                <a href="profil.html" class="nav-link">⚙️ Profil</a>
+<body class="dashboard-page bg-bg">
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <span id="toggleIcon">☰</span>
+    </button>
+
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- Dashboard Wrapper -->
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="dashboardSidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">🛍️ MA-JAY</div>
+            </div>
+            
+            <nav class="sidebar-nav" id="mainNav">
+                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link active">🛒 Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
+                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
             </nav>
-            <button onclick="window.authMajay.deconnexion()" style="background: none; border: none; cursor: pointer; font-size: 1.2em;">🚪</button>
+
+            <div class="sidebar-footer">
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <button onclick="window.authMaJay.deconnexion()" class="btn btn-outline btn-sm w-full" title="Déconnexion" aria-label="Se déconnecter">🚪 Déconnexion</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-main-content">
+        <!-- SEARCH BAR -->
+        <div class="search-bar mb-3">
+            <span class="text-text-light">🔍</span>
+            <input type="text" placeholder="Client, ID commande, téléphone..." id="searchInput">
         </div>
-    </header>
 
-    <div class="dashboard-container">
-        <h1 style="font-size: 2em; margin-bottom: 30px;">Mes Commandes</h1>
+        <!-- FILTER BUTTONS -->
+        <div class="flex gap-2 mb-4 overflow-x-auto pb-2">
+            <button class="filter-btn active" data-filter="tous">Tous</button>
+            <button class="filter-btn" data-filter="soldee">Soldée</button>
+            <button class="filter-btn" data-filter="partielle">Partielle</button>
+            <button class="filter-btn" data-filter="bor">Bor</button>
+        </div>
 
-        <div style="background: white; border-radius: 16px; overflow: hidden;">
-            <table id="commandesTable">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Produits</th>
-                        <th>Total</th>
-                        <th>Statut</th>
-                    </tr>
-                </thead>
-                <tbody id="commandesBody">
-                    <tr>
-                        <td colspan="4" style="text-align: center; padding: 40px; color: #718096;">
-                            Chargement...
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- ORDERS LIST -->
+        <div id="ordersList" class="space-y-3">
+            <!-- Orders will be loaded here -->
         </div>
     </div>
 
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <div class="max-w-6xl mx-auto flex justify-around">
+            <a href="dashboard.html" class="bottom-nav-item">
+                <span class="icon">📊</span>
+                <span>Tableau</span>
+            </a>
+            <a href="produits.html" class="bottom-nav-item">
+                <span class="icon">📦</span>
+                <span>Stock</span>
+            </a>
+            <a href="commandes.html" class="bottom-nav-item active">
+                <span class="icon">🛒</span>
+                <span>Commandes</span>
+            </a>
+            <a href="profil.html" class="bottom-nav-item">
+                <span class="icon">👤</span>
+                <span>Compte</span>
+            </a>
+        </div>
+    </nav>
+
     <script type="module">
         import { supabase } from "../js/config.js";
-        import { authMajay } from "../js/auth.js";
+        import { authMaJay } from "../js/auth.js";
 
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session) window.location.href = 'connexion.html';
 
-        // Afficher les liens conditionnels selon le plan
-        const plan = session.subscription_plan || 'free';
-        if (plan === 'entreprise') {
-            const nav = document.getElementById('mainNav');
-            const equipeLink = document.createElement('a');
-            equipeLink.href = 'equipe.html';
-            equipeLink.className = 'nav-link';
-            equipeLink.textContent = '👥 Équipe';
-            nav.insertBefore(equipeLink, nav.lastElementChild);
-            
-            const multiLink = document.createElement('a');
-            multiLink.href = 'multi-boutiques.html';
-            multiLink.className = 'nav-link';
-            multiLink.textContent = '🏪 Multi-Boutiques';
-            nav.insertBefore(multiLink, nav.lastElementChild);
-        }
+        let commandes = [];
+        let filterActif = 'tous';
+        let searchTerm = '';
 
+        // Charger les commandes
         async function chargerCommandes() {
             const { data, error } = await supabase
                 .from('orders')
-                .select('*')
+                .select(`
+                    *,
+                    customer:customers(*)
+                `)
                 .eq('store_id', session.store_id)
                 .order('created_at', { ascending: false });
 
@@ -83,37 +111,198 @@
                 return;
             }
 
-            const tbody = document.getElementById('commandesBody');
+            commandes = data || [];
+            afficherCommandes();
+        }
 
-            if (!data || data.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="4" style="text-align: center; padding: 60px; color: #718096;">
-                            <div style="font-size: 3em; margin-bottom: 15px;">🛒</div>
-                            <p>Aucune commande pour le moment</p>
-                        </td>
-                    </tr>
+        function formaterDate(dateStr) {
+            const date = new Date(dateStr);
+            const aujourdhui = new Date();
+            const hier = new Date(aujourdhui);
+            hier.setDate(hier.getDate() - 1);
+
+            const dateFormatee = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+            const heureFormatee = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+            if (date.toDateString() === aujourdhui.toDateString()) {
+                return `Aujourd'hui, ${heureFormatee}`;
+            } else if (date.toDateString() === hier.toDateString()) {
+                return `Hier, ${heureFormatee}`;
+            } else {
+                return `${dateFormatee}, ${heureFormatee}`;
+            }
+        }
+
+        function obtenirAvatar(nom) {
+            // Générer un avatar basé sur la première lettre du nom
+            const initiale = nom ? nom.charAt(0).toUpperCase() : '?';
+            const colors = ['#25D366', '#075E54', '#128C7E', '#20BA5A', '#0A5D52'];
+            const colorIndex = nom ? nom.charCodeAt(0) % colors.length : 0;
+            return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><circle cx="24" cy="24" r="24" fill="${colors[colorIndex]}"/><text x="24" y="24" font-family="Arial" font-size="20" fill="white" text-anchor="middle" dominant-baseline="central">${initiale}</text></svg>`)}`;
+        }
+
+        function obtenirBadgeStatut(statut, montantTotal, montantPaye) {
+            if (statut === 'paid' || (montantPaye && montantPaye >= montantTotal)) {
+                return { text: 'SOLDÉE', class: 'soldee', icon: '✓' };
+            } else if (statut === 'partial' || (montantPaye && montantPaye > 0 && montantPaye < montantTotal)) {
+                return { text: 'PARTIELLE', class: 'partielle', icon: '⏳' };
+            } else if (statut === 'credit' || statut === 'bor') {
+                return { text: 'BOR', class: 'bor', icon: '!' };
+            }
+            return { text: 'EN ATTENTE', class: 'en-attente', icon: '⏳' };
+        }
+
+        function afficherCommandes() {
+            const container = document.getElementById('ordersList');
+
+            let commandesFiltrees = commandes.filter(cmd => {
+                // Filtre par statut
+                const montantTotal = parseFloat(cmd.total_amount || 0);
+                const montantPaye = parseFloat(cmd.amount_paid || 0);
+                const statut = cmd.status || (montantPaye >= montantTotal ? 'paid' : (montantPaye > 0 ? 'partial' : 'credit'));
+
+                if (filterActif === 'soldee' && !(statut === 'paid' || montantPaye >= montantTotal)) return false;
+                if (filterActif === 'partielle' && !(statut === 'partial' || (montantPaye > 0 && montantPaye < montantTotal))) return false;
+                if (filterActif === 'bor' && !(statut === 'credit' || statut === 'bor' || (montantPaye === 0 && montantTotal > 0))) return false;
+
+                // Recherche
+                if (searchTerm) {
+                    const searchLower = searchTerm.toLowerCase();
+                    const nomClient = cmd.customer?.first_name || cmd.customer_name || '';
+                    const telClient = cmd.customer?.phone || cmd.customer_phone || '';
+                    const orderId = cmd.id?.toString() || '';
+                    if (!nomClient.toLowerCase().includes(searchLower) && 
+                        !telClient.includes(searchTerm) && 
+                        !orderId.includes(searchTerm)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            if (commandesFiltrees.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🛒</div>
+                        <p class="empty-state-text">Aucune commande trouvée</p>
+                    </div>
                 `;
                 return;
             }
 
-            tbody.innerHTML = data.map(cmd => {
-                const itemsCount = Array.isArray(cmd.items) ? cmd.items.length : 0;
-                const statusClass = cmd.status === 'delivered' ? 'success' : 
-                                   cmd.status === 'confirmed' ? 'success' : 
-                                   cmd.status === 'cancelled' ? 'danger' : 'warning';
+            container.innerHTML = commandesFiltrees.map(cmd => {
+                const customer = cmd.customer || {};
+                const nomComplet = customer.first_name ? `${customer.first_name} ${customer.last_name || ''}`.trim() : (cmd.customer_name || 'Client');
+                const avatarUrl = obtenirAvatar(nomComplet);
+                const montantTotal = parseFloat(cmd.total_amount || 0);
+                const montantPaye = parseFloat(cmd.amount_paid || 0);
+                const statut = cmd.status || (montantPaye >= montantTotal ? 'paid' : (montantPaye > 0 ? 'partial' : 'credit'));
+                const badge = obtenirBadgeStatut(statut, montantTotal, montantPaye);
+
+                let montantAffichage = '';
+                if (statut === 'paid' || montantPaye >= montantTotal) {
+                    montantAffichage = `${montantTotal.toLocaleString('fr-FR')} FCFA`;
+                } else if (statut === 'partial' || (montantPaye > 0 && montantPaye < montantTotal)) {
+                    montantAffichage = `${montantPaye.toLocaleString('fr-FR')} / ${montantTotal.toLocaleString('fr-FR')} FCFA`;
+                } else {
+                    montantAffichage = `À Crédit: ${montantTotal.toLocaleString('fr-FR')} FCFA`;
+                }
+
+                const orderId = cmd.id ? `#WS-${cmd.id}` : '';
+                const dateAffichage = formaterDate(cmd.created_at);
+
                 return `
-                <tr>
-                    <td>${new Date(cmd.created_at).toLocaleDateString('fr-FR')}</td>
-                    <td>${itemsCount} article(s)</td>
-                    <td style="font-weight: 700; color: #25D366;">${parseInt(cmd.total || 0).toLocaleString()} ${cmd.currency || 'XOF'}</td>
-                    <td><span class="badge badge-${statusClass}">${cmd.status || 'pending'}</span></td>
-                </tr>
-            `;
+                    <div class="order-card" onclick="window.location.href='commandes.html?id=${cmd.id}'">
+                        <img src="${avatarUrl}" alt="${nomComplet}" class="avatar">
+                        <div class="order-info">
+                            <div class="order-name">
+                                ${nomComplet}
+                                <span class="text-accent">💬</span>
+                            </div>
+                            <div class="order-details">${orderId} • ${dateAffichage}</div>
+                            <div class="order-amount ${statut === 'paid' ? 'text-accent' : (statut === 'partial' ? 'text-warning' : 'text-danger')}">${montantAffichage}</div>
+                        </div>
+                        <div class="flex flex-col items-end gap-2">
+                            <span class="status-badge ${badge.class}">${badge.text}</span>
+                            <span class="text-text-light text-lg">→</span>
+                        </div>
+                    </div>
+                `;
             }).join('');
         }
 
+        // Filtres
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                filterActif = this.dataset.filter;
+                afficherCommandes();
+            });
+        });
+
+        // Recherche
+        document.getElementById('searchInput').addEventListener('input', function() {
+            searchTerm = this.value;
+            afficherCommandes();
+        });
+
+        // Sidebar toggle functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isOpen = sidebar.classList.contains('open');
+            
+            if (isOpen) {
+                closeSidebar();
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '✕';
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '☰';
+        }
+
+        window.toggleSidebar = toggleSidebar;
+        window.closeSidebar = closeSidebar;
+
+        // Mettre à jour le badge du plan dans la sidebar
+        const userPlan = document.getElementById('userPlan');
+        if (userPlan && session) {
+            userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
+            userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
+        }
+
+        // Afficher les liens conditionnels selon le plan
+        const plan = session?.subscription_plan || 'free';
+        if (plan === 'entreprise') {
+            const nav = document.getElementById('mainNav');
+            const equipeLink = document.createElement('a');
+            equipeLink.href = 'equipe.html';
+            equipeLink.className = 'sidebar-nav-link';
+            equipeLink.textContent = '👥 Équipe';
+            nav.insertBefore(equipeLink, nav.lastElementChild);
+            
+            const multiLink = document.createElement('a');
+            multiLink.href = 'multi-boutiques.html';
+            multiLink.className = 'sidebar-nav-link';
+            multiLink.textContent = '🏪 Multi-Boutiques';
+            nav.insertBefore(multiLink, nav.lastElementChild);
+        }
+
+        // Initialiser
         chargerCommandes();
     </script>
+            </div>
+        </main>
+    </div>
 </body>
 </html>

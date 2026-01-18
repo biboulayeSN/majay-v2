@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion SuperAdmin - MAJAY</title>
+    <title>Connexion SuperAdmin - MA-JAY</title>
     <link rel="stylesheet" href="../css/output.css">
 </head>
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-header">
-            <h1 class="logo" style="color: white;">🛡️ MAJAY</h1>
-            <p class="tagline" style="color: rgba(255,255,255,0.9);">Espace SuperAdmin</p>
+            <h1 class="logo">🛡️ <span class="text-primary">MA-JAY</span></h1>
+            <p class="tagline">Espace SuperAdmin</p>
         </div>
 
         <div class="auth-card">
@@ -20,15 +20,15 @@
             <!-- Formulaire de connexion -->
             <form id="adminForm" class="auth-form" style="display: block;">
                 <div class="form-group">
-                    <label>Numéro de téléphone</label>
-                    <input type="tel" id="telephone" required placeholder="780181144" autofocus>
-                    <span class="form-hint">Entrez votre numéro de téléphone</span>
+                    <label for="telephone" class="form-label">Numéro de téléphone</label>
+                    <input type="tel" id="telephone" class="form-control" required placeholder="780181144" autofocus aria-required="true" aria-label="Numéro de téléphone" aria-describedby="telHint">
+                    <span class="form-hint" id="telHint">Entrez votre numéro de téléphone</span>
                 </div>
 
                 <div class="form-group">
-                    <label>Mot de passe</label>
-                    <input type="password" id="password" required placeholder="••••••">
-                    <span class="form-hint">Entrez votre mot de passe</span>
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <input type="password" id="password" class="form-control" required placeholder="••••••" aria-required="true" aria-label="Mot de passe" aria-describedby="pwdHint">
+                    <span class="form-hint" id="pwdHint">Entrez votre mot de passe</span>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">

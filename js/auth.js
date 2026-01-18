@@ -103,8 +103,17 @@ async function inscrireVendeur(data) {
   try {
     const { nom, slug, telephone, whatsapp, full_name } = data;
 
-    // Nettoyer le numéro
-    const phone = telephone.replace(/\s/g, '').replace(/^0/, '+221');
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:102',message:'inscrireVendeur ENTRY',data:{telephone_received:telephone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A,B'})}).catch(()=>{});
+    // #endregion
+
+    // Le numéro est déjà formaté depuis inscription.html, on enlève juste les espaces
+    const phone = telephone.replace(/\s/g, '');
+    
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:108',message:'Phone AFTER cleanup',data:{phone_cleaned:phone,starts_with_plus:phone.startsWith('+')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A,B'})}).catch(()=>{});
+    // #endregion
+    
     if (!phone.startsWith('+')) {
       throw new Error('Le numéro doit commencer par + (ex: +221771234567)');
     }
@@ -126,6 +135,10 @@ async function inscrireVendeur(data) {
     }
 
     // Envoyer OTP pour créer le compte
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:129',message:'BEFORE signInWithOtp',data:{phone_to_send:phone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
+    // #endregion
+    
     const { error: otpError } = await supabase.auth.signInWithOtp({
       phone: phone,
       options: {
@@ -140,6 +153,10 @@ async function inscrireVendeur(data) {
     });
 
     if (otpError) throw otpError;
+    
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:143',message:'OTP sent successfully',data:{phone_used:phone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
+    // #endregion
 
     // Stocker temporairement les données d'inscription
     sessionStorage.setItem('majay_inscription_temp', JSON.stringify({
@@ -149,6 +166,10 @@ async function inscrireVendeur(data) {
       whatsapp: whatsapp || phone,
       full_name: full_name || nom
     }));
+
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:170',message:'inscrireVendeur EXIT',data:{phone_returned:phone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
+    // #endregion
 
     return { 
       success: true, 
@@ -165,7 +186,28 @@ async function inscrireVendeur(data) {
  */
 async function finaliserInscription(telephone, code) {
   try {
-    const phone = telephone.replace(/\s/g, '').replace(/^0/, '+221');
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:166',message:'finaliserInscription ENTRY',data:{telephone_received:telephone,code_length:code.length},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'D,E'})}).catch(()=>{});
+    // #endregion
+    
+    // Nettoyer le numéro (enlever espaces) mais garder le préfixe s'il existe déjà
+    let phone = telephone.replace(/\s/g, '');
+    
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:175',message:'Phone BEFORE prefix check',data:{phone_before:phone,starts_with_plus:phone.startsWith('+')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'E'})}).catch(()=>{});
+    // #endregion
+    
+    // Ajouter le préfixe seulement si le numéro ne commence pas par +
+    if (!phone.startsWith('+')) {
+      phone = phone.replace(/^0/, '+221');
+      if (!phone.startsWith('+')) {
+        phone = '+221' + phone;
+      }
+    }
+    
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:188',message:'Phone AFTER formatting for verifyOtp',data:{phone_final:phone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'E'})}).catch(()=>{});
+    // #endregion
     
     // Vérifier le code OTP
     const { data: authData, error: authError } = await supabase.auth.verifyOtp({
@@ -173,6 +215,10 @@ async function finaliserInscription(telephone, code) {
       token: code,
       type: 'sms'
     });
+
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:199',message:'verifyOtp RESULT',data:{has_error:!!authError,error_message:authError?.message,error_code:authError?.code,has_data:!!authData,user_id:authData?.user?.id},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'F,G,H'})}).catch(()=>{});
+    // #endregion
 
     if (authError) throw authError;
 
@@ -183,57 +229,85 @@ async function finaliserInscription(telephone, code) {
       throw new Error('Données d\'inscription introuvables. Veuillez recommencer.');
     }
 
-    // Créer l'utilisateur et la boutique via la fonction RPC
-    const { data: result, error: rpcError } = await supabase.rpc('create_user_and_store', {
-      p_auth_user_id: authData.user.id,
-      p_phone: phone,
-      p_full_name: tempData.full_name || tempData.nom,
-      p_store_name: tempData.nom,
-      p_store_slug: tempData.slug,
-      p_whatsapp_number: tempData.whatsapp || phone
-    });
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:210',message:'Creating user in public.users (RLS disabled)',data:{user_id:authData.user.id,store_name:tempData.nom,store_slug:tempData.slug},timestamp:Date.now(),sessionId:'debug-session',runId:'fix-v4',hypothesisId:'L'})}).catch(()=>{});
+    // #endregion
 
-    if (rpcError) throw rpcError;
+    // Créer l'utilisateur dans public.users (requis pour la FK de stores)
+    // RLS doit être désactivé sur users pour que ceci fonctionne
+    const { error: userError } = await supabase
+      .from('users')
+      .insert({
+        id: authData.user.id,
+        phone: phone,
+        full_name: tempData.full_name || tempData.nom,
+        role_type: 'owner'
+      });
+
+    if (userError && userError.code !== '23505') { // 23505 = duplicate key (user already exists)
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:228',message:'User insert ERROR',data:{error_message:userError.message,error_code:userError.code},timestamp:Date.now(),sessionId:'debug-session',runId:'fix-v4',hypothesisId:'L'})}).catch(()=>{});
+      // #endregion
+      throw userError;
+    }
+
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:235',message:'User created in public.users SUCCESS',data:{user_id:authData.user.id},timestamp:Date.now(),sessionId:'debug-session',runId:'fix-v4',hypothesisId:'L'})}).catch(()=>{});
+    // #endregion
+
+    // Créer la boutique dans la table stores
+    const { data: storeData, error: storeError } = await supabase
+      .from('stores')
+      .insert({
+        name: tempData.nom,
+        slug: tempData.slug,
+        owner_id: authData.user.id,
+        whatsapp_number: tempData.whatsapp || phone,
+        subscription_plan: 'free',
+        is_active: true
+      })
+      .select()
+      .single();
+
+    if (storeError) {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:253',message:'Store insert ERROR',data:{error_message:storeError.message,error_code:storeError.code},timestamp:Date.now(),sessionId:'debug-session',runId:'fix',hypothesisId:'I'})}).catch(()=>{});
+      // #endregion
+      throw storeError;
+    }
+
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:260',message:'Store created successfully',data:{store_id:storeData.id,store_slug:storeData.slug},timestamp:Date.now(),sessionId:'debug-session',runId:'fix',hypothesisId:'I'})}).catch(()=>{});
+    // #endregion
 
     // Nettoyer les données temporaires
     sessionStorage.removeItem('majay_inscription_temp');
 
-    // Récupérer les données complètes
-    const { data: userData, error: userError } = await supabase
-      .from('users')
-      .select(`
-        id,
-        phone,
-        full_name,
-        stores!inner (
-          id,
-          name,
-          slug,
-          subscription_plan,
-          whatsapp_number
-        )
-      `)
-      .eq('id', authData.user.id)
-      .single();
-
-    if (userError) throw userError;
-
-    const store = Array.isArray(userData.stores) ? userData.stores[0] : userData.stores;
-
+    // Créer la session avec les données qu'on a déjà (de Auth et Store)
     const sessionData = {
-      user_id: userData.id,
-      store_id: store.id,
-      phone: userData.phone,
-      full_name: userData.full_name || store.name,
-      store_name: store.name,
-      store_slug: store.slug,
-      subscription_plan: store.subscription_plan,
-      whatsapp_number: store.whatsapp_number,
+      user_id: authData.user.id,
+      store_id: storeData.id,
+      phone: authData.user.phone || phone, // Utiliser le phone de auth.users
+      email: authData.user.email || null,
+      full_name: tempData.full_name || tempData.nom,
+      store_name: storeData.name,
+      store_slug: storeData.slug,
+      subscription_plan: storeData.subscription_plan,
+      whatsapp_number: storeData.whatsapp_number,
       role_type: 'owner',
       timestamp: Date.now()
     };
 
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:278',message:'Session created SUCCESS',data:{user_id:sessionData.user_id,store_id:sessionData.store_id,store_slug:sessionData.store_slug,subscription_plan:sessionData.subscription_plan},timestamp:Date.now(),sessionId:'debug-session',runId:'fix-v3',hypothesisId:'K'})}).catch(()=>{});
+    // #endregion
+
     sauvegarderSession(sessionData);
+    
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:289',message:'finaliserInscription EXIT - SUCCESS',data:{success:true,store_slug:sessionData.store_slug},timestamp:Date.now(),sessionId:'debug-session',runId:'fix-v3',hypothesisId:'K'})}).catch(()=>{});
+    // #endregion
+    
     return { success: true, data: sessionData };
   } catch (error) {
     return { success: false, error: error.message };
@@ -332,12 +406,18 @@ function getSession() {
   
   try {
     const data = JSON.parse(s);
-    // Vérifier expiration (30 jours)
+    // Vérifier expiration (30 jours d'inactivité)
     const age = Date.now() - (data.timestamp || 0);
     if (age > 30 * 24 * 60 * 60 * 1000) {
       deconnexion();
       return null;
     }
+    
+    // Renouveler le timestamp à chaque utilisation pour maintenir la session active
+    // Cela garantit que la session persiste tant que l'utilisateur utilise l'application
+    data.timestamp = Date.now();
+    sauvegarderSession(data);
+    
     return data;
   } catch {
     return null;
@@ -363,7 +443,7 @@ async function connexionVendeurAncien(telephone) {
   return await connexionVendeur(telephone);
 }
 
-export const authMajay = {
+export const authMaJay = {
   // Nouvelles fonctions
   envoyerOTP,
   verifierOTP,

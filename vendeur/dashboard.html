@@ -3,30 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - MAJAY</title>
+    <title>Dashboard - MA-JAY</title>
     <link rel="stylesheet" href="../css/output.css">
 </head>
 <body class="dashboard-page">
-    <header class="dashboard-header">
-        <div class="dashboard-header-content">
-            <div class="dashboard-logo">🛍️ MAJAY</div>
-            <nav class="dashboard-nav" id="mainNav">
-                <a href="dashboard.html" class="nav-link active">📊 Dashboard</a>
-                <a href="produits.html" class="nav-link">📦 Produits</a>
-                <a href="commandes.html" class="nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="nav-link">👥 Clients</a>
-                <a href="analytics.html" class="nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="nav-link">💳 Abonnements</a>
-                <a href="profil.html" class="nav-link">⚙️ Profil</a>
-            </nav>
-            <div style="display: flex; gap: var(--spacing-md); align-items: center;">
-                <span class="badge" id="userPlan">FREE</span>
-                <button onclick="window.authMajay.deconnexion()" class="btn btn-outline btn-sm" title="Déconnexion">🚪 Déconnexion</button>
-            </div>
-        </div>
-    </header>
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <span id="toggleIcon">☰</span>
+    </button>
 
-    <div class="dashboard-container">
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- Dashboard Wrapper -->
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="dashboardSidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">🛍️ MA-JAY</div>
+            </div>
+            
+            <nav class="sidebar-nav" id="mainNav">
+                <a href="dashboard.html" class="sidebar-nav-link active">📊 Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
+                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <button onclick="window.authMajay.deconnexion()" class="btn btn-outline btn-sm w-full" title="Déconnexion" aria-label="Se déconnecter">🚪 Déconnexion</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-main-content">
         <div class="page-header">
             <div>
                 <h1 class="page-title">Bonjour, <span id="userName">Vendeur</span> 👋</h1>
@@ -42,35 +57,35 @@
         </div>
 
         <div class="actions-grid">
-            <div class="action-card" onclick="window.location.href='produits.html'">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="produits.html" class="action-card" role="button" aria-label="Gérer mes produits">
+                <div class="flex justify-between items-center">
                     <div>
-                        <h3 style="margin-bottom: 10px;">Gérer mes produits</h3>
-                        <p style="color: #718096;">Ajouter, modifier ou supprimer</p>
+                        <h3 class="text-lg font-bold text-text mb-2">Gérer mes produits</h3>
+                        <p class="text-text-light text-base">Ajouter, modifier ou supprimer</p>
                     </div>
-                    <div style="font-size: 2.5em;">📦</div>
+                    <div class="text-5xl">📦</div>
                 </div>
-            </div>
+            </a>
 
-            <div class="action-card" onclick="copierLien()">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+            <button type="button" onclick="copierLien()" class="action-card" aria-label="Partager ma boutique">
+                <div class="flex justify-between items-center">
                     <div>
-                        <h3 style="margin-bottom: 10px;">Partager ma boutique</h3>
-                        <p style="color: #718096;">Copier le lien</p>
+                        <h3 class="text-lg font-bold text-text mb-2">Partager ma boutique</h3>
+                        <p class="text-text-light text-base">Copier le lien</p>
                     </div>
-                    <div style="font-size: 2.5em;">🔗</div>
+                    <div class="text-5xl">🔗</div>
                 </div>
-            </div>
+            </button>
 
-            <div class="action-card" onclick="window.location.href='commandes.html'">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="commandes.html" class="action-card" role="button" aria-label="Mes commandes">
+                <div class="flex justify-between items-center">
                     <div>
-                        <h3 style="margin-bottom: 10px;">Mes commandes</h3>
-                        <p style="color: #718096;">Historique et suivi</p>
+                        <h3 class="text-lg font-bold text-text mb-2">Mes commandes</h3>
+                        <p class="text-text-light text-base">Historique et suivi</p>
                     </div>
-                    <div style="font-size: 2.5em;">🛒</div>
+                    <div class="text-5xl">🛒</div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <div class="card">
@@ -83,11 +98,13 @@
                     <p style="margin-top: var(--spacing-md);">Chargement...</p>
                 </div>
             </div>
-            <div class="card-footer" style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
-                <button onclick="upgradePlan('pro')" class="btn btn-primary btn-sm">🚀 Passer Pro</button>
-                <button onclick="upgradePlan('entreprise')" class="btn btn-primary btn-sm">💎 Passer Entreprise</button>
+            <div class="card-footer flex gap-3 flex-wrap">
+                <button onclick="upgradePlan('pro')" class="btn btn-primary btn-sm" aria-label="Passer au plan Pro">🚀 Passer Pro</button>
+                <button onclick="upgradePlan('entreprise')" class="btn btn-primary btn-sm" aria-label="Passer au plan Entreprise">💎 Passer Entreprise</button>
             </div>
         </div>
+            </div>
+        </main>
     </div>
 
     <script type="module">
@@ -113,8 +130,9 @@ Slug : ${session.store_slug}
         };
 
         document.getElementById('userName').textContent = session.store_name || session.full_name;
-        document.getElementById('userPlan').textContent = (session.subscription_plan || 'free').toUpperCase();
-        document.getElementById('userPlan').className = `badge badge-${session.subscription_plan || 'free'}`;
+        const userPlan = document.getElementById('userPlan');
+        userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
+        userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
 
         // Afficher les liens conditionnels selon le plan
         const plan = session.subscription_plan || 'free';
@@ -123,16 +141,43 @@ Slug : ${session.store_slug}
             const nav = document.getElementById('mainNav');
             const equipeLink = document.createElement('a');
             equipeLink.href = 'equipe.html';
-            equipeLink.className = 'nav-link';
+            equipeLink.className = 'sidebar-nav-link';
             equipeLink.textContent = '👥 Équipe';
             nav.insertBefore(equipeLink, nav.lastElementChild);
             
             const multiLink = document.createElement('a');
             multiLink.href = 'multi-boutiques.html';
-            multiLink.className = 'nav-link';
+            multiLink.className = 'sidebar-nav-link';
             multiLink.textContent = '🏪 Multi-Boutiques';
             nav.insertBefore(multiLink, nav.lastElementChild);
         }
+
+        // Sidebar toggle functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isOpen = sidebar.classList.contains('open');
+            
+            if (isOpen) {
+                closeSidebar();
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '✕';
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '☰';
+        }
+
+        // Expose functions globally
+        window.toggleSidebar = toggleSidebar;
+        window.closeSidebar = closeSidebar;
 
         async function chargerStats() {
             try {

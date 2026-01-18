@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Panier - MAJAY STORE</title>
+    <title>Mon Panier - MA-JAY STORE</title>
     <link rel="stylesheet" href="css/output.css">
 </head>
 <body class="min-h-screen bg-gradient-to-br from-primary via-primary-light to-secondary py-5 px-5 font-sans">
@@ -52,12 +52,12 @@
 
                 <button class="w-full py-3 px-4 bg-success text-white border-none rounded-xl text-base font-bold cursor-pointer mt-5 transition-all duration-200 flex items-center justify-center gap-2 hover:bg-accent-dark hover:-translate-y-0.5 hover:shadow-lg min-h-[44px]" id="checkoutBtn">
                     <span>🚀</span>
-                    <span>S'inscrire pour commander</span>
+                    <span>Creer une boutique</span>
                 </button>
 
                 <div class="bg-bg py-4 px-4 rounded-xl mt-4 text-sm text-text-light leading-relaxed">
                     <strong class="text-success">ℹ️ Information :</strong><br>
-                    Pour passer une vraie commande, vous devez créer votre compte vendeur. Vous pourrez ensuite gérer vos propres produits et recevoir des commandes de vos clients.
+                    Ceci est une version de démonstration. Vous pouvez obtenir votre propre boutique en vous inscrivant.
                 </div>
             </div>
         </div>
@@ -102,11 +102,11 @@
                     </div>
                     <div class="flex flex-col justify-between items-end gap-2">
                         <div class="flex items-center gap-2 bg-white py-1.5 px-3 rounded-xl shadow-sm">
-                            <button class="bg-success text-white border-none w-8 h-8 rounded-lg text-lg font-bold cursor-pointer transition-all duration-150 hover:bg-accent-dark hover:scale-105 min-w-[32px] min-h-[32px] flex items-center justify-center" onclick="changerQuantite(${item.id}, -1)">−</button>
-                            <span class="text-base font-bold min-w-[24px] text-center">${item.quantite}</span>
-                            <button class="bg-success text-white border-none w-8 h-8 rounded-lg text-lg font-bold cursor-pointer transition-all duration-150 hover:bg-accent-dark hover:scale-105 min-w-[32px] min-h-[32px] flex items-center justify-center" onclick="changerQuantite(${item.id}, 1)">+</button>
+                            <button class="bg-success text-white border-none rounded-lg text-lg font-bold cursor-pointer transition-all duration-150 hover:bg-accent-dark hover:scale-105 min-w-[44px] min-h-[44px] flex items-center justify-center" onclick="changerQuantite(${item.id}, -1)" aria-label="Diminuer la quantité">−</button>
+                            <span class="text-base font-bold min-w-[24px] text-center" aria-label="Quantité: ${item.quantite}">${item.quantite}</span>
+                            <button class="bg-success text-white border-none rounded-lg text-lg font-bold cursor-pointer transition-all duration-150 hover:bg-accent-dark hover:scale-105 min-w-[44px] min-h-[44px] flex items-center justify-center" onclick="changerQuantite(${item.id}, 1)" aria-label="Augmenter la quantité">+</button>
                         </div>
-                        <button class="bg-danger text-white border-none py-2 px-3 rounded-lg text-xs font-semibold cursor-pointer transition-all duration-200 hover:bg-red-600 hover:scale-105 min-h-[36px] flex items-center justify-center" onclick="retirerItem(${item.id})">🗑️ Retirer</button>
+                        <button class="bg-danger text-white border-none py-2 px-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 hover:bg-red-600 hover:scale-105 min-h-[44px] min-w-[44px] flex items-center justify-center" onclick="retirerItem(${item.id})" aria-label="Retirer ${item.name} du panier">🗑️ Retirer</button>
                     </div>
                 </div>
             `).join('');
@@ -160,7 +160,7 @@
             const confirmation = confirm(
                 `🎭 MODE DÉMONSTRATION\n\n` +
                 `Vous avez ${totalItems} article(s) dans votre panier.\n\n` +
-                `Pour passer une vraie commande, vous devez créer votre compte vendeur.\n\n` +
+                `Vous arrivez a la fin de la démonstration. Vous pouvez maintenant vous inscrire pour passer une vraie commande.\n\n` +
                 `Voulez-vous vous inscrire maintenant ?`
             );
             

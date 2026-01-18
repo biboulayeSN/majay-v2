@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer une Boutique - MAJAY</title>
+    <link rel="stylesheet" href="../css/output.css">
+</head>
+<body class="dashboard-page">
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <span id="toggleIcon">☰</span>
+    </button>
+
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- Dashboard Wrapper -->
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="dashboardSidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">🛍️ MA-JAY</div>
+            </div>
+            
+            <nav class="sidebar-nav" id="mainNav">
+                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
+                <a href="equipe.html" class="sidebar-nav-link">👥 Équipe</a>
+                <div class="sidebar-menu-item">
+                    <div class="sidebar-nav-link has-submenu open">🏪 Mes Boutiques</div>
+                    <div class="sidebar-submenu open">
+                        <a href="agents.html" class="sidebar-submenu-link">👤 Agents</a>
+                        <a href="creation-boutique.html" class="sidebar-submenu-link active">➕ Créer une boutique</a>
+                        <a href="depot.html" class="sidebar-submenu-link">📦 Dépôt</a>
+                        <a href="transferts.html" class="sidebar-submenu-link">🚚 Transferts</a>
+                        <a href="comptabilite.html" class="sidebar-submenu-link">💰 Comptabilité</a>
+                        <a href="rapports.html" class="sidebar-submenu-link">📊 Rapports</a>
+                    </div>
+                </div>
+                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-main-content">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">➕ Créer une Nouvelle Boutique</h1>
+                        <p class="page-subtitle">Créez jusqu'à 4 boutiques avec le plan Entreprise</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Informations de la boutique</h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="createStoreForm" class="auth-form">
+                            <div class="form-group">
+                                <label for="storeName" class="form-label">Nom de la boutique *</label>
+                                <input type="text" id="storeName" class="form-control" required placeholder="Ex: Ma Boutique Dakar">
+                                <span class="form-hint">Le nom visible par vos clients</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="storeSlug" class="form-label">Slug (URL) *</label>
+                                <div class="input-with-prefix">
+                                    <span class="prefix" style="position: static; color: var(--color-text-light);">www.site.com/</span>
+                                    <input type="text" id="storeSlug" class="form-control" required placeholder="ma-boutique-dakar" pattern="[a-z0-9-]+" style="margin-left: 10px;">
+                                </div>
+                                <span class="form-hint">Uniquement lettres minuscules, chiffres et tirets</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="storeWhatsApp" class="form-label">Numéro WhatsApp *</label>
+                                <input type="tel" id="storeWhatsApp" class="form-control" required placeholder="+221 77 123 45 67">
+                                <span class="form-hint">Numéro pour recevoir les commandes</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="storeDescription" class="form-label">Description</label>
+                                <textarea id="storeDescription" class="form-control" rows="3" placeholder="Décrivez votre boutique..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg w-full">
+                                <span class="btn-text">✨ Créer la boutique</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📊 Limites du plan Entreprise</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                            <div class="stat-card">
+                                <div class="stat-label">Boutiques créées</div>
+                                <div class="stat-value" id="storesCount">0</div>
+                                <div class="stat-label">sur 4 max</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Dépôts</div>
+                                <div class="stat-value">1</div>
+                                <div class="stat-label">inclus</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { supabase } from "../js/config.js";
+        import { authMaJay } from "../js/auth.js";
+
+        const session = authMaJay.getSession();
+        if (!session) window.location.href = 'connexion.html';
+
+        const plan = session.subscription_plan || 'free';
+        if (plan !== 'entreprise') {
+            window.location.href = 'dashboard.html';
+        }
+
+        const userPlan = document.getElementById('userPlan');
+        if (userPlan) {
+            userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
+            userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isOpen = sidebar.classList.contains('open');
+            if (isOpen) {
+                closeSidebar();
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '✕';
+            }
+        }
+        function closeSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '☰';
+        }
+        window.toggleSidebar = toggleSidebar;
+        window.closeSidebar = closeSidebar;
+
+        // Charger le nombre de boutiques existantes
+        async function chargerNombreBoutiques() {
+            const { data, error } = await supabase
+                .from('stores')
+                .select('id', { count: 'exact', head: false })
+                .eq('owner_id', session.user_id)
+                .eq('is_active', true);
+
+            const count = data?.length || 0;
+            document.getElementById('storesCount').textContent = count;
+            
+            if (count >= 4) {
+                document.getElementById('createStoreForm').style.opacity = '0.5';
+                document.getElementById('createStoreForm').style.pointerEvents = 'none';
+                const formBtn = document.querySelector('#createStoreForm button');
+                formBtn.disabled = true;
+                formBtn.innerHTML = '<span class="btn-text">❌ Limite atteinte (4/4)</span>';
+            }
+        }
+
+        document.getElementById('createStoreForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('button');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const originalText = btnText.textContent;
+            
+            submitBtn.disabled = true;
+            btnText.textContent = '⏳ Création...';
+
+            const storeName = document.getElementById('storeName').value.trim();
+            const storeSlug = document.getElementById('storeSlug').value.trim().toLowerCase();
+            const storeWhatsApp = document.getElementById('storeWhatsApp').value.trim();
+            const storeDescription = document.getElementById('storeDescription').value.trim();
+
+            try {
+                // Vérifier si le slug existe déjà
+                const { data: existing } = await supabase
+                    .from('stores')
+                    .select('id')
+                    .eq('slug', storeSlug)
+                    .single();
+
+                if (existing) {
+                    const { showError } = await import('../js/notifications.js');
+                    showError('Ce slug est déjà utilisé. Choisissez-en un autre.');
+                    submitBtn.disabled = false;
+                    btnText.textContent = originalText;
+                    return;
+                }
+
+                const { data: newStore, error } = await supabase
+                    .from('stores')
+                    .insert({
+                        name: storeName,
+                        slug: storeSlug,
+                        owner_id: session.user_id,
+                        whatsapp_number: storeWhatsApp,
+                        description: storeDescription || null,
+                        subscription_plan: 'entreprise',
+                        is_active: true
+                    })
+                    .select()
+                    .single();
+
+                if (error) throw error;
+
+                const { showSuccess } = await import('../js/notifications.js');
+                showSuccess('Boutique créée avec succès !');
+                
+                setTimeout(() => {
+                    window.location.href = 'multi-boutiques.html';
+                }, 1500);
+            } catch (error) {
+                const { showError } = await import('../js/notifications.js');
+                showError(error.message || 'Erreur lors de la création de la boutique');
+                submitBtn.disabled = false;
+                btnText.textContent = originalText;
+            }
+        });
+
+        chargerNombreBoutiques();
+    </script>
+</body>
+</html>

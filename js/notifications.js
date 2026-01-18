@@ -53,11 +53,45 @@ export function showInfo(message) {
     showNotification(message, 'info');
 }
 
-// Ajouter les animations CSS si elles n'existent pas
+// Ajouter les styles et animations CSS si elles n'existent pas
 if (!document.getElementById('notification-styles')) {
     const style = document.createElement('style');
     style.id = 'notification-styles';
     style.textContent = `
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            max-width: 500px;
+            font-size: 14px;
+            animation: slideInRight 0.3s ease;
+        }
+        
+        .notification-success {
+            border-left: 4px solid #25D366;
+        }
+        
+        .notification-error {
+            border-left: 4px solid #ff4757;
+        }
+        
+        .notification-warning {
+            border-left: 4px solid #ffa502;
+        }
+        
+        .notification-info {
+            border-left: 4px solid #3742fa;
+        }
+        
         @keyframes slideInRight {
             from {
                 transform: translateX(400px);
@@ -68,6 +102,7 @@ if (!document.getElementById('notification-styles')) {
                 opacity: 1;
             }
         }
+        
         @keyframes slideOutRight {
             from {
                 transform: translateX(0);

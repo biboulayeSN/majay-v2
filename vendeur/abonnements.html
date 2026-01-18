@@ -35,19 +35,42 @@
 
             <div class="sidebar-footer">
                 <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
-                <button onclick="window.authMaJay.deconnexion()" class="btn btn-outline btn-sm w-full" title="Déconnexion" aria-label="Se déconnecter">🚪 Déconnexion</button>
             </div>
         </aside>
 
         <!-- Main Content -->
         <main class="dashboard-main">
             <div class="dashboard-main-content">
-        <div class="page-header">
-            <h1 class="page-title">Mon Abonnement</h1>
+        <!-- Section hero -->
+        <div class="pricing-hero" style="text-align: center; padding: 3rem 1rem; background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%); color: white; border-radius: 16px; margin-bottom: 3rem;">
+            <h1 style="font-size: 3rem; font-weight: 900; margin-bottom: 1rem;">💳 Choisissez votre Plan</h1>
+            <p style="font-size: 1.25rem; opacity: 0.9;">Optez pour le plan qui correspond le mieux à vos besoins</p>
         </div>
 
-        <div class="plan-card" id="currentPlan">
+        <!-- Plans cards grid -->
+        <div class="pricing-grid" id="plansGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
             <div class="loader"></div>
+        </div>
+
+        <!-- Section fonctionnalités détaillées -->
+        <div class="features-section">
+            <h2 style="text-align: center; font-size: 2.5rem; font-weight: 900; margin-bottom: 3rem;">✨ Fonctionnalités</h2>
+            
+            <div class="features-comparison" style="overflow-x: auto;">
+                <table class="features-table" style="width: 100%; border-collapse: collapse;" id="featuresTable">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--color-border, #e2e8f0);">
+                            <th style="text-align: left; padding: 1rem;">Fonctionnalité</th>
+                            <th style="text-align: center; padding: 1rem;">FREE</th>
+                            <th style="text-align: center; padding: 1rem;">PRO</th>
+                            <th style="text-align: center; padding: 1rem;">ENTREPRISE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="featuresTableBody">
+                        <!-- Fonctionnalités chargées dynamiquement -->
+                    </tbody>
+                </table>
+            </div>
         </div>
             </div>
         </main>
@@ -111,43 +134,105 @@
             nav.insertBefore(multiLink, nav.lastElementChild);
         }
 
-        async function chargerPlan() {
+        async function chargerPlans() {
             try {
-                const result = await subscriptionsUtils.getCurrentPlan();
-                if (!result.success) {
-                    throw new Error(result.error);
+                const [currentPlanResult, allPlansResult] = await Promise.all([
+                    subscriptionsUtils.getCurrentPlan(),
+                    subscriptionsUtils.getAllPlans()
+                ]);
+
+                if (!currentPlanResult.success || !allPlansResult.success) {
+                    throw new Error('Erreur lors du chargement des plans');
                 }
 
-                const plan = result.data;
-                const planDetails = plan.plan_details;
-                const planNames = { free: '🎁 FREE', pro: '⭐ PRO', entreprise: '🏢 ENTREPRISE' };
+                const currentPlan = currentPlanResult.data;
+                const allPlans = allPlansResult.data;
+                const currentPlanName = currentPlan.plan_name || 'free';
 
-                document.getElementById('currentPlan').innerHTML = `
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="text-2xl font-black text-text mb-4">Plan actuel: ${planNames[plan.plan_name] || plan.plan_name}</h2>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-4">
-                                <p class="text-base mb-2"><strong class="font-semibold">Prix:</strong> <span class="text-text">${planDetails?.annual_price ? (planDetails.annual_price / 1000).toLocaleString() + ' FCFA/an' : 'Gratuit'}</span></p>
-                                <p class="text-base mb-2"><strong class="font-semibold">Produits max:</strong> <span class="text-text">${planDetails?.max_products === -1 ? 'Illimité' : planDetails?.max_products}</span></p>
-                                ${plan.expires_at ? `<p class="text-base"><strong class="font-semibold">Expire le:</strong> <span class="text-text">${new Date(plan.expires_at).toLocaleDateString('fr-FR')}</span></p>` : ''}
+                // Afficher les cartes de plans
+                document.getElementById('plansGrid').innerHTML = allPlans.map(plan => {
+                    const isCurrent = plan.name === currentPlanName;
+                    const features = plan.features || {};
+                    
+                    return `
+                        <div class="pricing-card ${isCurrent ? 'current-plan' : ''}" style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; transition: all 0.3s; ${isCurrent ? 'border: 3px solid var(--color-primary); transform: scale(1.05);' : 'border: 2px solid transparent;'}">
+                            ${isCurrent ? '<div class="badge badge-success" style="position: absolute; top: 1rem; right: 1rem; background: var(--color-primary); color: white; padding: 0.5rem 1rem; border-radius: 8px; font-weight: bold;">Plan Actuel</div>' : ''}
+                            <h3 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">
+                                ${plan.name === 'free' ? '🎁' : plan.name === 'pro' ? '⭐' : '🏢'} 
+                                ${plan.name.toUpperCase()}
+                            </h3>
+                            <div style="font-size: 3rem; font-weight: 900; color: var(--color-primary); margin-bottom: 1rem;">
+                                ${plan.annual_price === 0 ? 'Gratuit' : `${(plan.annual_price / 1000).toLocaleString()} FCFA/an`}
                             </div>
-                            <button onclick="upgradePlan()" class="btn btn-primary btn-lg w-full mt-6" aria-label="Passer au plan supérieur">🚀 Passer au plan supérieur</button>
+                            <ul style="list-style: none; padding: 0; margin: 2rem 0;">
+                                <li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="color: var(--color-primary); font-weight: bold;">✓</span> 
+                                    ${plan.max_products === -1 ? 'Produits illimités' : `${plan.max_products} produits max`}
+                                </li>
+                                <li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="color: var(--color-primary); font-weight: bold;">✓</span> 
+                                    ${plan.max_photos_per_product} photos/produit
+                                </li>
+                                ${features.whatsapp ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-primary); font-weight: bold;">✓</span> Intégration WhatsApp</li>' : ''}
+                                ${features.crm ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-primary); font-weight: bold;">✓</span> CRM Clients</li>' : ''}
+                                ${features.relance ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-primary); font-weight: bold;">✓</span> Relance automatique</li>' : ''}
+                                ${features.multi_store ? `<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-primary); font-weight: bold;">✓</span> ${plan.max_stores} boutiques</li>` : ''}
+                                ${features.trend_radar ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-primary); font-weight: bold;">✓</span> Trend Radar</li>' : ''}
+                                ${features.geo_analytics ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-primary); font-weight: bold;">✓</span> Analytics géographiques</li>' : ''}
+                            </ul>
+                            <button class="btn btn-primary w-full ${isCurrent ? 'disabled' : ''}" 
+                                    onclick="upgradeToPlan('${plan.name}')"
+                                    ${isCurrent ? 'disabled style="opacity: 0.6; cursor: not-allowed;"' : ''}>
+                                ${isCurrent ? 'Plan actuel' : plan.annual_price === 0 ? 'Gratuit' : 'Choisir ce plan'}
+                            </button>
                         </div>
-                    </div>
-                `;
+                    `;
+                }).join('');
+
+                // Afficher la comparaison des fonctionnalités
+                afficherComparaisonFonctionnalites(allPlans, currentPlanName);
             } catch (error) {
                 console.error(error);
+                document.getElementById('plansGrid').innerHTML = `<div class="text-center p-8 text-danger">Erreur lors du chargement des plans</div>`;
             }
         }
+
+        function afficherComparaisonFonctionnalites(plans, currentPlanName) {
+            const featuresList = [
+                { name: 'Produits maximum', free: '7', pro: 'Illimité', entreprise: 'Illimité' },
+                { name: 'Photos par produit', free: '3', pro: '10', entreprise: '20' },
+                { name: 'Boutiques', free: '1', pro: '1', entreprise: '5' },
+                { name: 'Agents/Membres équipe', free: '1', pro: '1', entreprise: 'Illimité' },
+                { name: 'Intégration WhatsApp', free: '✓', pro: '✓', entreprise: '✓' },
+                { name: 'CRM Clients', free: '✗', pro: '✓', entreprise: '✓' },
+                { name: 'Relance automatique', free: '✗', pro: '✓', entreprise: '✓' },
+                { name: 'Multi-boutiques', free: '✗', pro: '✗', entreprise: '✓' },
+                { name: 'Trend Radar', free: '✗', pro: '✗', entreprise: '✓' },
+                { name: 'Analytics géographiques', free: '✗', pro: '✗', entreprise: '✓' },
+                { name: 'Support', free: 'Email uniquement', pro: 'WhatsApp ou Email', entreprise: 'WhatsApp ou Email' }
+            ];
+
+            document.getElementById('featuresTableBody').innerHTML = featuresList.map(feature => `
+                <tr style="border-bottom: 1px solid var(--color-border, #e2e8f0);">
+                    <td style="padding: 1rem; font-weight: 600;">${feature.name}</td>
+                    <td style="padding: 1rem; text-align: center;">${feature.free}</td>
+                    <td style="padding: 1rem; text-align: center;">${feature.pro}</td>
+                    <td style="padding: 1rem; text-align: center;">${feature.entreprise}</td>
+                </tr>
+            `).join('');
+        }
+
+        window.upgradeToPlan = function(planName) {
+            const msg = `Bonjour, je souhaite passer au plan ${planName.toUpperCase()}.\n\nBoutique: ${session.store_name}\nTéléphone: ${session.phone}`;
+            window.open(`https://wa.me/${ADMIN_PHONE.replace(/\+/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
+        };
 
         window.upgradePlan = function() {
             const msg = `Bonjour, je souhaite passer au plan supérieur.\n\nBoutique: ${session.store_name}\nTéléphone: ${session.phone}`;
             window.open(`https://wa.me/${ADMIN_PHONE.replace(/\+/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
         };
 
-        chargerPlan();
+        chargerPlans();
     </script>
 </body>
 </html>

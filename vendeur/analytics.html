@@ -76,7 +76,6 @@
 
             <div class="sidebar-footer">
                 <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
-                <button onclick="window.authMaJay.deconnexion()" class="btn btn-outline btn-sm w-full" title="Déconnexion" aria-label="Se déconnecter">🚪 Déconnexion</button>
             </div>
         </aside>
 
@@ -91,11 +90,54 @@
                 <p style="margin-top: 15px; color: #718096;">Chargement...</p>
             </div>
         </div>
-    </div>
+
+        <!-- Liste détaillée des produits -->
+        <div class="card">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h2 class="card-title">📊 Détails des Produits</h2>
+                    <p class="card-subtitle">Performance détaillée de chaque produit</p>
+                </div>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+                    <select id="filterCategory" class="form-control" style="min-width: 150px;">
+                        <option value="">Toutes les catégories</option>
+                    </select>
+                    <button onclick="exporterCSV()" class="btn btn-primary btn-sm">
+                        📥 Exporter CSV
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div style="overflow-x: auto;">
+                    <table class="table" id="productsTable">
+                        <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Catégorie</th>
+                                <th>Consultations</th>
+                                <th>Quantités commandées</th>
+                                <th>Quantités restantes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <tr>
+                                <td colspan="6" class="text-center p-8">
+                                    <div class="loader"></div>
+                                    <p class="mt-4 text-text-light">Chargement des produits...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+            </div>
 
     <script type="module">
         import { analyticsUtils } from "../js/analytics.js";
         import { authMaJay } from "../js/auth.js";
+        import { supabase } from "../js/config.js";
 
         const session = authMaJay.getSession();
         if (!session) window.location.href = 'connexion.html';
@@ -185,7 +227,151 @@
             }
         }
 
+        let productsData = [];
+        let filteredProductsData = [];
+
+        async function chargerProduitsDetails() {
+            try {
+                const { data: products, error: productsError } = await supabase
+                    .from('products')
+                    .select('id, name, category, stock, views_count, orders_count')
+                    .eq('store_id', session.store_id)
+                    .eq('is_active', true)
+                    .order('created_at', { ascending: false });
+
+                if (productsError) throw productsError;
+
+                // Récupérer les vues depuis click_events
+                const { data: viewsData } = await supabase
+                    .from('click_events')
+                    .select('product_id')
+                    .eq('store_id', session.store_id)
+                    .eq('event_type', 'view');
+
+                // Récupérer les quantités commandées depuis orders
+                const { data: ordersData } = await supabase
+                    .from('orders')
+                    .select('items')
+                    .eq('store_id', session.store_id);
+
+                // Calculer les statistiques par produit
+                productsData = products.map(product => {
+                    const views = viewsData?.filter(v => v.product_id === product.id).length || product.views_count || 0;
+                    
+                    // Calculer quantités commandées depuis les commandes
+                    let quantitesCommandees = 0;
+                    if (ordersData) {
+                        ordersData.forEach(order => {
+                            if (Array.isArray(order.items)) {
+                                const item = order.items.find(i => i.product_id === product.id);
+                                if (item) {
+                                    quantitesCommandees += parseInt(item.quantity || 0);
+                                }
+                            }
+                        });
+                    }
+
+                    return {
+                        ...product,
+                        consultations: views,
+                        quantites_commandees: quantitesCommandees,
+                        quantites_restantes: product.stock || 0
+                    };
+                });
+
+                filteredProductsData = [...productsData];
+                afficherTableProduits(filteredProductsData);
+                chargerCategories(productsData);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('productsTableBody').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center p-8 text-danger">
+                            Erreur lors du chargement des produits
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function afficherTableProduits(produits) {
+            const tbody = document.getElementById('productsTableBody');
+            
+            if (!produits || produits.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center p-8">
+                            <p>Aucun produit trouvé</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = produits.map(p => `
+                <tr style="cursor: pointer;" onclick="voirDetailsProduit('${p.id}')" onmouseover="this.style.backgroundColor='#f7fafc'" onmouseout="this.style.backgroundColor=''">
+                    <td><strong>${p.name}</strong></td>
+                    <td><span class="badge badge-info">${p.category || 'Sans catégorie'}</span></td>
+                    <td>${p.consultations}</td>
+                    <td>${p.quantites_commandees}</td>
+                    <td>${p.quantites_restantes}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); voirDetailsProduit('${p.id}')">
+                            👁️ Voir détails
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function chargerCategories(produits) {
+            const categories = [...new Set(produits.map(p => p.category).filter(Boolean))];
+            const select = document.getElementById('filterCategory');
+            select.innerHTML = '<option value="">Toutes les catégories</option>' + 
+                categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+            
+            select.addEventListener('change', function() {
+                const category = this.value;
+                filteredProductsData = category ? productsData.filter(p => p.category === category) : [...productsData];
+                afficherTableProduits(filteredProductsData);
+            });
+        }
+
+        window.exporterCSV = async function() {
+            const headers = ['Produit', 'Catégorie', 'Consultations', 'Quantités commandées', 'Quantités restantes'];
+            const rows = filteredProductsData.map(p => [
+                p.name,
+                p.category || '',
+                p.consultations,
+                p.quantites_commandees,
+                p.quantites_restantes
+            ]);
+            
+            const csv = [
+                headers.join(','),
+                ...rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+            ].join('\n');
+            
+            try {
+                const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `produits-analytics-${new Date().toISOString().split('T')[0]}.csv`;
+                link.click();
+                const { showSuccess } = await import('../js/notifications.js');
+                showSuccess('Export CSV réussi !');
+            } catch (err) {
+                const { showError } = await import('../js/notifications.js');
+                showError('Erreur lors de l\'export CSV');
+            }
+        };
+
+        window.voirDetailsProduit = function(productId) {
+            window.location.href = `produit-details.html?product_id=${productId}`;
+        };
+
         chargerStats();
+        chargerProduitsDetails();
     </script>
             </div>
         </main>

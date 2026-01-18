@@ -5,73 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil - MAJAY</title>
     <link rel="stylesheet" href="../css/output.css">
-    <style>
-        .dashboard-page { background: #f7fafc; }
-        .dashboard-header {
-            background: white;
-            padding: 20px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .dashboard-header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .dashboard-logo { font-size: 1.5em; font-weight: 900; color: #667eea; }
-        .dashboard-nav { display: flex; gap: 20px; }
-        .nav-link {
-            color: #718096;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 10px 15px;
-            border-radius: 8px;
-        }
-        .nav-link.active { background: #edf2f7; color: #667eea; }
-        .dashboard-container { max-width: 800px; margin: 0 auto; padding: 30px 20px; }
-        .profile-card {
-            background: white;
-            border-radius: 16px;
-            padding: 40px;
-            margin-bottom: 30px;
-        }
-        .profile-header {
-            text-align: center;
-            padding-bottom: 30px;
-            border-bottom: 2px solid #e2e8f0;
-            margin-bottom: 30px;
-        }
-        .profile-icon {
-            font-size: 5em;
-            margin-bottom: 15px;
-        }
-        .shop-link {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px;
-            background: #f7fafc;
-            border-radius: 12px;
-            margin-top: 20px;
-        }
-        .shop-link input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            font-weight: 600;
-            color: #667eea;
-        }
-        .copy-btn {
-            padding: 10px 20px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-    </style>
 </head>
 <body class="dashboard-page">
     <!-- Sidebar Toggle Button (Mobile) -->
@@ -102,58 +35,98 @@
 
             <div class="sidebar-footer">
                 <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
-                <button onclick="window.authMaJay.deconnexion()" class="btn btn-outline btn-sm w-full" title="Déconnexion" aria-label="Se déconnecter">🚪 Déconnexion</button>
+                <!-- Bouton déconnecter masqué sur la page profil -->
             </div>
         </aside>
 
         <!-- Main Content -->
         <main class="dashboard-main">
             <div class="dashboard-main-content">
-        <div class="profile-card">
-            <div class="profile-header">
-                <div class="profile-icon">👤</div>
-                <h1 id="vendeurNom">Ma Boutique</h1>
-                <span class="badge" id="vendeurPlan">FREE</span>
-            </div>
-
-            <form id="profilForm" class="auth-form">
-                <div class="form-group">
-                    <label>Nom de la boutique</label>
-                    <input type="text" id="nom" required>
+                <!-- En-tête du profil -->
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Mon Profil</h1>
+                        <p class="page-subtitle">Gérez vos informations personnelles et paramètres de boutique</p>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Téléphone</label>
-                    <input type="tel" id="telephone" disabled style="background: #f7fafc;">
-                    <span class="form-hint">Le téléphone ne peut pas être modifié</span>
+                <!-- Carte principale profil -->
+                <div class="card profile-main-card">
+                    <div class="profile-header-section">
+                        <div class="profile-avatar">👤</div>
+                        <div class="profile-info-header">
+                            <h2 id="vendeurNom" class="profile-name">Ma Boutique</h2>
+                            <span class="badge badge-info" id="vendeurPlan">FREE</span>
+                        </div>
+                    </div>
+
+                    <form id="profilForm" class="auth-form">
+                        <div class="form-group">
+                            <label for="nom" class="form-label">Nom de la boutique *</label>
+                            <input type="text" id="nom" class="form-control" required placeholder="Ex: Ma Super Boutique">
+                            <span class="form-hint">Le nom visible par vos clients</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telephone" class="form-label">Téléphone</label>
+                            <input type="tel" id="telephone" class="form-control" disabled>
+                            <span class="form-hint">Le téléphone ne peut pas être modifié</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="whatsapp" class="form-label">WhatsApp *</label>
+                            <input type="tel" id="whatsapp" class="form-control" required placeholder="Ex: +221 77 123 45 67">
+                            <span class="form-hint">Numéro WhatsApp pour les commandes</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bio" class="form-label">Bio / Description</label>
+                            <textarea id="bio" class="form-control" rows="3" placeholder="Décrivez votre boutique en quelques mots..."></textarea>
+                            <span class="form-hint">Cette description apparaîtra sur votre catalogue</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shopLink" class="form-label">Lien de votre boutique</label>
+                            <div class="input-with-prefix">
+                                <input type="text" id="shopLink" class="form-control" readonly>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="copierLien()" style="margin-left: 10px; min-width: 100px;">📋 Copier</button>
+                            </div>
+                            <span class="form-hint">Partagez ce lien avec vos clients</span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-full mt-4">
+                            <span class="btn-text">💾 Enregistrer les modifications</span>
+                        </button>
+                    </form>
                 </div>
 
-                <div class="form-group">
-                    <label>WhatsApp</label>
-                    <input type="tel" id="whatsapp" required>
+                <!-- Section Paramètres -->
+                <div class="card profile-settings-card">
+                    <div class="card-header">
+                        <h2 class="card-title">⚙️ Paramètres</h2>
+                        <p class="card-subtitle">Gestion de votre compte</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-actions">
+                            <button onclick="deconnexion()" class="btn btn-outline btn-lg w-full mb-4">
+                                🚪 Se déconnecter
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Bio / Description</label>
-                    <input type="text" id="bio" placeholder="Décrivez votre boutique">
+                <!-- Zone dangereuse -->
+                <div class="card profile-danger-zone">
+                    <div class="card-header">
+                        <h2 class="card-title" style="color: var(--color-danger);">⚠️ Zone dangereuse</h2>
+                        <p class="card-subtitle" style="color: var(--color-text-light);">Actions irréversibles</p>
+                    </div>
+                    <div class="card-body">
+                        <button onclick="supprimerCompte()" class="btn btn-danger btn-lg w-full">
+                            🗑️ Supprimer mon compte
+                        </button>
+                    </div>
                 </div>
-
-                <button type="submit" class="btn-primary">💾 Enregistrer les modifications</button>
-            </form>
-
-            <div class="shop-link">
-                <span>🔗</span>
-                <input type="text" id="shopLink" readonly>
-                <button class="copy-btn" onclick="copierLien()">Copier</button>
-            </div>
-        </div>
-
-        <div class="profile-card">
-            <h2 style="margin-bottom: 20px;">⚠️ Zone dangereuse</h2>
-            <button class="btn-danger" onclick="supprimerCompte()" style="background: #ff4757; color: white; width: 100%;">
-                🗑️ Supprimer mon compte
-            </button>
-        </div>
             </div>
         </main>
     </div>
@@ -246,13 +219,32 @@
         window.copierLien = async function() {
             const input = document.getElementById('shopLink');
             input.select();
-            document.execCommand('copy');
-            const { showSuccess } = await import('../js/notifications.js');
-            showSuccess('Lien copié ! Partagez-le avec vos clients');
+            try {
+                await navigator.clipboard.writeText(input.value);
+                const { showSuccess } = await import('../js/notifications.js');
+                showSuccess('Lien copié ! Partagez-le avec vos clients');
+            } catch (err) {
+                document.execCommand('copy');
+                const { showSuccess } = await import('../js/notifications.js');
+                showSuccess('Lien copié ! Partagez-le avec vos clients');
+            }
+        };
+
+        window.deconnexion = function() {
+            if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
+                authMaJay.deconnexion();
+            }
         };
 
         document.getElementById('profilForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const originalText = btnText.textContent;
+            
+            submitBtn.disabled = true;
+            btnText.textContent = '⏳ Enregistrement...';
 
             const { error } = await supabase
                 .from('stores')
@@ -263,6 +255,9 @@
                     updated_at: new Date().toISOString()
                 })
                 .eq('id', session.store_id);
+
+            submitBtn.disabled = false;
+            btnText.textContent = originalText;
 
             if (error) {
                 const { showError } = await import('../js/notifications.js');

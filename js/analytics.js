@@ -1,12 +1,12 @@
 import { supabase } from "./config.js";
-import { authMajay } from "./auth.js";
+import { authMaJay } from "./auth.js";
 
 /**
  * Obtenir les analytics d'un produit
  */
 export async function getProductAnalytics(productId, dateRange = {}) {
     try {
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -40,7 +40,7 @@ export async function getProductAnalytics(productId, dateRange = {}) {
  */
 export async function getRegionalStats(dateRange = {}) {
     try {
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -73,7 +73,7 @@ export async function getRegionalStats(dateRange = {}) {
  */
 export async function getTrendData(category = null) {
     try {
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -120,7 +120,7 @@ export async function getTrendData(category = null) {
  */
 export async function getStoreStats(dateRange = {}) {
     try {
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -179,10 +179,91 @@ export async function getStoreStats(dateRange = {}) {
     }
 }
 
+/**
+ * Obtenir les détails de tous les produits avec statistiques
+ */
+export async function getProductsDetails(dateRange = {}) {
+    try {
+        const session = authMaJay.getSession();
+        if (!session || !session.store_id) {
+            throw new Error('Non authentifié');
+        }
+
+        // Récupérer les produits
+        const { data: products, error: productsError } = await supabase
+            .from('products')
+            .select('id, name, category, stock, price, currency, views_count')
+            .eq('store_id', session.store_id)
+            .eq('is_active', true);
+
+        if (productsError) throw productsError;
+
+        // Récupérer les vues depuis click_events
+        let viewsQuery = supabase
+            .from('click_events')
+            .select('product_id')
+            .eq('store_id', session.store_id)
+            .eq('event_type', 'view');
+
+        if (dateRange.start) {
+            viewsQuery = viewsQuery.gte('created_at', dateRange.start);
+        }
+        if (dateRange.end) {
+            viewsQuery = viewsQuery.lte('created_at', dateRange.end);
+        }
+
+        const { data: views } = await viewsQuery;
+
+        // Récupérer les commandes
+        let ordersQuery = supabase
+            .from('orders')
+            .select('items')
+            .eq('store_id', session.store_id);
+
+        if (dateRange.start) {
+            ordersQuery = ordersQuery.gte('created_at', dateRange.start);
+        }
+        if (dateRange.end) {
+            ordersQuery = ordersQuery.lte('created_at', dateRange.end);
+        }
+
+        const { data: orders } = await ordersQuery;
+
+        // Calculer les statistiques par produit
+        const productsWithStats = products.map(product => {
+            const consultations = views?.filter(v => v.product_id === product.id).length || product.views_count || 0;
+            
+            let quantitesCommandees = 0;
+            if (orders) {
+                orders.forEach(order => {
+                    if (Array.isArray(order.items)) {
+                        const item = order.items.find(i => i.product_id === product.id);
+                        if (item) {
+                            quantitesCommandees += parseInt(item.quantity || 0);
+                        }
+                    }
+                });
+            }
+
+            return {
+                ...product,
+                consultations,
+                quantites_commandees: quantitesCommandees,
+                quantites_restantes: product.stock || 0
+            };
+        });
+
+        return { success: true, data: productsWithStats };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
 export const analyticsUtils = {
     getProductAnalytics,
     getRegionalStats,
     getTrendData,
-    getStoreStats
+    getStoreStats,
+    getProductsDetails
 };
 

@@ -20,22 +20,15 @@
         <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ MA-JAY</div>
+                <div class="sidebar-logo">🛍️ MA-JAY STORE</div>
             </div>
             
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link active">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <!-- Le sidebar sera injecté par initSidebar() -->
             </nav>
 
             <div class="sidebar-footer">
-                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
-                <button onclick="window.authMajay.deconnexion()" class="btn btn-outline btn-sm w-full" title="Déconnexion" aria-label="Se déconnecter">🚪 Déconnexion</button>
+                <a href="#" data-route="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
             </div>
         </aside>
 
@@ -44,7 +37,7 @@
             <div class="dashboard-main-content">
         <div class="page-header">
             <div>
-                <h1 class="page-title">Bonjour, <span id="userName">Vendeur</span> 👋</h1>
+                <h1 class="page-title">TABLEAU DE BORD - <span id="userName">Vendeur</span> 👋</h1>
                 <p class="page-subtitle">Voici un aperçu de votre activité</p>
             </div>
         </div>
@@ -57,7 +50,7 @@
         </div>
 
         <div class="actions-grid">
-            <a href="produits.html" class="action-card" role="button" aria-label="Gérer mes produits">
+            <a href="#" data-route="produits.html" class="action-card" role="button" aria-label="Gérer mes produits">
                 <div class="flex justify-between items-center">
                     <div>
                         <h3 class="text-lg font-bold text-text mb-2">Gérer mes produits</h3>
@@ -77,7 +70,7 @@
                 </div>
             </button>
 
-            <a href="commandes.html" class="action-card" role="button" aria-label="Mes commandes">
+            <a href="#" data-route="commandes.html" class="action-card" role="button" aria-label="Mes commandes">
                 <div class="flex justify-between items-center">
                     <div>
                         <h3 class="text-lg font-bold text-text mb-2">Mes commandes</h3>
@@ -98,20 +91,22 @@
                     <p style="margin-top: var(--spacing-md);">Chargement...</p>
                 </div>
             </div>
-            <div class="card-footer flex gap-3 flex-wrap">
-                <button onclick="upgradePlan('pro')" class="btn btn-primary btn-sm" aria-label="Passer au plan Pro">🚀 Passer Pro</button>
-                <button onclick="upgradePlan('entreprise')" class="btn btn-primary btn-sm" aria-label="Passer au plan Entreprise">💎 Passer Entreprise</button>
-            </div>
         </div>
             </div>
         </main>
     </div>
 
+    <!-- Initialiser le sidebar et le router -->
+    <script type="module">
+        import { initVendorApp } from "../js/vendor-app.js";
+        initVendorApp();
+    </script>
+
     <script type="module">
         import { supabase } from "../js/config.js";
-        import { authMajay } from "../js/auth.js";
+        import { authMaJay } from "../js/auth.js";
 
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session) window.location.href = 'connexion.html';
         
         window.upgradePlan = function(plan) {
@@ -130,104 +125,106 @@ Slug : ${session.store_slug}
         };
 
         document.getElementById('userName').textContent = session.store_name || session.full_name;
-        const userPlan = document.getElementById('userPlan');
-        userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
-        userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
-
-        // Afficher les liens conditionnels selon le plan
-        const plan = session.subscription_plan || 'free';
-        if (plan === 'entreprise') {
-            // Ajouter les liens pour plan Entreprise
-            const nav = document.getElementById('mainNav');
-            const equipeLink = document.createElement('a');
-            equipeLink.href = 'equipe.html';
-            equipeLink.className = 'sidebar-nav-link';
-            equipeLink.textContent = '👥 Équipe';
-            nav.insertBefore(equipeLink, nav.lastElementChild);
-            
-            const multiLink = document.createElement('a');
-            multiLink.href = 'multi-boutiques.html';
-            multiLink.className = 'sidebar-nav-link';
-            multiLink.textContent = '🏪 Multi-Boutiques';
-            nav.insertBefore(multiLink, nav.lastElementChild);
-        }
-
-        // Sidebar toggle functions
-        function toggleSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isOpen = sidebar.classList.contains('open');
-            
-            if (isOpen) {
-                closeSidebar();
-            } else {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
-                document.getElementById('toggleIcon').textContent = '✕';
-            }
-        }
-
-        function closeSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            document.getElementById('toggleIcon').textContent = '☰';
-        }
-
-        // Expose functions globally
-        window.toggleSidebar = toggleSidebar;
-        window.closeSidebar = closeSidebar;
 
         async function chargerStats() {
+            // Afficher la barre de chargement pendant 5 secondes minimum
+            const startTime = Date.now();
+            const minLoadTime = 5000; // 5 secondes
+            
+            // Afficher la barre de progression
+            document.getElementById('statsGrid').innerHTML = `
+                <div style="grid-column: 1/-1; padding: var(--spacing-2xl); text-align: center;">
+                    <div class="loading-progress">
+                        <div class="loading-progress-bar"></div>
+                    </div>
+                    <p style="margin-top: var(--spacing-md); color: var(--color-text-light); font-size: var(--font-size-base);">Chargement des statistiques...</p>
+                </div>
+            `;
+
             try {
-                const { data: produits } = await supabase
-                    .from('products')
-                    .select('id')
-                    .eq('store_id', session.store_id)
-                    .eq('is_active', true);
+                // Lancer les requêtes en parallèle
+                const [produitsResult, commandesResult, vuesResult] = await Promise.all([
+                    supabase
+                        .from('products')
+                        .select('id')
+                        .eq('store_id', session.store_id)
+                        .eq('is_active', true),
+                    supabase
+                        .from('orders')
+                        .select('total')
+                        .eq('store_id', session.store_id),
+                    supabase
+                        .from('click_events')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('store_id', session.store_id)
+                        .eq('event_type', 'view')
+                ]);
 
-                const { data: commandes } = await supabase
-                    .from('orders')
-                    .select('total')
-                    .eq('store_id', session.store_id);
+                const produits = produitsResult.data || [];
+                const commandes = commandesResult.data || [];
+                const totalVues = vuesResult.count || 0;
 
-                // Compter les vues depuis click_events
-                const { count: totalVues } = await supabase
-                    .from('click_events')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('store_id', session.store_id)
-                    .eq('event_type', 'view');
+                const nbProduits = produits.length || 0;
+                const nbCommandes = commandes.length || 0;
+                const totalVentes = commandes.reduce((sum, c) => sum + (parseInt(c.total) || 0), 0) || 0;
 
-                const nbProduits = produits?.length || 0;
-                const nbCommandes = commandes?.length || 0;
-                const totalVentes = commandes?.reduce((sum, c) => sum + (parseInt(c.total) || 0), 0) || 0;
+                // Calculer le temps écoulé et attendre si nécessaire pour atteindre 5 secondes
+                const elapsedTime = Date.now() - startTime;
+                const remainingTime = Math.max(0, minLoadTime - elapsedTime);
+                
+                if (remainingTime > 0) {
+                    await new Promise(resolve => setTimeout(resolve, remainingTime));
+                }
 
-                document.getElementById('statsGrid').innerHTML = `
-                    <div class="stat-card slide-up" style="animation-delay: 0.1s;">
-                        <div class="stat-icon">📦</div>
-                        <div class="stat-label">Produits actifs</div>
-                        <div class="stat-value">${nbProduits}</div>
-                    </div>
-                    <div class="stat-card slide-up" style="animation-delay: 0.2s;">
-                        <div class="stat-icon">🛒</div>
-                        <div class="stat-label">Commandes</div>
-                        <div class="stat-value">${nbCommandes}</div>
-                    </div>
-                    <div class="stat-card slide-up" style="animation-delay: 0.3s;">
-                        <div class="stat-icon">💰</div>
-                        <div class="stat-label">Ventes totales</div>
-                        <div class="stat-value">${totalVentes.toLocaleString()}</div>
-                        <div style="font-size: var(--font-size-sm); color: var(--color-text-light); margin-top: var(--spacing-xs);">FCFA</div>
-                    </div>
-                    <div class="stat-card slide-up" style="animation-delay: 0.4s;">
-                        <div class="stat-icon">👁️</div>
-                        <div class="stat-label">Vues catalogue</div>
-                        <div class="stat-value">${totalVues}</div>
-                    </div>
-                `;
+                // Vérifier si toutes les stats sont à zéro
+                const allStatsZero = nbProduits === 0 && nbCommandes === 0 && totalVentes === 0 && totalVues === 0;
+
+                if (allStatsZero) {
+                    document.getElementById('statsGrid').innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: var(--spacing-3xl);" class="fade-in">
+                            <div style="font-size: 4rem; margin-bottom: var(--spacing-md);">📊</div>
+                            <h3 style="font-size: var(--font-size-xl); font-weight: 700; color: var(--color-text); margin-bottom: var(--spacing-sm);">Aucune transaction enregistrée</h3>
+                            <p style="color: var(--color-text-light); font-size: var(--font-size-base);">Vos statistiques apparaîtront ici une fois que vous aurez des produits et des commandes.</p>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('statsGrid').innerHTML = `
+                        <div class="stat-card slide-up" style="animation-delay: 0.1s;">
+                            <div class="stat-icon">📦</div>
+                            <div class="stat-label">Produits actifs</div>
+                            <div class="stat-value">${nbProduits}</div>
+                        </div>
+                        <div class="stat-card slide-up" style="animation-delay: 0.2s;">
+                            <div class="stat-icon">🛒</div>
+                            <div class="stat-label">Commandes</div>
+                            <div class="stat-value">${nbCommandes}</div>
+                        </div>
+                        <div class="stat-card slide-up" style="animation-delay: 0.3s;">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-label">Ventes totales</div>
+                            <div class="stat-value">${totalVentes.toLocaleString()}</div>
+                            <div style="font-size: var(--font-size-sm); color: var(--color-text-light); margin-top: var(--spacing-xs);">FCFA</div>
+                        </div>
+                        <div class="stat-card slide-up" style="animation-delay: 0.4s;">
+                            <div class="stat-icon">👁️</div>
+                            <div class="stat-label">Vues catalogue</div>
+                            <div class="stat-value">${totalVues}</div>
+                        </div>
+                    `;
+                }
             } catch (error) {
                 console.error(error);
+                // En cas d'erreur, attendre quand même 5 secondes puis afficher un message
+                const elapsedTime = Date.now() - startTime;
+                const remainingTime = Math.max(0, minLoadTime - elapsedTime);
+                if (remainingTime > 0) {
+                    await new Promise(resolve => setTimeout(resolve, remainingTime));
+                }
+                document.getElementById('statsGrid').innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: var(--spacing-2xl);" class="fade-in">
+                        <p style="color: var(--color-danger);">Erreur lors du chargement des statistiques</p>
+                    </div>
+                `;
             }
         }
 
@@ -293,13 +290,43 @@ Slug : ${session.store_slug}
         window.copierLien = async function() {
             // Nouveau format : www.site.com/slug-boutique
             const lien = window.location.origin + '/' + session.store_slug;
+            
             try {
-                await navigator.clipboard.writeText(lien);
-                const { showSuccess } = await import('../js/notifications.js');
-                showSuccess('Lien copié ! Partagez-le avec vos clients');
+                // Méthode moderne avec Clipboard API (nécessite HTTPS ou localhost)
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(lien);
+                    const { showSuccess } = await import('../js/notifications.js');
+                    showSuccess('Lien copié ! Partagez-le avec vos clients');
+                    return;
+                }
             } catch (err) {
+                console.warn('Clipboard API non disponible, utilisation du fallback');
+            }
+            
+            // Fallback : méthode ancienne avec execCommand (fonctionne en HTTP)
+            try {
+                const textArea = document.createElement('textarea');
+                textArea.value = lien;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                if (successful) {
+                    const { showSuccess } = await import('../js/notifications.js');
+                    showSuccess('Lien copié ! Partagez-le avec vos clients');
+                } else {
+                    throw new Error('execCommand failed');
+                }
+            } catch (err) {
+                console.error('Erreur lors de la copie:', err);
                 const { showError } = await import('../js/notifications.js');
-                showError('Erreur lors de la copie');
+                showError('Impossible de copier le lien. Veuillez le sélectionner manuellement.');
             }
         };
 

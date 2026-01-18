@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock et Catalogue - MAJAY</title>
+    <title>Stock et Catalogue</title>
     <link rel="stylesheet" href="../css/output.css">
 </head>
 <body class="dashboard-page bg-bg">
@@ -35,7 +35,6 @@
 
             <div class="sidebar-footer">
                 <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
-                <button onclick="window.authMaJay.deconnexion()" class="btn btn-outline btn-sm w-full" title="Déconnexion" aria-label="Se déconnecter">🚪 Déconnexion</button>
             </div>
         </aside>
 
@@ -46,7 +45,7 @@
         <div class="bg-gradient-to-r from-primary-light to-accent rounded-xl p-5 mb-4 relative overflow-hidden">
             <div class="relative z-10">
                 <h2 class="text-base font-black text-white mb-1">Lien du catalogue public</h2>
-                <p class="text-sm text-white/90 mb-3">Partagez votre boutique sur WhatsApp et Instagram</p>
+                <p class="text-sm text-white/90 mb-3">Partagez votre boutique sur WhatsApp, TikTok, Instagram et Telegram pour que vos clients puissent voir vos produits</p>
                 <div class="flex gap-2 items-center">
                     <input type="text" readonly class="flex-1 bg-white/20 backdrop-blur-sm text-white rounded-lg px-3 py-2 text-sm border-none outline-none placeholder-white/70" id="catalogueLink">
                     <button class="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm min-h-[44px] hover:bg-white/90 transition-all" onclick="copierLien()">Copier</button>
@@ -82,7 +81,10 @@
 
         <!-- PRODUCTS LIST -->
         <div class="mb-4">
-            <h2 class="text-lg font-black text-text mb-3">Liste des produits</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                <h2 class="text-lg font-black text-text">Liste des produits</h2>
+                <div id="viewToggleContainer"></div>
+            </div>
             <div id="productsList" class="space-y-3">
                 <!-- Products will be loaded here -->
             </div>
@@ -92,27 +94,6 @@
     <!-- FAB -->
     <button class="fab" onclick="ouvrirModalAjout()" title="Ajouter un produit">+</button>
 
-    <!-- BOTTOM NAVIGATION -->
-    <nav class="bottom-nav">
-        <div class="max-w-6xl mx-auto flex justify-around">
-            <a href="dashboard.html" class="bottom-nav-item">
-                <span class="icon">📊</span>
-                <span>Tableau</span>
-            </a>
-            <a href="produits.html" class="bottom-nav-item active">
-                <span class="icon">📦</span>
-                <span>Stock</span>
-            </a>
-            <a href="commandes.html" class="bottom-nav-item">
-                <span class="icon">🛒</span>
-                <span>Commandes</span>
-            </a>
-            <a href="profil.html" class="bottom-nav-item">
-                <span class="icon">👤</span>
-                <span>Compte</span>
-            </a>
-        </div>
-    </nav>
 
     <!-- MODAL AJOUT/ÉDITION -->
     <div class="hidden fixed inset-0 bg-black/50 z-50 items-center justify-center p-4" id="productModalBackdrop" onclick="fermerModal()"></div>
@@ -165,6 +146,7 @@
     <script type="module">
         import { supabase } from "../js/config.js";
         import { authMaJay } from "../js/auth.js";
+        import { ViewToggle } from "../js/components/view-toggle.js";
 
         const session = authMaJay.getSession();
         if (!session) window.location.href = 'connexion.html';
@@ -172,6 +154,12 @@
         let produits = [];
         let filterActif = 'tous';
         let searchTerm = '';
+        
+        // Initialiser le toggle grille/liste
+        const viewToggleContainer = document.getElementById('viewToggleContainer');
+        if (viewToggleContainer) {
+            window.viewToggle = new ViewToggle('productsList');
+        }
 
         // Charger les produits
         async function chargerProduits() {

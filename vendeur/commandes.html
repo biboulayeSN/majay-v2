@@ -35,7 +35,6 @@
 
             <div class="sidebar-footer">
                 <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
-                <button onclick="window.authMaJay.deconnexion()" class="btn btn-outline btn-sm w-full" title="Déconnexion" aria-label="Se déconnecter">🚪 Déconnexion</button>
             </div>
         </aside>
 
@@ -62,27 +61,6 @@
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
-    <nav class="bottom-nav">
-        <div class="max-w-6xl mx-auto flex justify-around">
-            <a href="dashboard.html" class="bottom-nav-item">
-                <span class="icon">📊</span>
-                <span>Tableau</span>
-            </a>
-            <a href="produits.html" class="bottom-nav-item">
-                <span class="icon">📦</span>
-                <span>Stock</span>
-            </a>
-            <a href="commandes.html" class="bottom-nav-item active">
-                <span class="icon">🛒</span>
-                <span>Commandes</span>
-            </a>
-            <a href="profil.html" class="bottom-nav-item">
-                <span class="icon">👤</span>
-                <span>Compte</span>
-            </a>
-        </div>
-    </nav>
 
     <script type="module">
         import { supabase } from "../js/config.js";

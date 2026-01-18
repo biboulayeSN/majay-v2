@@ -1,12 +1,12 @@
 import { supabase } from "./config.js";
-import { authMajay } from "./auth.js";
+import { authMaJay } from "./auth.js";
 
 /**
  * Obtenir le plan actuel de la boutique
  */
 export async function getCurrentPlan() {
     try {
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -53,7 +53,7 @@ export async function getCurrentPlan() {
  */
 export async function getSubscriptionHistory() {
     try {
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -84,7 +84,7 @@ export async function getSubscriptionHistory() {
  */
 export async function getInvoices() {
     try {
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -113,7 +113,7 @@ export async function getInvoices() {
  */
 export async function getPayments(invoiceId) {
     try {
-        const session = authMajay.getSession();
+        const session = authMaJay.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }

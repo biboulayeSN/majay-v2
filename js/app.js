@@ -68,9 +68,19 @@ async function chargerProduits() {
             .eq("is_active", true)
             .single();
 
-        if (storeError) throw storeError;
+        if (storeError) {
+            console.error("Erreur récupération boutique:", storeError);
+            // Si la boutique n'existe pas (code 406 ou PGRST116)
+            if (storeError.code === 'PGRST116' || storeError.message?.includes('0 rows')) {
+                afficherErreur(`Boutique "${slug}" introuvable. Vérifiez que le lien est correct.`);
+            } else {
+                afficherErreur(`Erreur lors du chargement de la boutique: ${storeError.message}`);
+            }
+            return;
+        }
+        
         if (!store) {
-            afficherErreur("Boutique introuvable ou inactive");
+            afficherErreur(`Boutique "${slug}" introuvable ou inactive`);
             return;
         }
 
@@ -90,9 +100,13 @@ async function chargerProduits() {
             .eq("is_active", true)
             .order("created_at", { ascending: false });
 
-        if (produitsError) throw produitsError;
-
-        produits = produitsData || [];
+        if (produitsError) {
+            console.error("Erreur récupération produits:", produitsError);
+            // Ne pas bloquer l'affichage si erreur produits, juste logger
+            produits = [];
+        } else {
+            produits = produitsData || [];
+        }
 
         // Enregistrer un événement de vue pour analytics
         if (produits.length > 0) {

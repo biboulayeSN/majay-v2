@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails Produit - MAJAY</title>
+    <link rel="stylesheet" href="../css/output.css">
+</head>
+<body class="dashboard-page bg-bg">
+    <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+        <span id="toggleIcon">☰</span>
+    </button>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <div class="dashboard-wrapper">
+        <aside class="dashboard-sidebar" id="dashboardSidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">🛍️ MA-JAY</div>
+            </div>
+            <nav class="sidebar-nav" id="mainNav">
+                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
+                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+            </div>
+        </aside>
+        <main class="dashboard-main">
+            <div class="dashboard-main-content">
+                <div class="mb-4">
+                    <button onclick="window.history.back()" class="btn btn-outline btn-sm mb-4">← Retour</button>
+                    <h1 class="text-3xl font-black text-text mb-2" id="productName">Détails du Produit</h1>
+                    <p class="text-text-light">Commandes et factures associées</p>
+                </div>
+
+                <!-- Informations produit -->
+                <div class="card mb-6">
+                    <div class="card-header">
+                        <h2 class="card-title">📦 Informations Produit</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="productInfo">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liste des commandes -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">🛒 Commandes contenant ce produit</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="ordersList">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { supabase } from "../js/config.js";
+        import { authMaJay } from "../js/auth.js";
+
+        const session = authMaJay.getSession();
+        if (!session) window.location.href = 'connexion.html';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('product_id');
+
+        if (!productId) {
+            window.location.href = 'analytics.html';
+        }
+
+        // Sidebar toggle functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isOpen = sidebar.classList.contains('open');
+            
+            if (isOpen) {
+                closeSidebar();
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '✕';
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('dashboardSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '☰';
+        }
+
+        window.toggleSidebar = toggleSidebar;
+        window.closeSidebar = closeSidebar;
+
+        // Mettre à jour le badge du plan dans la sidebar
+        const userPlan = document.getElementById('userPlan');
+        if (userPlan) {
+            userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
+            userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
+        }
+
+        // Afficher les liens conditionnels selon le plan
+        const plan = session.subscription_plan || 'free';
+        if (plan === 'entreprise') {
+            const nav = document.getElementById('mainNav');
+            const equipeLink = document.createElement('a');
+            equipeLink.href = 'equipe.html';
+            equipeLink.className = 'sidebar-nav-link';
+            equipeLink.textContent = '👥 Équipe';
+            nav.insertBefore(equipeLink, nav.lastElementChild);
+            
+            const multiLink = document.createElement('a');
+            multiLink.href = 'multi-boutiques.html';
+            multiLink.className = 'sidebar-nav-link';
+            multiLink.textContent = '🏪 Multi-Boutiques';
+            nav.insertBefore(multiLink, nav.lastElementChild);
+        }
+
+        // Charger les détails du produit
+        async function chargerDetailsProduit() {
+            try {
+                const { data: product, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .eq('id', productId)
+                    .eq('store_id', session.store_id)
+                    .single();
+
+                if (error || !product) {
+                    document.getElementById('productInfo').innerHTML = '<p class="text-danger">Produit introuvable</p>';
+                    return;
+                }
+
+                document.getElementById('productName').textContent = product.name;
+                
+                // Récupérer les vues
+                const { data: viewsData } = await supabase
+                    .from('click_events')
+                    .select('product_id')
+                    .eq('store_id', session.store_id)
+                    .eq('product_id', productId)
+                    .eq('event_type', 'view');
+
+                const consultations = viewsData?.length || product.views_count || 0;
+
+                document.getElementById('productInfo').innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                        <div>
+                            <p class="text-sm text-text-light mb-1">Nom</p>
+                            <p class="font-bold text-lg">${product.name}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-text-light mb-1">Catégorie</p>
+                            <p class="font-bold"><span class="badge badge-info">${product.category || 'Sans catégorie'}</span></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-text-light mb-1">Prix</p>
+                            <p class="font-bold text-lg">${parseInt(product.price || 0).toLocaleString()} ${product.currency || 'XOF'}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-text-light mb-1">Stock restant</p>
+                            <p class="font-bold text-lg">${product.stock || 0}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-text-light mb-1">Consultations</p>
+                            <p class="font-bold text-lg">${consultations}</p>
+                        </div>
+                    </div>
+                    ${product.description ? `<div class="mt-4 pt-4 border-t border-gray-200"><p class="text-text-light">${product.description}</p></div>` : ''}
+                `;
+
+                // Charger les commandes contenant ce produit
+                chargerCommandesProduit(productId);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('productInfo').innerHTML = '<p class="text-danger">Erreur lors du chargement</p>';
+            }
+        }
+
+        async function chargerCommandesProduit(productId) {
+            try {
+                const { data: orders, error } = await supabase
+                    .from('orders')
+                    .select('*')
+                    .eq('store_id', session.store_id)
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    document.getElementById('ordersList').innerHTML = '<p class="text-danger">Erreur lors du chargement</p>';
+                    return;
+                }
+
+                // Filtrer les commandes contenant ce produit
+                const ordersWithProduct = orders.filter(order => {
+                    if (!Array.isArray(order.items)) return false;
+                    return order.items.some(item => item.product_id === productId);
+                });
+
+                if (ordersWithProduct.length === 0) {
+                    document.getElementById('ordersList').innerHTML = `
+                        <div class="text-center p-8">
+                            <p class="text-text-light">Aucune commande trouvée pour ce produit</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const statusNames = {
+                    pending: 'En attente',
+                    confirmed: 'Confirmée',
+                    delivered: 'Livrée',
+                    cancelled: 'Annulée'
+                };
+
+                document.getElementById('ordersList').innerHTML = `
+                    <div class="space-y-4">
+                        ${ordersWithProduct.map(order => {
+                            const item = order.items.find(i => i.product_id === productId);
+                            const statusClass = order.status === 'delivered' ? 'badge-success' : 
+                                               order.status === 'cancelled' ? 'badge-danger' : 'badge-warning';
+                            return `
+                                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                                        <div>
+                                            <h3 class="font-bold text-lg">Commande #${order.order_number || order.id.substring(0, 8)}</h3>
+                                            <p class="text-sm text-text-light">${new Date(order.created_at).toLocaleDateString('fr-FR', { 
+                                                year: 'numeric', 
+                                                month: 'long', 
+                                                day: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}</p>
+                                            <p class="text-sm text-text-light mt-1">Client: ${order.customer_name}</p>
+                                            <p class="text-sm text-text-light">Téléphone: ${order.customer_phone}</p>
+                                        </div>
+                                        <span class="badge ${statusClass}">
+                                            ${statusNames[order.status] || order.status}
+                                        </span>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                                        <div>
+                                            <p class="text-sm text-text-light">Quantité commandée</p>
+                                            <p class="font-bold">${item.quantity || 0}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-text-light">Prix unitaire</p>
+                                            <p class="font-bold">${parseInt(item.price || 0).toLocaleString()} ${order.currency || 'XOF'}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-text-light">Total commande</p>
+                                            <p class="font-bold">${parseInt(order.total || 0).toLocaleString()} ${order.currency || 'XOF'}</p>
+                                        </div>
+                                    </div>
+                                    <button onclick="genererFacturePDF('${order.id}')" class="btn btn-primary btn-sm w-full">
+                                        📄 Générer facture PDF
+                                    </button>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            } catch (error) {
+                console.error(error);
+                document.getElementById('ordersList').innerHTML = '<p class="text-danger">Erreur lors du chargement des commandes</p>';
+            }
+        }
+
+        window.genererFacturePDF = async function(orderId) {
+            try {
+                // Récupérer la commande
+                const { data: order, error } = await supabase
+                    .from('orders')
+                    .select('*')
+                    .eq('id', orderId)
+                    .eq('store_id', session.store_id)
+                    .single();
+
+                if (error || !order) {
+                    const { showError } = await import('../js/notifications.js');
+                    showError('Commande introuvable');
+                    return;
+                }
+
+                // Récupérer les infos de la boutique
+                const { data: store } = await supabase
+                    .from('stores')
+                    .select('name, whatsapp_number')
+                    .eq('id', session.store_id)
+                    .single();
+
+                // Générer le PDF (utiliser une fenêtre d'impression)
+                const printWindow = window.open('', '_blank');
+                const itemsHTML = Array.isArray(order.items) ? order.items.map(item => `
+                    <tr>
+                        <td>${item.name || 'Produit'}</td>
+                        <td style="text-align: center;">${item.quantity || 0}</td>
+                        <td style="text-align: right;">${parseInt(item.price || 0).toLocaleString()} ${order.currency || 'XOF'}</td>
+                        <td style="text-align: right;">${parseInt((item.price || 0) * (item.quantity || 0)).toLocaleString()} ${order.currency || 'XOF'}</td>
+                    </tr>
+                `).join('') : '';
+
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Facture ${order.order_number || order.id.substring(0, 8)}</title>
+                        <meta charset="UTF-8">
+                        <style>
+                            * { margin: 0; padding: 0; box-sizing: border-box; }
+                            body { 
+                                font-family: Arial, sans-serif; 
+                                padding: 40px; 
+                                background: white;
+                                color: #333;
+                            }
+                            .header { 
+                                text-align: center; 
+                                margin-bottom: 40px; 
+                                border-bottom: 2px solid #667eea;
+                                padding-bottom: 20px;
+                            }
+                            .header h1 { 
+                                color: #667eea; 
+                                font-size: 2em; 
+                                margin-bottom: 10px;
+                            }
+                            .details { 
+                                margin: 30px 0; 
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                                gap: 20px;
+                            }
+                            .details p { margin: 8px 0; }
+                            table { 
+                                width: 100%; 
+                                border-collapse: collapse; 
+                                margin: 30px 0; 
+                            }
+                            th, td { 
+                                border: 1px solid #ddd; 
+                                padding: 12px; 
+                                text-align: left; 
+                            }
+                            th { 
+                                background-color: #667eea; 
+                                color: white; 
+                                font-weight: bold;
+                            }
+                            .total-row { 
+                                font-weight: bold; 
+                                font-size: 1.2em; 
+                                background-color: #f7fafc;
+                            }
+                            .footer {
+                                margin-top: 40px;
+                                padding-top: 20px;
+                                border-top: 1px solid #ddd;
+                                text-align: center;
+                                color: #666;
+                                font-size: 0.9em;
+                            }
+                            @media print {
+                                body { padding: 20px; }
+                                .no-print { display: none; }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <h1>FACTURE</h1>
+                            <p style="font-size: 1.2em; font-weight: bold;">${store?.name || session.store_name || 'MA-JAY STORE'}</p>
+                            ${store?.whatsapp_number ? `<p>Téléphone: ${store.whatsapp_number}</p>` : ''}
+                        </div>
+                        <div class="details">
+                            <div>
+                                <h3 style="margin-bottom: 10px; color: #667eea;">Informations Commande</h3>
+                                <p><strong>Numéro de commande:</strong> ${order.order_number || order.id.substring(0, 8)}</p>
+                                <p><strong>Date:</strong> ${new Date(order.created_at).toLocaleDateString('fr-FR', { 
+                                    year: 'numeric', 
+                                    month: 'long', 
+                                    day: 'numeric'
+                                })}</p>
+                                <p><strong>Heure:</strong> ${new Date(order.created_at).toLocaleTimeString('fr-FR', {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                })}</p>
+                            </div>
+                            <div>
+                                <h3 style="margin-bottom: 10px; color: #667eea;">Informations Client</h3>
+                                <p><strong>Nom:</strong> ${order.customer_name}</p>
+                                <p><strong>Téléphone:</strong> ${order.customer_phone}</p>
+                                ${order.customer_address ? `<p><strong>Adresse:</strong> ${order.customer_address}</p>` : ''}
+                                ${order.customer_city ? `<p><strong>Ville:</strong> ${order.customer_city}</p>` : ''}
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th style="text-align: center;">Quantité</th>
+                                    <th style="text-align: right;">Prix unitaire</th>
+                                    <th style="text-align: right;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${itemsHTML}
+                            </tbody>
+                            <tfoot>
+                                ${order.delivery_fee > 0 ? `
+                                <tr>
+                                    <td colspan="3" style="text-align: right;">Frais de livraison:</td>
+                                    <td style="text-align: right;">${parseInt(order.delivery_fee || 0).toLocaleString()} ${order.currency || 'XOF'}</td>
+                                </tr>
+                                ` : ''}
+                                ${order.discount_amount > 0 ? `
+                                <tr>
+                                    <td colspan="3" style="text-align: right;">Remise:</td>
+                                    <td style="text-align: right;">-${parseInt(order.discount_amount || 0).toLocaleString()} ${order.currency || 'XOF'}</td>
+                                </tr>
+                                ` : ''}
+                                <tr class="total-row">
+                                    <td colspan="3" style="text-align: right;">TOTAL:</td>
+                                    <td style="text-align: right;">${parseInt(order.total || 0).toLocaleString()} ${order.currency || 'XOF'}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="footer">
+                            <p>Merci de votre confiance !</p>
+                            <p>Facture générée le ${new Date().toLocaleDateString('fr-FR')}</p>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                
+                // Attendre que le contenu soit chargé avant d'imprimer
+                setTimeout(() => {
+                    printWindow.print();
+                }, 500);
+                
+                const { showSuccess } = await import('../js/notifications.js');
+                showSuccess('Facture générée !');
+            } catch (err) {
+                console.error(err);
+                const { showError } = await import('../js/notifications.js');
+                showError('Erreur lors de la génération de la facture');
+            }
+        };
+
+        chargerDetailsProduit();
+    </script>
+</body>
+</html>

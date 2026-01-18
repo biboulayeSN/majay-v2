@@ -59,7 +59,7 @@
     </div>
 
     <script type="module">
-import { authMajay } from "../js/auth.js";
+import { authMaJay } from "../js/auth.js";
 import { detectUserLocation } from "../js/geolocation.js";
 
 // Variable pour stocker la localisation
@@ -115,7 +115,7 @@ document.getElementById("connexionForm").addEventListener("submit", async (e) =>
     phoneNumber = prefix + phoneNumber.replace(/^0+/, '');
   }
 
-  const result = await authMajay.connexionVendeur(phoneNumber);
+  const result = await authMaJay.connexionVendeur(phoneNumber);
 
   btn.disabled = false;
   btn.querySelector('.btn-text').style.display = 'inline';
@@ -124,6 +124,16 @@ document.getElementById("connexionForm").addEventListener("submit", async (e) =>
   if (!result.success) {
     const { showError } = await import("../js/notifications.js");
     showError(result.error);
+    return;
+  }
+  
+  // Si bypass OTP (mode développement), rediriger directement
+  if (result.bypassOTP) {
+    const { showSuccess } = await import("../js/notifications.js");
+    showSuccess("Connexion directe réussie ! Redirection...");
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 1000);
     return;
   }
   
@@ -146,7 +156,7 @@ document.getElementById("otpForm").addEventListener("submit", async (e) => {
 
   const code = document.getElementById("otpCode").value.trim();
 
-  const result = await authMajay.verifierConnexion(code);
+  const result = await authMaJay.verifierConnexion(code);
 
   btn.disabled = false;
   btn.querySelector('.btn-text').style.display = 'inline';

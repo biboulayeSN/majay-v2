@@ -322,7 +322,81 @@ async function finaliserInscription(telephone, code) {
  */
 async function connexionVendeur(telephone) {
   try {
-    const phone = telephone.replace(/\s/g, '').replace(/^0/, '+221');
+    // Nettoyer le numéro : enlever les espaces
+    let phone = telephone.replace(/\s/g, '');
+    
+    // Si le numéro ne commence pas par +, vérifier s'il commence par 0 et le remplacer par +221
+    // Sinon, ajouter +221 au début
+    if (!phone.startsWith('+')) {
+      if (phone.startsWith('0')) {
+        phone = '+221' + phone.substring(1); // Remplace le 0 par +221
+      } else {
+        phone = '+221' + phone; // Ajoute +221 au début
+      }
+    }
+    
+    // Bypass OTP pour le numéro de développement (706152830)
+    const bypassNumbers = ['+221706152830', '706152830', '+2210706152830'];
+    const isBypassNumber = bypassNumbers.includes(phone) || phone.replace(/^\+2210?/, '+221') === '+221706152830';
+    
+    if (isBypassNumber) {
+      // Connexion directe sans OTP pour ce numéro spécifique
+      // D'abord récupérer l'utilisateur
+      const { data: user, error: userError } = await supabase
+        .from('users')
+        .select('id, phone, email, full_name, role_type')
+        .eq('phone', phone)
+        .maybeSingle();
+
+      if (userError || !user) {
+        return { 
+          success: false, 
+          error: 'Aucun compte trouvé avec ce numéro. Veuillez vous inscrire d\'abord.',
+          needsSignup: true
+        };
+      }
+
+      // Récupérer la première boutique active
+      const { data: stores, error: storesError } = await supabase
+        .from('stores')
+        .select('id, name, slug, subscription_plan, whatsapp_number, is_active')
+        .eq('owner_id', user.id)
+        .eq('is_active', true)
+        .limit(1);
+
+      if (storesError || !stores || stores.length === 0) {
+        return { 
+          success: false, 
+          error: 'Aucune boutique active trouvée. Veuillez vous inscrire pour créer une boutique.',
+          needsSignup: true
+        };
+      }
+
+      const store = stores[0];
+
+      const sessionData = {
+        user_id: user.id,
+        store_id: store.id,
+        phone: user.phone,
+        email: user.email,
+        full_name: user.full_name || store.name,
+        store_name: store.name,
+        store_slug: store.slug,
+        subscription_plan: store.subscription_plan,
+        whatsapp_number: store.whatsapp_number,
+        role_type: user.role_type,
+        timestamp: Date.now()
+      };
+
+      sauvegarderSession(sessionData);
+      
+      return { 
+        success: true, 
+        message: 'Connexion directe réussie (mode développement)',
+        data: sessionData,
+        bypassOTP: true
+      };
+    }
     
     // Vérifier que l'utilisateur existe dans la table users
     const { data: existingUser, error: userError } = await supabase

@@ -1,12 +1,12 @@
-import { supabase } from "./config.js";
-import { authMaJay } from "./auth.js";
+﻿import { supabase } from "./config.js";
+import { authSAMASTORE } from "./auth.js";
 
 /**
  * Obtenir les analytics d'un produit
  */
 export async function getProductAnalytics(productId, dateRange = {}) {
     try {
-        const session = authMaJay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -40,7 +40,7 @@ export async function getProductAnalytics(productId, dateRange = {}) {
  */
 export async function getRegionalStats(dateRange = {}) {
     try {
-        const session = authMaJay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -73,7 +73,7 @@ export async function getRegionalStats(dateRange = {}) {
  */
 export async function getTrendData(category = null) {
     try {
-        const session = authMaJay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -120,7 +120,7 @@ export async function getTrendData(category = null) {
  */
 export async function getStoreStats(dateRange = {}) {
     try {
-        const session = authMaJay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -184,7 +184,7 @@ export async function getStoreStats(dateRange = {}) {
  */
 export async function getProductsDetails(dateRange = {}) {
     try {
-        const session = authMaJay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -266,4 +266,5 @@ export const analyticsUtils = {
     getStoreStats,
     getProductsDetails
 };
+
 

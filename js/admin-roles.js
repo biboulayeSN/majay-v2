@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Gestion des rôles et permissions admin
  */
 
@@ -55,7 +55,7 @@ export async function checkPermission(permission) {
  * Obtenir la session admin avec le rôle
  */
 export function getAdminSession() {
-    const s = localStorage.getItem("majay_admin");
+    const s = localStorage.getItem("SAMASTORE_admin");
     if (!s) return null;
     
     try {
@@ -211,4 +211,5 @@ export function getRolePermissions(role) {
 
     return permissions[role] || null;
 }
+
 

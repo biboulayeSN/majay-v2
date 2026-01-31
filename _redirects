@@ -1,4 +1,4 @@
-# Configuration Netlify/Vercel pour le routage MAJAY
+﻿# Configuration Netlify/Vercel pour le routage SAMASTORE
 # Si vous déployez sur Netlify ou Vercel, ce fichier gère le routage
 
 # Rediriger admin.site.com vers /admin/
@@ -6,4 +6,5 @@
 
 # Rediriger les boutiques vers store-router.html
 /*  /store-router.html  200
+
 

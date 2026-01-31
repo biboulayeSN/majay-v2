@@ -1,4 +1,4 @@
-// ==================== SERVICE DE GÉOLOCALISATION IP ====================
+﻿// ==================== SERVICE DE GÉOLOCALISATION IP ====================
 // Détecte automatiquement le pays, la ville et le préfixe téléphonique
 
 // Liste des pays avec préfixes téléphoniques
@@ -34,7 +34,7 @@ export const COUNTRY_CODES = {
 let cachedLocation = null;
 
 // URL du Cloudflare Worker (à configurer après déploiement)
-// Remplacez par l'URL de votre Worker : https://ma-jay-geolocation.workers.dev
+// Remplacez par l'URL de votre Worker : https://SAMASTORE-geolocation.workers.dev
 const CLOUDFLARE_WORKER_URL = null; // null = utiliser API tierce par défaut
 
 /**
@@ -324,3 +324,4 @@ export async function initPhoneAutoDetect(phoneInput, countrySelector = null) {
         return null;
     }
 }
+

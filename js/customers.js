@@ -1,12 +1,12 @@
-import { supabase } from "./config.js";
-import { authMajay } from "./auth.js";
+﻿import { supabase } from "./config.js";
+import { authSAMASTORE } from "./auth.js";
 
 /**
  * Obtenir tous les clients d'une boutique
  */
 export async function getCustomers(filters = {}) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -44,7 +44,7 @@ export async function getCustomers(filters = {}) {
  */
 export async function getCustomer(customerId) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -78,7 +78,7 @@ export async function getCustomer(customerId) {
  */
 export async function upsertCustomer(customerData) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -108,7 +108,7 @@ export async function upsertCustomer(customerData) {
  */
 export async function updateCustomerSegment(customerId, segment) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -137,7 +137,7 @@ export async function updateCustomerSegment(customerId, segment) {
  */
 export async function addCustomerNote(customerId, note) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -180,7 +180,7 @@ export async function addCustomerNote(customerId, note) {
  */
 export async function addCustomerTags(customerId, tags) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -225,4 +225,5 @@ export const customersUtils = {
     addCustomerNote,
     addCustomerTags
 };
+
 

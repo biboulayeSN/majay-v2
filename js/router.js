@@ -1,5 +1,5 @@
-/**
- * Système de routage pour MAJAY
+﻿/**
+ * Système de routage pour SAMASTORE
  * Gère les URLs propres pour les boutiques et l'admin
  */
 
@@ -170,4 +170,5 @@ async function loadStoreCatalog(slug) {
     // Sinon, rediriger vers catalogue.html avec le slug
     window.location.href = `/catalogue.html?shop=${slug}`;
 }
+
 

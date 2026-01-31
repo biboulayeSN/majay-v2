@@ -1,11 +1,11 @@
-import { supabase } from "./config.js";
-import { authMajay } from "./auth.js";
+﻿import { supabase } from "./config.js";
+import { authSAMASTORE } from "./auth.js";
 
 /**
  * Obtenir la boutique actuelle depuis la session
  */
 export function getCurrentStore() {
-    const session = authMajay.getSession();
+    const session = authSAMASTORE.getSession();
     if (!session || !session.store_id) {
         return null;
     }
@@ -38,7 +38,7 @@ export async function getOwnerStores(ownerId) {
  */
 export async function createStore(storeData) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session) {
             throw new Error('Non authentifié');
         }
@@ -68,7 +68,7 @@ export async function createStore(storeData) {
  */
 export async function switchStore(storeId) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session) {
             throw new Error('Non authentifié');
         }
@@ -93,7 +93,7 @@ export async function switchStore(storeId) {
             whatsapp_number: store.whatsapp_number
         };
 
-        authMajay.sauvegarderSession(newSession);
+        authSAMASTORE.sauvegarderSession(newSession);
 
         return { success: true, data: store };
     } catch (error) {
@@ -106,7 +106,7 @@ export async function switchStore(storeId) {
  */
 export async function checkPlanLimits(checkType) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session) {
             throw new Error('Non authentifié');
         }
@@ -129,7 +129,7 @@ export async function checkPlanLimits(checkType) {
  */
 export async function updateStore(storeId, updates) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session) {
             throw new Error('Non authentifié');
         }
@@ -173,4 +173,5 @@ export const storesUtils = {
     checkPlanLimits,
     updateStore
 };
+
 

@@ -1,4 +1,4 @@
-import { supabase, getStoreSlug } from "./config.js";
+﻿import { supabase, getStoreSlug } from "./config.js";
 import { getDemoStore, isDemoStore } from "./demo-data.js";
 import { detectUserLocation, formatPhoneWithPrefix } from "./geolocation.js";
 
@@ -22,7 +22,7 @@ async function chargerProduits() {
         if (isDemoStore(slug)) {
             isDemo = true;
             const demoStore = getDemoStore(slug);
-            
+
             if (!demoStore) {
                 afficherErreur("Boutique de démonstration introuvable");
                 return;
@@ -78,7 +78,7 @@ async function chargerProduits() {
             }
             return;
         }
-        
+
         if (!store) {
             afficherErreur(`Boutique "${slug}" introuvable ou inactive`);
             return;
@@ -127,40 +127,42 @@ async function chargerProduits() {
 
 // ==================== GÉNÉRATION DYNAMIQUE DES CATÉGORIES ====================
 function genererBoutonsCategories() {
-    // Extraire les catégories uniques des produits
-    const categories = ['tous', ...new Set(produits.map(p => p.category).filter(Boolean))];
-    
-    // Icônes par catégorie
-    const categoryIcons = {
-        'tous': '🌟',
-        'Femme': '👗',
-        'Homme': '👔',
-        'Chaussures': '👟',
-        'Sacs': '👜',
-        'Audio': '🎧',
-        'Accessoires': '🔌',
-        'Wearable': '⌚',
-        'Maquillage': '💄',
-        'Soins': '✨',
-        'montres': '⌚',
-        'chaussures': '👟',
-        'sacs': '👜',
-        'accessoires': '🕶️',
-        'electronique': '📱'
-    };
-    
-    // Conteneur des boutons
+    // Si des boutons sont déjà présents dans le HTML (cas normal), ne pas les régénérer
+    // Sauf si on est en mode démo où on veut peut-être forcer certaines catégories
     const nav = document.querySelector('nav[role="navigation"]');
     if (!nav) return;
-    
-    // Générer les boutons HTML
+
+    // Si le nav contient déjà des boutons (hardcodés dans catalogue.html), 
+    // on ajoute juste les écouteurs d'événements via initialiserEvenements()
+    if (nav.children.length > 0) return;
+
+    // Fallback : Génération dynamique si le HTML est vide
+    const categories = ['tous', ...new Set(produits.map(p => p.category).filter(Boolean))];
+
+    const categoryIcons = {
+        'tous': '🌟',
+        'multimedia_hightech': '📱',
+        'telephones_tablettes': '📱',
+        'informatique_ordinateurs': '💻',
+        'Maison_Electromenager': '🏠',
+        'gros_electromenager': '❄️',
+        'Mode_Beaute_Sante': '👗',
+        'vetements_chaussures': '👟',
+        'Agroalimentaire': '🥕',
+        'Vehicules_Transport': '🚗',
+        'Immobilier': '🏢',
+        'Emploi_Services': '💼',
+        'Divers_Loisirs': '⚽',
+        'autres': '🔄'
+    };
+
     nav.innerHTML = categories.map((cat, index) => {
         const isActive = index === 0 ? 'active' : '';
         const icon = categoryIcons[cat] || '📦';
-        const label = cat === 'tous' ? 'Tous' : cat;
+        const label = cat === 'tous' ? 'Tous' : cat.replace(/_/g, ' ');
         const ariaLabel = cat === 'tous' ? 'Afficher tous les produits' : `Filtrer par catégorie ${cat}`;
         const ariaPressed = index === 0 ? 'true' : 'false';
-        
+
         return `
             <button class="category-btn ${isActive}" data-category="${cat}" aria-label="${ariaLabel}" aria-pressed="${ariaPressed}">
                 <span class="text-lg" aria-hidden="true">${icon}</span>
@@ -174,7 +176,7 @@ function genererBoutonsCategories() {
 async function enregistrerClickEvent(productId, storeId, eventType) {
     // Ne pas enregistrer d'analytics en mode démo
     if (isDemo) return;
-    
+
     try {
         // Récupérer la ville depuis l'IP (simplifié - en production utiliser un service)
         const customerCity = 'Unknown'; // À améliorer avec un service de géolocalisation
@@ -193,10 +195,10 @@ async function enregistrerClickEvent(productId, storeId, eventType) {
 }
 
 function getSessionId() {
-    let sessionId = sessionStorage.getItem('ma-jay_session_id');
+    let sessionId = sessionStorage.getItem('SAMASTORE_session_id');
     if (!sessionId) {
         sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        sessionStorage.setItem('ma-jay_session_id', sessionId);
+        sessionStorage.setItem('SAMASTORE_session_id', sessionId);
     }
     return sessionId;
 }
@@ -204,10 +206,32 @@ function getSessionId() {
 // ==================== AFFICHAGE PRODUITS ====================
 function afficherProduits(categorie) {
     const grid = document.getElementById('productsGrid');
-    
-    const produitsFiltres = categorie === 'tous' 
-        ? produits 
-        : produits.filter(p => p.category === categorie);
+
+    const produitsFiltres = categorie === 'tous'
+        ? produits
+        : produits.filter(p => {
+            // Correspondance exacte
+            if (p.category === categorie) return true;
+
+            // Logique de sous-catégories pour les filtres principaux
+            const mapCategories = {
+                'multimedia_hightech': ['telephones_tablettes', 'informatique_ordinateurs', 'electronique_tv_video', 'consoles_jeux_video'],
+                'Maison_Electromenager': ['gros_electromenager', 'petit_electromenager', 'ameublement_decoration', 'cuisine_entretien'],
+                'Vehicules_Transport': ['voitures_particulieres', 'motos_scooters', 'camions_engins_btp', 'pieces_detachees'],
+                'Immobilier': ['vente_maisons_terrains', 'location_appartements', 'bureaux_commerces', 'locations_saisonnieres'],
+                'Mode_Beaute_Sante': ['vetements_chaussures', 'bijoux_montres_sacs', 'cosmetiques_parfumerie', 'sante_bienetre'],
+                'Emploi_Services': ['offres_demandes_emploi', 'prestations_services', 'formations_cours'],
+                'Agroalimentaire': ['supermarche_epicerie', 'produits_frais_locaux', 'elevage_betail'],
+                'Divers_Loisirs': ['sport_fitness', 'jouets_puericulture', 'materiaux_construction', 'animaux']
+            };
+
+            const sousCategories = mapCategories[categorie];
+            if (sousCategories && sousCategories.includes(p.category)) {
+                return true;
+            }
+
+            return false;
+        });
 
     if (produitsFiltres.length === 0) {
         grid.innerHTML = `
@@ -226,8 +250,8 @@ function afficherProduits(categorie) {
         if (isDemo) {
             imageUrl = produit.image_url || 'https://via.placeholder.com/300';
         } else {
-            imageUrl = produit.images && produit.images.length > 0 
-                ? produit.images[0] 
+            imageUrl = produit.images && produit.images.length > 0
+                ? produit.images[0]
                 : 'https://via.placeholder.com/300';
         }
 
@@ -241,7 +265,7 @@ function afficherProduits(categorie) {
                  loading="lazy"
                  onerror="this.src='https://via.placeholder.com/300?text=Image'">
             <div class="product-info">
-                <span class="product-category">${produit.category || 'Non catégorisé'}</span>
+                <span class="product-category">${(produit.category || 'Non catégorisé').replace(/_/g, ' ')}</span>
                 <h3 class="product-name">${produit.name}</h3>
                 <p class="product-desc">${produit.description || ''}</p>
                 <div class="product-footer">
@@ -257,7 +281,7 @@ function afficherProduits(categorie) {
 
     // Ajouter les événements sur les boutons
     document.querySelectorAll('.add-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', function (e) {
             e.stopPropagation(); // Empêcher l'ouverture de la modal
             const id = parseInt(this.dataset.id);
             ajouterAuPanier(id, this);
@@ -266,10 +290,10 @@ function afficherProduits(categorie) {
 
     // Ajouter les événements pour ouvrir la modal de détails au clic sur la carte
     document.querySelectorAll('.product-card').forEach(card => {
-        card.addEventListener('click', function(e) {
+        card.addEventListener('click', function (e) {
             // Ne pas ouvrir si on clique sur le bouton "Ajouter"
             if (e.target.closest('.add-btn')) return;
-            
+
             const id = parseInt(this.dataset.id);
             ouvrirModalDetails(id);
         });
@@ -279,7 +303,7 @@ function afficherProduits(categorie) {
 // ==================== GESTION PANIER ====================
 function ajouterAuPanier(idProduit, bouton) {
     const produit = produits.find(p => p.id === idProduit);
-    
+
     if (!produit) return;
 
     const itemExistant = panier.find(item => item.id === idProduit);
@@ -314,7 +338,7 @@ function animerBoutonAjout(bouton) {
     bouton.disabled = true;
     bouton.innerHTML = '<span class="btn-text">✓ Ajouté !</span>';
     bouton.classList.add('btn-success');
-    
+
     setTimeout(() => {
         bouton.innerHTML = contenuOriginal;
         bouton.classList.remove('btn-success');
@@ -363,7 +387,7 @@ function afficherPanier() {
 
     // Ajouter événements suppression
     document.querySelectorAll('.remove-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             const id = parseInt(this.dataset.id);
             retirerDuPanier(id);
         });
@@ -382,12 +406,12 @@ async function ouvrirModalContact() {
     fermerPanier();
     document.getElementById('contactModal').classList.add('active');
     document.body.style.overflow = 'hidden';
-    
+
     // Initialiser la détection de géolocalisation pour le téléphone
     try {
         const location = await detectUserLocation();
         const phoneInput = document.getElementById('clientPhone');
-        
+
         // Afficher le préfixe
         let phonePrefix = document.getElementById('clientPhonePrefix');
         if (!phonePrefix) {
@@ -407,16 +431,16 @@ async function ouvrirModalContact() {
             phoneInput.parentElement.insertBefore(phonePrefix, phoneInput);
         }
         phonePrefix.textContent = location.prefix;
-        
+
         // Mettre à jour le hint
         document.getElementById('clientPhoneHint').innerHTML = `
             <span style="color: #25D366;">✓</span> Pays détecté: ${location.flag} ${location.countryName}
         `;
-        
+
         // Stocker la localisation pour l'utiliser lors de la soumission
         phoneInput.dataset.countryCode = location.country;
         phoneInput.dataset.prefix = location.prefix;
-        
+
     } catch (error) {
         console.error('Erreur détection localisation:', error);
     }
@@ -445,7 +469,7 @@ async function envoyerVersWhatsApp() {
             `Vous etes a la fin de la démonstration. Vous pouvez maintenant vous inscrire pour passer une vraie commande.\n\n` +
             `Voulez-vous vous inscrire maintenant ?`
         );
-        
+
         if (confirmation) {
             window.location.href = 'vendeur/inscription.html';
         }
@@ -458,7 +482,7 @@ async function envoyerVersWhatsApp() {
 
 async function finaliserCommande(event) {
     event.preventDefault();
-    
+
     const firstName = document.getElementById('clientFirstName').value.trim();
     const lastName = document.getElementById('clientLastName').value.trim();
     let phone = document.getElementById('clientPhone').value.trim();
@@ -483,7 +507,7 @@ async function finaliserCommande(event) {
     try {
         // Récupérer la localisation pour le CRM
         const location = await detectUserLocation();
-        
+
         // Enregistrer le client dans le CRM avec géolocalisation
         await enregistrerClientCRM({
             firstName,
@@ -497,7 +521,7 @@ async function finaliserCommande(event) {
 
         // Préparer le message WhatsApp
         await envoyerMessageWhatsApp(phone, firstName);
-        
+
     } catch (error) {
         console.error('Erreur lors de la finalisation:', error);
         afficherNotification('❌ Erreur lors de l\'enregistrement. Commande annulée.');
@@ -508,7 +532,7 @@ async function enregistrerClientCRM(clientData) {
     try {
         // Calculer le total de la commande
         const total = calculerTotal();
-        
+
         // Vérifier si le client existe déjà
         const { data: existingCustomer } = await supabase
             .from('customers')
@@ -567,13 +591,13 @@ async function envoyerMessageWhatsApp(clientPhone, clientName) {
     message += `━━━━━━━━━━━━━━━━━━━━\n\n`;
 
     const items = [];
-    
+
     panier.forEach((item, index) => {
         message += `${index + 1}. *${item.name}*\n`;
         message += `   📦 Quantité: ${item.quantite}\n`;
         message += `   💰 Prix unitaire: ${formaterPrix(item.price)} ${item.currency || 'XOF'}\n`;
         message += `   ✅ Sous-total: ${formaterPrix(parseInt(item.price) * item.quantite)} ${item.currency || 'XOF'}\n\n`;
-        
+
         items.push({
             product_id: item.id,
             name: item.name,
@@ -647,19 +671,19 @@ async function envoyerMessageWhatsApp(clientPhone, clientName) {
     panier = [];
     mettreAJourBadgePanier();
     afficherPanier();
-    
+
     afficherNotification('✅ Commande envoyée avec succès !');
 }
 
 // ==================== FILTRES ====================
 function initialiserFiltres() {
     const boutons = document.querySelectorAll('.category-btn');
-    
+
     boutons.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             boutons.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            
+
             categorieActive = this.dataset.category;
             afficherProduits(categorieActive);
         });
@@ -678,13 +702,13 @@ function ouvrirPanier() {
 
     // En mode normal, ouvrir la modal
     afficherPanier();
-    
+
     const whatsappBtn = document.getElementById('whatsappBtn');
     whatsappBtn.innerHTML = `
         <span>📲</span>
         <span>Commander sur WhatsApp</span>
     `;
-    
+
     document.getElementById('cartModal').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -704,8 +728,8 @@ function ouvrirModalDetails(idProduit) {
     if (isDemo) {
         images = produit.image_url ? [produit.image_url] : ['https://via.placeholder.com/300'];
     } else {
-        images = produit.images && produit.images.length > 0 
-            ? produit.images 
+        images = produit.images && produit.images.length > 0
+            ? produit.images
             : ['https://via.placeholder.com/300'];
     }
 
@@ -714,7 +738,7 @@ function ouvrirModalDetails(idProduit) {
     document.getElementById('productDetailName').textContent = produit.name;
     document.getElementById('productDetailCategory').textContent = produit.category || 'Non catégorisé';
     document.getElementById('productDetailDescription').textContent = produit.description || 'Aucune description disponible.';
-    
+
     const currency = produit.currency || 'FCFA';
     document.getElementById('productDetailPrice').textContent = `${formaterPrix(produit.price)} ${currency}`;
 
@@ -734,7 +758,7 @@ function ouvrirModalDetails(idProduit) {
 
     // Événement pour le bouton "Ajouter au panier"
     const addBtn = document.getElementById('productDetailAddBtn');
-    addBtn.onclick = function() {
+    addBtn.onclick = function () {
         ajouterAuPanier(idProduit, addBtn);
         fermerModalDetails();
     };
@@ -747,7 +771,7 @@ function ouvrirModalDetails(idProduit) {
 
 function changerImagePrincipale(imageUrl, thumbnail) {
     document.getElementById('productDetailMainImage').src = imageUrl;
-    
+
     // Mettre à jour la bordure des miniatures
     document.querySelectorAll('#productDetailThumbnails img').forEach(img => {
         img.classList.remove('border-accent');
@@ -774,22 +798,22 @@ function initialiserEvenements() {
     document.getElementById('closeBtn').addEventListener('click', fermerPanier);
     document.getElementById('modalOverlay').addEventListener('click', fermerPanier);
     document.getElementById('whatsappBtn').addEventListener('click', envoyerVersWhatsApp);
-    
+
     // Événements pour le modal de contact
     document.getElementById('contactCloseBtn').addEventListener('click', fermerModalContact);
     document.getElementById('contactOverlay').addEventListener('click', fermerModalContact);
     document.getElementById('contactForm').addEventListener('submit', finaliserCommande);
-    
+
     // Événements pour le modal de détails produit
     const productDetailModal = document.getElementById('productDetailModal');
     if (productDetailModal) {
         document.getElementById('productDetailCloseBtn').addEventListener('click', fermerModalDetails);
         document.getElementById('productDetailOverlay').addEventListener('click', fermerModalDetails);
     }
-    
+
     initialiserFiltres();
-    
-    document.addEventListener('keydown', function(e) {
+
+    document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
             fermerPanier();
             fermerModalContact();
@@ -819,9 +843,9 @@ function afficherNotification(message) {
         animation: slideIn 0.3s ease;
     `;
     notif.textContent = message;
-    
+
     document.body.appendChild(notif);
-    
+
     setTimeout(() => {
         notif.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => notif.remove(), 300);
@@ -880,3 +904,4 @@ document.head.appendChild(style);
 
 // ==================== INITIALISATION ====================
 document.addEventListener('DOMContentLoaded', chargerProduits);
+

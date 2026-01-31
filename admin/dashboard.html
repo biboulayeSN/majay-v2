@@ -5,109 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - MAJAY</title>
     <link rel="stylesheet" href="../css/output.css">
-    <style>
-        .admin-header {
-            background: linear-gradient(135deg, var(--color-bg-dark) 0%, #16213e 100%);
-            color: white;
-        }
-        .admin-nav a {
-            color: white;
-        }
-        .admin-nav a.active {
-            background: rgba(255,255,255,0.2);
-        }
-    </style>
 </head>
-<body class="dashboard-page">
-    <header class="dashboard-header admin-header">
-        <div class="dashboard-header-content">
-            <div class="dashboard-logo">🛡️ ADMIN MAJAY</div>
-            <nav class="dashboard-nav admin-nav" id="mainNav">
-                <a href="dashboard.html" class="nav-link active">📊 Dashboard</a>
-            </nav>
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <span id="adminName" style="color: white;"></span>
-                <button onclick="deconnexionAdmin()" class="btn btn-outline btn-sm" style="color: white; border-color: rgba(255,255,255,0.3);">🚪 Déconnexion</button>
+<body class="dashboard-page admin-dashboard">
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button class="admin-sidebar-toggle" onclick="toggleAdminSidebar()" aria-label="Toggle sidebar">
+        <span id="adminToggleIcon">☰</span>
+    </button>
+
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="admin-sidebar-overlay" id="adminSidebarOverlay" onclick="closeAdminSidebar()"></div>
+
+    <!-- Dashboard Wrapper -->
+    <div class="dashboard-wrapper admin-wrapper">
+        <!-- Sidebar injecté par initAdminNav() -->
+        
+        <!-- Main Content -->
+        <main class="dashboard-main admin-main">
+            <div class="admin-main-content">
+                <div class="page-header" style="margin-bottom: 30px;">
+                    <h1 class="page-title" style="font-size: 2.5em; font-weight: 900; color: #1a1a2e; margin-bottom: 10px;">
+                        Tableau de bord SuperAdmin
+                    </h1>
+                    <p class="page-subtitle" style="color: #718096; font-size: 1.1em;">Vue d'ensemble de la plateforme</p>
+                </div>
+
+                <div class="stats-grid" id="statsGrid" style="margin-bottom: 30px;">
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                        <div class="loader"></div>
+                        <p style="margin-top: 15px; color: #718096;">Chargement des statistiques...</p>
+                    </div>
+                </div>
+
+                <div class="admin-card-relief" style="margin-bottom: 30px;">
+                    <div class="card-header" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid rgba(0,0,0,0.05);">
+                        <h2 style="font-size: 1.5em; font-weight: 700; color: #1a1a2e; display: flex; align-items: center; gap: 10px;">
+                            📋 Comptes en attente d'approbation
+                        </h2>
+                    </div>
+                    <div id="demandesListe">
+                        <div class="loader"></div>
+                        <p style="text-align: center; margin-top: 15px; color: #718096;">Chargement...</p>
+                    </div>
+                </div>
+
+                <div class="admin-card-relief">
+                    <div class="card-header" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid rgba(0,0,0,0.05);">
+                        <h2 style="font-size: 1.5em; font-weight: 700; color: #1a1a2e; display: flex; align-items: center; gap: 10px;">
+                            📈 Dernières commandes
+                        </h2>
+                    </div>
+                    <div id="commandesRecentes">
+                        <div class="loader"></div>
+                        <p style="text-align: center; margin-top: 15px; color: #718096;">Chargement...</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </header>
-
-    <div class="dashboard-container">
-        <h1 style="font-size: 2em; margin-bottom: 30px;">Tableau de bord SuperAdmin</h1>
-
-        <div class="stats-grid" id="statsGrid">
-            <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
-                <div class="loader"></div>
-                <p style="margin-top: 15px; color: #718096;">Chargement des statistiques...</p>
-            </div>
-        </div>
-
-        <div style="background: white; border-radius: 16px; padding: 30px; margin-top: 30px;">
-            <h2 style="margin-bottom: 20px;">📋 Comptes en attente d'approbation</h2>
-            <div id="demandesListe">Chargement...</div>
-        </div>
-
-        <div style="background: white; border-radius: 16px; padding: 30px; margin-top: 30px;">
-            <h2 style="margin-bottom: 20px;">📈 Dernières commandes</h2>
-            <div id="commandesRecentes">Chargement...</div>
-        </div>
+        </main>
     </div>
 
     <script type="module">
         import { supabase } from "../js/config.js";
         import { adminAuth } from "../js/admin-auth.js";
-        import { adminRoles, ADMIN_ROLES } from "../js/admin-roles.js";
+        import { initAdminApp } from "../js/admin-app.js";
+        import { afficherEtatVide } from "../js/admin-utils.js";
 
+        // Initialiser l'app admin (charge le sidebar et le router)
+        initAdminApp();
+
+        // Vérifier l'authentification
         const admin = adminAuth.verifierAuthAdmin();
         if (!admin) {
             window.location.href = 'connexion.html';
         }
-
-        document.getElementById('adminName').textContent = admin.nom;
-
-        // Afficher les liens selon le rôle
-        const nav = document.getElementById('mainNav');
-        const role = admin.admin_role;
-
-        if (role === ADMIN_ROLES.SUPER_ADMIN) {
-            nav.innerHTML += `
-                <a href="admins.html" class="nav-link">👥 Admins</a>
-                <a href="vendeur.html" class="nav-link">👤 Vendeurs</a>
-                <a href="stores.html" class="nav-link">🏪 Boutiques</a>
-            `;
-        } else         if (role === ADMIN_ROLES.COMMERCIAL || role === ADMIN_ROLES.COMMERCIAL_GESTIONNAIRE) {
-            nav.innerHTML += `
-                <a href="commercial.html" class="nav-link">👥 Vendeurs</a>
-            `;
-        }
-        if (role === ADMIN_ROLES.GESTIONNAIRE || role === ADMIN_ROLES.COMMERCIAL_GESTIONNAIRE) {
-            nav.innerHTML += `
-                <a href="gestionnaire.html" class="nav-link">🏪 Boutiques</a>
-            `;
-        }
-        if (role === ADMIN_ROLES.COMMERCIAL_GESTIONNAIRE) {
-            nav.innerHTML += `
-                <a href="commercial-gestionnaire.html" class="nav-link">📊 Vue d'ensemble</a>
-            `;
-        }
-        if (role === ADMIN_ROLES.ANALYTICS) {
-            nav.innerHTML += `
-                <a href="analytics.html" class="nav-link">📊 Analytics</a>
-            `;
-        } else if (role === ADMIN_ROLES.FINANCIAL) {
-            nav.innerHTML += `
-                <a href="financial.html" class="nav-link">💰 Financial</a>
-            `;
-        }
-
-        window.deconnexionAdmin = () => adminAuth.deconnexionAdmin();
 
         async function chargerStats() {
             try {
                 const stats = await adminAuth.getStatsAdmin();
 
                 document.getElementById('statsGrid').innerHTML = `
-                    <div class="stat-card">
+                    <div class="stat-card admin-stat-relief">
                         <div class="stat-icon">👥</div>
                         <div class="stat-label">Total Vendeurs</div>
                         <div class="stat-value">${stats.total_vendeurs}</div>
@@ -115,7 +91,7 @@
                             Actifs: ${stats.vendeurs_actifs} | Inactifs: ${stats.vendeurs_inactifs}
                         </p>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card admin-stat-relief">
                         <div class="stat-icon">📦</div>
                         <div class="stat-label">Produits</div>
                         <div class="stat-value">${stats.total_produits}</div>
@@ -123,12 +99,12 @@
                             Free: ${stats.vendeurs_free} | Pro: ${stats.vendeurs_pro} | Ent: ${stats.vendeurs_entreprise}
                         </p>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card admin-stat-relief">
                         <div class="stat-icon">🛒</div>
                         <div class="stat-label">Commandes</div>
                         <div class="stat-value">${stats.total_commandes}</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card admin-stat-relief">
                         <div class="stat-icon">💰</div>
                         <div class="stat-label">Volume Total</div>
                         <div class="stat-value">${parseFloat(stats.volume_ventes_total).toLocaleString()} FCFA</div>
@@ -165,33 +141,31 @@
                 if (error) throw error;
 
                 if (!data || data.length === 0) {
-                    document.getElementById('demandesListe').innerHTML = `
-                        <p style="text-align: center; color: #718096; padding: 40px;">
-                            ✅ Aucune demande en attente
-                        </p>
-                    `;
+                    document.getElementById('demandesListe').innerHTML = afficherEtatVide("Aucune demande d'approbation en attente", "✅");
                     return;
                 }
 
                 document.getElementById('demandesListe').innerHTML = data.map(store => {
                     const owner = Array.isArray(store.owner) ? store.owner[0] : store.owner;
                     return `
-                    <div style="padding: 20px; border: 2px solid #ffa502; border-radius: 12px; margin-bottom: 15px; background: #fffbf5;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-                            <div style="flex: 1; min-width: 200px;">
-                                <h3 style="margin-bottom: 5px; color: #1a1a2e;">${store.name}</h3>
-                                <p style="color: #718096; margin-bottom: 5px;">👤 ${owner?.full_name || 'N/A'}</p>
-                                <p style="color: #718096; margin-bottom: 5px;">📞 ${owner?.phone || 'N/A'}</p>
-                                <p style="color: #718096; margin-bottom: 5px;">🔗 majay.com/${store.slug}</p>
-                                <p style="color: #718096; font-size: 0.9em;">
-                                    Inscrit le ${new Date(store.created_at).toLocaleDateString('fr-FR')}
-                                </p>
+                    <div class="admin-card-relief" style="border: 2px solid #ffa502; background: linear-gradient(135deg, #fffbf5 0%, #ffffff 100%); margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                            <div style="flex: 1; min-width: 250px;">
+                                <h3 style="margin-bottom: 12px; color: #1a1a2e; font-size: 1.3em; font-weight: 700;">${store.name}</h3>
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <p style="color: #718096; font-size: 15px;">👤 ${owner?.full_name || 'N/A'}</p>
+                                    <p style="color: #718096; font-size: 15px;">📞 ${owner?.phone || 'N/A'}</p>
+                                    <p style="color: #718096; font-size: 15px;">🔗 majay.com/${store.slug}</p>
+                                    <p style="color: #718096; font-size: 14px; margin-top: 8px;">
+                                        Inscrit le ${new Date(store.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}
+                                    </p>
+                                </div>
                             </div>
-                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                <button onclick="approuverStore('${store.id}')" class="btn-primary" style="padding: 12px 24px;">
+                            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                                <button onclick="approuverStore('${store.id}')" class="btn btn-primary" style="padding: 12px 24px; font-weight: 600;">
                                     ✅ Approuver
                                 </button>
-                                <button onclick="rejeterStore('${store.id}')" class="btn-danger" style="padding: 12px 24px; background: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                <button onclick="rejeterStore('${store.id}')" class="btn btn-danger" style="padding: 12px 24px; font-weight: 600;">
                                     ❌ Rejeter
                                 </button>
                             </div>
@@ -247,39 +221,37 @@
                 if (error) throw error;
 
                 if (!data || data.length === 0) {
-                    document.getElementById('commandesRecentes').innerHTML = `
-                        <p style="text-align: center; color: #718096; padding: 40px;">
-                            Aucune commande récente
-                        </p>
-                    `;
+                    document.getElementById('commandesRecentes').innerHTML = afficherEtatVide("Aucune commande récente", "🛒");
                     return;
                 }
 
                 document.getElementById('commandesRecentes').innerHTML = `
-                    <table style="width: 100%;">
-                        <thead>
-                            <tr style="background: #f7fafc;">
-                                <th style="padding: 15px; text-align: left;">Date</th>
-                                <th style="padding: 15px; text-align: left;">Boutique</th>
-                                <th style="padding: 15px; text-align: left;">Articles</th>
-                                <th style="padding: 15px; text-align: left;">Montant</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${data.map(c => {
-                                const store = Array.isArray(c.stores) ? c.stores[0] : c.stores;
-                                const itemsCount = Array.isArray(c.items) ? c.items.length : 0;
-                                return `
-                                <tr style="border-top: 1px solid #e2e8f0;">
-                                    <td style="padding: 15px;">${new Date(c.created_at).toLocaleDateString('fr-FR')}</td>
-                                    <td style="padding: 15px;">${store?.name || 'N/A'}</td>
-                                    <td style="padding: 15px;">${itemsCount} article(s)</td>
-                                    <td style="padding: 15px; font-weight: 700; color: #25D366;">${parseInt(c.total || 0).toLocaleString()} ${c.currency || 'XOF'}</td>
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table-relief" style="width: 100%; border-collapse: separate; border-spacing: 0;">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Boutique</th>
+                                    <th>Articles</th>
+                                    <th>Montant</th>
                                 </tr>
-                            `;
-                            }).join('')}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                ${data.map(c => {
+                                    const store = Array.isArray(c.stores) ? c.stores[0] : c.stores;
+                                    const itemsCount = Array.isArray(c.items) ? c.items.length : 0;
+                                    return `
+                                    <tr>
+                                        <td>${new Date(c.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}</td>
+                                        <td>${store?.name || 'N/A'}</td>
+                                        <td>${itemsCount} article(s)</td>
+                                        <td style="font-weight: 700; color: #25D366; font-size: 16px;">${parseInt(c.total || 0).toLocaleString()} ${c.currency || 'XOF'}</td>
+                                    </tr>
+                                `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
                 `;
             } catch (error) {
                 console.error(error);

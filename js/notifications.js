@@ -1,5 +1,5 @@
-/**
- * Système de notifications amélioré pour MAJAY
+﻿/**
+ * Système de notifications amélioré pour SAMASTORE
  */
 
 export function showNotification(message, type = 'success', duration = 3000) {
@@ -116,4 +116,5 @@ if (!document.getElementById('notification-styles')) {
     `;
     document.head.appendChild(style);
 }
+
 

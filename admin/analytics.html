@@ -5,51 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Analytics - MAJAY</title>
     <link rel="stylesheet" href="../css/output.css">
-    <style>
-        .admin-header {
-            background: linear-gradient(135deg, #6b2c91 0%, #9d4edd 100%);
-            color: white;
-        }
-        .admin-nav a { color: white; }
-        .admin-nav a.active { background: rgba(255,255,255,0.2); }
-    </style>
 </head>
-<body class="dashboard-page">
-    <header class="dashboard-header admin-header">
-        <div class="dashboard-header-content">
-            <div class="dashboard-logo">📊 ADMIN ANALYTICS</div>
-            <nav class="dashboard-nav admin-nav">
-                <a href="analytics.html" class="nav-link active">📈 Statistiques</a>
-                <a href="analytics-reports.html" class="nav-link">📄 Rapports</a>
-            </nav>
-            <button onclick="deconnexionAdmin()" class="btn btn-outline btn-sm" style="color: white; border-color: rgba(255,255,255,0.3);">🚪 Déconnexion</button>
-        </div>
-    </header>
+<body class="dashboard-page admin-dashboard">
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button class="admin-sidebar-toggle" onclick="toggleAdminSidebar()" aria-label="Toggle sidebar">
+        <span id="adminToggleIcon">☰</span>
+    </button>
 
-    <div class="dashboard-container">
-        <div class="page-header">
-            <div>
-                <h1 class="page-title">Statistiques de la Plateforme</h1>
-                <p class="page-subtitle">Analyses et données de la base de données</p>
-            </div>
-            <button onclick="exporterDonnees()" class="btn btn-primary btn-lg">📥 Exporter les données</button>
-        </div>
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="admin-sidebar-overlay" id="adminSidebarOverlay" onclick="closeAdminSidebar()"></div>
 
-        <div class="stats-grid" id="analyticsGrid">
-            <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
-                <div class="loader"></div>
-                <p style="margin-top: 15px; color: #718096;">Chargement des statistiques...</p>
-            </div>
-        </div>
+    <!-- Dashboard Wrapper -->
+    <div class="dashboard-wrapper admin-wrapper">
+        <!-- Sidebar injecté par initAdminNav() -->
+        
+        <!-- Main Content -->
+        <main class="dashboard-main admin-main">
+            <div class="admin-main-content">
+                <div class="page-header" style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+                    <div>
+                        <h1 class="page-title" style="font-size: 2.5em; font-weight: 900; color: #1a1a2e; margin-bottom: 10px;">
+                            Statistiques de la Plateforme
+                        </h1>
+                        <p class="page-subtitle" style="color: #718096; font-size: 1.1em;">Analyses et données de la base de données</p>
+                    </div>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <button onclick="exporterRapportGlobal()" class="btn btn-primary btn-lg" id="exportGlobalBtn">
+                            📊 Exporter le rapport global
+                        </button>
+                        <button onclick="exporterDonnees()" class="btn btn-outline btn-lg">📥 Exporter les données</button>
+                    </div>
+                </div>
 
-        <div class="card" style="margin-top: var(--spacing-xl);">
-            <div class="card-header">
-                <h2>📊 Analyses détaillées</h2>
+                <div class="stats-grid" id="analyticsGrid" style="margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                        <div class="loader"></div>
+                        <p style="margin-top: 15px; color: #718096;">Chargement des statistiques...</p>
+                    </div>
+                </div>
+
+                <div class="admin-card-relief">
+                    <div class="card-header" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid rgba(0,0,0,0.05);">
+                        <h2 style="font-size: 1.5em; font-weight: 700; color: #1a1a2e; display: flex; align-items: center; gap: 10px;">
+                            📊 Analyses détaillées
+                        </h2>
+                    </div>
+                    <div class="card-body" id="analyticsDetails">
+                        <div class="loader"></div>
+                        <p style="text-align: center; margin-top: 15px; color: #718096;">Chargement...</p>
+                    </div>
+                </div>
             </div>
-            <div class="card-body" id="analyticsDetails">
-                <div class="loader"></div>
-            </div>
-        </div>
+        </main>
     </div>
 
     <script type="module">
@@ -57,14 +64,18 @@
         import { adminAuth } from "../js/admin-auth.js";
         import { adminRoles, requirePermission } from "../js/admin-roles.js";
         import { showSuccess, showError, showInfo } from "../js/notifications.js";
+        import { exporterRapportGlobal } from "../js/admin-analytics.js";
+        import { initAdminApp } from "../js/admin-app.js";
+        import { afficherEtatVide } from "../js/admin-utils.js";
+
+        // Initialiser l'app admin (charge le sidebar et le router)
+        initAdminApp();
 
         const session = adminRoles.getAdminSession();
         if (!session) window.location.href = 'connexion.html';
 
         const hasAccess = await requirePermission('view_analytics');
         if (!hasAccess) return;
-
-        window.deconnexionAdmin = () => adminAuth.deconnexionAdmin();
 
         async function chargerAnalytics() {
             try {
@@ -77,22 +88,22 @@
                 ]);
 
                 document.getElementById('analyticsGrid').innerHTML = `
-                    <div class="stat-card">
+                    <div class="stat-card admin-stat-relief">
                         <div class="stat-icon">🏪</div>
                         <div class="stat-label">Boutiques</div>
                         <div class="stat-value">${storesCount.count || 0}</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card admin-stat-relief">
                         <div class="stat-icon">📦</div>
                         <div class="stat-label">Produits</div>
                         <div class="stat-value">${productsCount.count || 0}</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card admin-stat-relief">
                         <div class="stat-icon">🛒</div>
                         <div class="stat-label">Commandes</div>
                         <div class="stat-value">${ordersCount.count || 0}</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card admin-stat-relief">
                         <div class="stat-icon">👥</div>
                         <div class="stat-label">Utilisateurs</div>
                         <div class="stat-value">${usersCount.count || 0}</div>
@@ -111,17 +122,21 @@
                     statsByStatus[order.status] = (statsByStatus[order.status] || 0) + 1;
                 });
 
-                document.getElementById('analyticsDetails').innerHTML = `
-                    <h3>Répartition des commandes par statut</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md); margin-top: var(--spacing-md);">
-                        ${Object.entries(statsByStatus).map(([status, count]) => `
-                            <div class="card">
-                                <div style="font-size: 2em; margin-bottom: var(--spacing-sm);">${count}</div>
-                                <div style="color: var(--color-text-light);">${status}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
+                if (!orders || orders.length === 0) {
+                    document.getElementById('analyticsDetails').innerHTML = afficherEtatVide("Aucune commande enregistrée", "📊");
+                } else {
+                    document.getElementById('analyticsDetails').innerHTML = `
+                        <h3 style="font-size: 1.2em; font-weight: 700; color: #2d3748; margin-bottom: 20px;">Répartition des commandes par statut</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                            ${Object.entries(statsByStatus).map(([status, count]) => `
+                                <div class="admin-card-relief" style="text-align: center; padding: 25px;">
+                                    <div style="font-size: 2.5em; font-weight: 900; color: #1a1a2e; margin-bottom: 10px;">${count}</div>
+                                    <div style="color: #718096; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">${status}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
             } catch (error) {
                 showError('Erreur: ' + error.message);
             }
@@ -131,6 +146,33 @@
             if (!await requirePermission('export_data')) return;
             const { showInfo } = await import("../js/notifications.js");
             showInfo('Fonctionnalité d\'export en développement');
+        };
+
+        window.exporterRapportGlobal = async function() {
+            if (!await requirePermission('export_data')) {
+                showError('Vous n\'avez pas la permission d\'exporter des données');
+                return;
+            }
+
+            const btn = document.getElementById('exportGlobalBtn');
+            const originalText = btn.innerHTML;
+            
+            try {
+                btn.disabled = true;
+                btn.innerHTML = '⏳ Génération du rapport...';
+                
+                showInfo('Génération du rapport en cours... Cela peut prendre quelques instants.');
+                
+                await exporterRapportGlobal('rapport-global-majay');
+                
+                showSuccess('Rapport exporté avec succès !');
+            } catch (error) {
+                console.error('Erreur export rapport:', error);
+                showError('Erreur lors de l\'export du rapport: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
         };
 
         chargerAnalytics();

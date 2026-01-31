@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comptabilité - MAJAY</title>
+    <title>Comptabilité - SAMASTORE</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
 </head>
 <body class="dashboard-page">
@@ -11,7 +12,7 @@
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <div class="dashboard-wrapper">
         <aside class="dashboard-sidebar" id="dashboardSidebar">
-            <div class="sidebar-header"><div class="sidebar-logo">🛍️ MA-JAY</div></div>
+            <div class="sidebar-header"><div class="sidebar-logo">🛍️ SAMASTORE</div></div>
             <nav class="sidebar-nav" id="mainNav">
                 <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
                 <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
@@ -47,8 +48,8 @@
         </main>
     </div>
     <script type="module">
-        import { authMaJay } from "../js/auth.js";
-        const session = authMaJay.getSession();
+        import { authSAMASTORE } from "../js/auth.js";
+        const session = authSAMASTORE.getSession();
         if (!session) window.location.href = 'connexion.html';
         if ((session.subscription_plan || 'free') !== 'entreprise') window.location.href = 'dashboard.html';
         document.getElementById('userPlan').textContent = (session.subscription_plan || 'free').toUpperCase();
@@ -57,3 +58,5 @@
     </script>
 </body>
 </html>
+
+

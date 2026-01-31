@@ -7,14 +7,7 @@
     <link rel="stylesheet" href="../css/output.css">
     <style>
         body {
-            background: #f7fafc;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-        .admin-header {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .admin-header-content {
             max-width: 1400px;
@@ -74,6 +67,14 @@
         .badge-pro {
             background: #fff3e0;
             color: #e65100;
+        }
+        .badge-online {
+            background: #d4edda;
+            color: #155724;
+        }
+        .badge-offline {
+            background: #f8d7da;
+            color: #721c24;
         }
         .btn {
             padding: 8px 16px;
@@ -157,12 +158,6 @@
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-        .stats-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
         .stat-card {
             background: white;
             padding: 20px;
@@ -182,82 +177,100 @@
         }
     </style>
 </head>
-<body>
-    <header class="admin-header">
-        <div class="admin-header-content">
-            <div class="dashboard-logo">🛡️ ADMIN MAJAY</div>
-            <nav class="admin-nav">
-                <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
-                <a href="vendeurs.html" class="nav-link active">👥 Vendeurs</a>
-            </nav>
-            <button onclick="deconnexionAdmin()" class="btn-logout">🚪 Déconnexion</button>
-        </div>
-    </header>
+<body class="dashboard-page admin-dashboard">
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button class="admin-sidebar-toggle" onclick="toggleAdminSidebar()" aria-label="Toggle sidebar">
+        <span id="adminToggleIcon">☰</span>
+    </button>
 
-    <div class="dashboard-container">
-        <!-- Statistiques rapides -->
-        <div class="stats-row" id="statsRow">
-            <div class="stat-card">
-                <div class="stat-number" id="totalVendeurs">-</div>
-                <div class="stat-label">Total Vendeurs</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="vendeursActifs">-</div>
-                <div class="stat-label">Actifs</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="vendeursPro">-</div>
-                <div class="stat-label">Plan Pro</div>
-            </div>
-        </div>
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="admin-sidebar-overlay" id="adminSidebarOverlay" onclick="closeAdminSidebar()"></div>
 
-        <!-- Barre de recherche -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
-            <h1 style="font-size: 2em; margin: 0;">Gestion des Vendeurs</h1>
-            <input type="text" id="searchInput" class="search-box" placeholder="🔍 Rechercher par nom, slug ou téléphone...">
-        </div>
+    <!-- Dashboard Wrapper -->
+    <div class="dashboard-wrapper admin-wrapper">
+        <!-- Sidebar injecté par initAdminNav() -->
+        
+        <!-- Main Content -->
+        <main class="dashboard-main admin-main">
+            <div class="admin-main-content">
+                <!-- Page Header -->
+                <div class="page-header" style="margin-bottom: 30px;">
+                    <h1 class="page-title" style="font-size: 2.5em; font-weight: 900; color: #1a1a2e; margin-bottom: 10px;">
+                        Gestion des Vendeurs
+                    </h1>
+                    <p class="page-subtitle" style="color: #718096; font-size: 1.1em;">Surveillance et gestion des boutiques</p>
+                </div>
 
-        <!-- Tableau des vendeurs -->
-        <div style="background: white; border-radius: 16px; overflow-x: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-            <table style="width: 100%; min-width: 900px;">
-                <thead>
-                    <tr style="background: #f7fafc;">
-                        <th style="padding: 15px; text-align: left;">Vendeur</th>
-                        <th style="padding: 15px; text-align: left;">Contact</th>
-                        <th style="padding: 15px; text-align: left;">Plan</th>
-                        <th style="padding: 15px; text-align: center;">Produits</th>
-                        <th style="padding: 15px; text-align: center;">Statut</th>
-                        <th style="padding: 15px; text-align: center;">Actions</th>
-                    </tr>
-                </thead>
+                <!-- Statistiques rapides -->
+                <div class="stats-grid" id="statsRow" style="margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div class="admin-stat-relief">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-label">Total Vendeurs</div>
+                        <div class="stat-value" id="totalVendeurs">-</div>
+                    </div>
+                    <div class="admin-stat-relief">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-label">Actifs</div>
+                        <div class="stat-value" id="vendeursActifs">-</div>
+                    </div>
+                    <div class="admin-stat-relief">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-label">Plan Pro</div>
+                        <div class="stat-value" id="vendeursPro">-</div>
+                    </div>
+                </div>
+
+                <!-- Barre de recherche -->
+                <div class="admin-card-relief" style="margin-bottom: 30px;">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Rechercher par nom, catégorie, localité, téléphone..." style="font-size: 16px; padding: 16px 20px;">
+                </div>
+
+                <!-- Tableau des vendeurs -->
+                <div class="admin-card-relief" style="padding: 0; overflow: hidden;">
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table-relief" style="width: 100%; min-width: 1200px; border-collapse: separate; border-spacing: 0;">
+                            <thead>
+                                <tr>
+                                    <th>Identité</th>
+                                    <th>Localisation</th>
+                                    <th>Contact</th>
+                                    <th>Plan</th>
+                                    <th style="text-align: center;">Produits</th>
+                                    <th style="text-align: center;">Disponibilité</th>
+                                    <th style="text-align: center;">Dernière connexion</th>
+                                    <th style="text-align: center;">Statut</th>
+                                    <th style="text-align: center;">Actions</th>
+                                </tr>
+                            </thead>
                 <tbody id="vendeursTable">
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 60px; color: #718096;">
+                        <td colspan="9" style="text-align: center; padding: 60px; color: #718096;">
                             <div style="font-size: 3em;">⏳</div>
                             <div style="margin-top: 10px;">Chargement des données...</div>
                         </td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script type="module">
         import { supabase } from "../js/config.js";
         import { adminAuth } from "../js/admin-auth.js";
+        import { initAdminApp } from "../js/admin-app.js";
+        import { afficherEtatVide } from "../js/admin-utils.js";
+
+        // Initialiser l'app admin (charge le sidebar et le router)
+        initAdminApp();
 
         // Vérifier l'authentification
         const admin = adminAuth.verifierAuthAdmin();
         if (!admin) {
             window.location.href = 'connexion.html';
         }
-
-        // Fonction de déconnexion globale
-        window.deconnexionAdmin = () => {
-            if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
-                adminAuth.deconnexionAdmin();
-            }
-        };
 
         let stores = [];
         let stats = { total: 0, actifs: 0, pro: 0 };
@@ -283,10 +296,10 @@
                 console.error('Erreur chargement:', error);
                 document.getElementById('vendeursTable').innerHTML = `
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 60px;">
-                            <div style="color: #ff4757; font-size: 3em;">❌</div>
-                            <div style="color: #ff4757; margin-top: 10px; font-weight: 600;">Erreur lors du chargement</div>
-                            <div style="color: #718096; margin-top: 5px;">${error.message}</div>
+                        <td colspan="9" style="text-align: center; padding: 40px;">
+                            <div style="color: #ff4757; font-size: 3em; margin-bottom: 15px;">❌</div>
+                            <div style="color: #ff4757; font-weight: 700; font-size: 18px; margin-bottom: 8px;">Erreur lors du chargement</div>
+                            <div style="color: #718096; font-size: 14px;">${error.message}</div>
                         </td>
                     </tr>
                 `;
@@ -304,14 +317,52 @@
             document.getElementById('vendeursPro').textContent = stats.pro;
         }
 
+        // Calculer le statut en ligne/hors ligne basé sur last_login
+        function calculerStatutEnLigne(lastLogin) {
+            if (!lastLogin) return { isOnline: false, label: 'Hors ligne', badgeClass: 'badge-offline' };
+            
+            const maintenant = new Date();
+            const derniereConnexion = new Date(lastLogin);
+            const diffMinutes = (maintenant - derniereConnexion) / (1000 * 60);
+            
+            // En ligne si dernière connexion < 5 minutes
+            const isOnline = diffMinutes < 5;
+            
+            return {
+                isOnline,
+                label: isOnline ? 'En ligne' : 'Hors ligne',
+                badgeClass: isOnline ? 'badge-online' : 'badge-offline'
+            };
+        }
+
+        // Formater la date de dernière connexion
+        function formaterDerniereConnexion(lastLogin) {
+            if (!lastLogin) return 'Jamais';
+            
+            const date = new Date(lastLogin);
+            const maintenant = new Date();
+            const diffMinutes = Math.floor((maintenant - date) / (1000 * 60));
+            
+            if (diffMinutes < 1) return 'À l\'instant';
+            if (diffMinutes < 60) return `Il y a ${diffMinutes} min`;
+            if (diffMinutes < 1440) return `Il y a ${Math.floor(diffMinutes / 60)} h`;
+            
+            return date.toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
         // Afficher les boutiques dans le tableau
         function afficherVendeurs(liste) {
             if (liste.length === 0) {
                 document.getElementById('vendeursTable').innerHTML = `
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 60px; color: #718096;">
-                            <div style="font-size: 3em;">🔍</div>
-                            <div style="margin-top: 10px;">Aucune boutique trouvée</div>
+                        <td colspan="9" style="text-align: center; padding: 40px;">
+                            ${afficherEtatVide("Aucune boutique trouvée", "🔍")}
                         </td>
                     </tr>
                 `;
@@ -320,35 +371,54 @@
 
             document.getElementById('vendeursTable').innerHTML = liste.map(store => {
                 const owner = Array.isArray(store.owner) ? store.owner[0] : store.owner;
+                const statutEnLigne = calculerStatutEnLigne(owner?.last_login);
+                const derniereConnexion = formaterDerniereConnexion(owner?.last_login);
+                const localisation = [store.city, store.region].filter(Boolean).join(', ') || 'Non renseigné';
+                
                 return `
-                <tr style="border-top: 1px solid #e2e8f0;">
-                    <td style="padding: 15px;">
-                        <div style="font-weight: 600; color: #2d3748;">${store.name}</div>
-                        <div style="color: #718096; font-size: 0.9em; margin-top: 3px;">@${store.slug}</div>
+                <tr>
+                    <td>
+                        <div style="font-weight: 700; color: #2d3748; font-size: 15px; margin-bottom: 4px;">${owner?.full_name || store.name}</div>
+                        <div style="color: #718096; font-size: 13px;">
+                            ${store.activity_category || 'Non catégorisé'}
+                        </div>
                     </td>
-                    <td style="padding: 15px;">
-                        <div style="color: #2d3748;">${owner?.phone || 'N/A'}</div>
-                        ${owner?.full_name ? `<div style="color: #718096; font-size: 0.9em; margin-top: 3px;">${owner.full_name}</div>` : ''}
+                    <td>
+                        <div style="color: #2d3748; font-size: 14px; font-weight: 500;">📍 ${localisation}</div>
                     </td>
-                    <td style="padding: 15px;">
+                    <td>
+                        <div style="color: #2d3748; font-size: 14px; font-weight: 500;">${owner?.phone || 'N/A'}</div>
+                        <div style="color: #718096; font-size: 12px; margin-top: 4px;">@${store.slug}</div>
+                    </td>
+                    <td>
                         <select onchange="changerPlan('${store.id}', this.value, this)" 
-                                style="padding: 8px 12px; border-radius: 8px; border: 2px solid #e2e8f0; background: white;">
+                                class="form-control" 
+                                style="padding: 10px 14px; border-radius: 10px; border: 2px solid #e2e8f0; background: white; font-size: 14px; font-weight: 500; cursor: pointer;">
                             <option value="free" ${store.subscription_plan === 'free' ? 'selected' : ''}>🎁 Free</option>
                             <option value="pro" ${store.subscription_plan === 'pro' ? 'selected' : ''}>⭐ Pro</option>
                             <option value="entreprise" ${store.subscription_plan === 'entreprise' ? 'selected' : ''}>🏢 Entreprise</option>
                         </select>
                     </td>
-                    <td style="padding: 15px; text-align: center;">
-                        <span style="font-weight: 600; color: #667eea;">${store.nombreProduits || 0}</span>
+                    <td style="text-align: center;">
+                        <span style="font-weight: 700; color: #667eea; font-size: 16px;">${store.nombreProduits || 0}</span>
                     </td>
-                    <td style="padding: 15px; text-align: center;">
-                        <span class="badge ${store.is_active ? 'badge-active' : 'badge-inactive'}">
+                    <td style="text-align: center;">
+                        <span class="badge ${statutEnLigne.badgeClass}" style="padding: 8px 14px; font-size: 13px; font-weight: 600;">
+                            ${statutEnLigne.isOnline ? '🟢' : '🔴'} ${statutEnLigne.label}
+                        </span>
+                    </td>
+                    <td style="text-align: center; font-size: 13px; color: #718096;">
+                        ${derniereConnexion}
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="badge ${store.is_active ? 'badge-active' : 'badge-inactive'}" style="padding: 8px 14px; font-size: 13px; font-weight: 600;">
                             ${store.is_active ? '✓ Actif' : '✗ Inactif'}
                         </span>
                     </td>
-                    <td style="padding: 15px; text-align: center;">
+                    <td style="text-align: center;">
                         <button class="btn ${store.is_active ? 'btn-danger' : 'btn-success'}" 
-                                onclick="${store.is_active ? 'desactiverVendeur' : 'activerVendeur'}('${store.id}', this)">
+                                onclick="${store.is_active ? 'desactiverVendeur' : 'activerVendeur'}('${store.id}', this)"
+                                style="padding: 10px 16px; font-size: 13px;">
                             ${store.is_active ? '🚫 Désactiver' : '✓ Activer'}
                         </button>
                     </td>
@@ -425,8 +495,11 @@
             
             const filtres = stores.filter(store => {
                 const owner = Array.isArray(store.owner) ? store.owner[0] : store.owner;
+                const localisation = [store.city, store.region].filter(Boolean).join(' ').toLowerCase();
                 return store.name.toLowerCase().includes(terme) || 
                        store.slug.toLowerCase().includes(terme) ||
+                       (store.activity_category && store.activity_category.toLowerCase().includes(terme)) ||
+                       localisation.includes(terme) ||
                        (owner?.phone && owner.phone.includes(terme)) ||
                        (owner?.full_name && owner.full_name.toLowerCase().includes(terme));
             });

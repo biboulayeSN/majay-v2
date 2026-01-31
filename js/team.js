@@ -1,12 +1,12 @@
-import { supabase } from "./config.js";
-import { authMajay } from "./auth.js";
+﻿import { supabase } from "./config.js";
+import { authSAMASTORE } from "./auth.js";
 
 /**
  * Obtenir tous les membres de l'équipe
  */
 export async function getTeamMembers() {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -38,7 +38,7 @@ export async function getTeamMembers() {
  */
 export async function addTeamMember(memberData) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -75,7 +75,7 @@ export async function addTeamMember(memberData) {
  */
 export async function updateHabilitations(memberId, habilitations) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -104,7 +104,7 @@ export async function updateHabilitations(memberId, habilitations) {
  */
 export async function toggleMember(memberId, isActive) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -133,7 +133,7 @@ export async function toggleMember(memberId, isActive) {
  */
 export async function removeTeamMember(memberId) {
     try {
-        const session = authMajay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session || !session.store_id) {
             throw new Error('Non authentifié');
         }
@@ -161,4 +161,5 @@ export const teamUtils = {
     toggleMember,
     removeTeamMember
 };
+
 

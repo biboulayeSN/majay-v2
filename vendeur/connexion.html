@@ -1,15 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - MA-JAY</title>
+    <title>Connexion - SAMASTORE</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
 </head>
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-header">
-            <h1 class="logo">🛍️ <span class="text-primary">MA-JAY</span></h1>
+            <h1 class="logo">🛍️ <span class="text-primary">SAMASTORE</span></h1>
             <p class="tagline">Gérez votre boutique en ligne</p>
         </div>
 
@@ -59,7 +60,7 @@
     </div>
 
     <script type="module">
-import { authMaJay } from "../js/auth.js";
+import { authSAMASTORE } from "../js/auth.js";
 import { detectUserLocation } from "../js/geolocation.js";
 
 // Variable pour stocker la localisation
@@ -115,7 +116,7 @@ document.getElementById("connexionForm").addEventListener("submit", async (e) =>
     phoneNumber = prefix + phoneNumber.replace(/^0+/, '');
   }
 
-  const result = await authMaJay.connexionVendeur(phoneNumber);
+  const result = await authSAMASTORE.connexionVendeur(phoneNumber);
 
   btn.disabled = false;
   btn.querySelector('.btn-text').style.display = 'inline';
@@ -156,7 +157,7 @@ document.getElementById("otpForm").addEventListener("submit", async (e) => {
 
   const code = document.getElementById("otpCode").value.trim();
 
-  const result = await authMaJay.verifierConnexion(code);
+  const result = await authSAMASTORE.verifierConnexion(code);
 
   btn.disabled = false;
   btn.querySelector('.btn-text').style.display = 'inline';
@@ -185,6 +186,8 @@ window.retourTelephone = function() {
 
 </body>
 </html>
+
+
 
 
 

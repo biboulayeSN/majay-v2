@@ -1,15 +1,15 @@
-/**
+﻿/**
  * Application principale pour les pages vendeur
  * Initialise le sidebar et le router SPA
  */
 
 import { initSidebar, initSidebarNavigation } from './components/sidebar.js';
-import { authMaJay } from './auth.js';
+import { authSAMASTORE } from './auth.js';
 import { ThemeManager } from './theme-manager.js';
 import './vendor-router.js';
 
-// Exposer authMaJay globalement pour le sidebar
-window.authMaJay = authMaJay;
+// Exposer authSAMASTORE globalement pour le sidebar
+window.authSAMASTORE = authSAMASTORE;
 
 // Initialiser le gestionnaire de thème
 window.themeManager = new ThemeManager();
@@ -18,7 +18,7 @@ window.themeManager = new ThemeManager();
  * Initialise l'application vendeur
  */
 export function initVendorApp() {
-    const session = authMaJay.getSession();
+    const session = authSAMASTORE.getSession();
     if (!session) {
         window.location.href = 'connexion.html';
         return;
@@ -90,3 +90,4 @@ if (window.location.pathname.includes('/vendeur/') && !window.location.pathname.
         initVendorApp();
     }
 }
+

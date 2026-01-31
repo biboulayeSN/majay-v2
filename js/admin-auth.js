@@ -1,4 +1,4 @@
-import { supabase } from "./config.js";
+﻿import { supabase } from "./config.js";
 
 // ================= CONNEXION ADMIN =================
 
@@ -35,6 +35,7 @@ function hashPasswordFallback(password) {
   // Ces hashs sont pré-calculés avec SHA-256
   const knownHashes = {
     '123456': '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',
+    'admin123': '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',
     'admin': '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',
     'password': '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'
   };
@@ -103,6 +104,7 @@ async function connexionAdmin(telephone, password) {
       .update({ last_login: new Date().toISOString() })
       .eq('id', userData.id);
 
+    // Stocker le password_hash dans la session pour les appels RPC
     const sessionData = {
       user_id: userData.id,
       phone: userData.phone,
@@ -112,6 +114,7 @@ async function connexionAdmin(telephone, password) {
       admin_role: userData.admin_role || null,
       admin_permissions: userData.admin_permissions || {},
       can_create_admins: userData.can_create_admins || false,
+      password_hash: passwordHash, // Stocker le hash pour les appels RPC
       timestamp: Date.now()
     };
 
@@ -126,11 +129,11 @@ async function connexionAdmin(telephone, password) {
 // ================= SESSION ADMIN =================
 
 function sauvegarderSessionAdmin(admin) {
-  localStorage.setItem("majay_admin", JSON.stringify(admin));
+  localStorage.setItem("SAMASTORE_admin", JSON.stringify(admin));
 }
 
 function getSessionAdmin() {
-  const s = localStorage.getItem("majay_admin");
+  const s = localStorage.getItem("SAMASTORE_admin");
   if (!s) return null;
   
   try {
@@ -148,8 +151,8 @@ function getSessionAdmin() {
 }
 
 function deconnexionAdmin() {
-  localStorage.removeItem("majay_admin");
-  sessionStorage.removeItem('majay_admin_connexion_phone');
+  localStorage.removeItem("SAMASTORE_admin");
+  sessionStorage.removeItem('SAMASTORE_admin_connexion_phone');
   supabase.auth.signOut();
   window.location.href = "connexion.html";
 }
@@ -245,9 +248,38 @@ async function supprimerStore(storeId) {
 }
 
 /**
- * Obtenir les statistiques admin
+ * Obtenir les statistiques admin (avec bypass RLS via RPC)
  */
 async function getStatsAdmin() {
+  const session = getSessionAdmin();
+  if (!session || !session.password_hash) {
+    // Fallback sur la méthode normale si pas de session ou pas de hash
+    return getStatsAdminFallback();
+  }
+
+  try {
+    // Utiliser la fonction RPC qui bypass RLS
+    const { data, error } = await supabase.rpc('get_admin_stats', {
+      p_phone: session.phone,
+      p_password_hash: session.password_hash
+    });
+
+    if (error) {
+      console.warn('Erreur RPC get_admin_stats, utilisation du fallback:', error);
+      return getStatsAdminFallback();
+    }
+
+    return data;
+  } catch (error) {
+    console.warn('Erreur getStatsAdmin, utilisation du fallback:', error);
+    return getStatsAdminFallback();
+  }
+}
+
+/**
+ * Méthode fallback pour obtenir les statistiques (sans RPC)
+ */
+async function getStatsAdminFallback() {
   try {
     // Total stores
     const { count: totalStores } = await supabase
@@ -306,9 +338,66 @@ async function getStatsAdmin() {
 }
 
 /**
- * Obtenir la liste des boutiques
+ * Obtenir la liste des boutiques (avec bypass RLS via RPC pour admin)
  */
 async function getStores(filters = {}) {
+  const session = getSessionAdmin();
+  
+  // Si on a une session admin avec password_hash, utiliser la fonction RPC
+  if (session && session.password_hash) {
+    try {
+      const { data, error } = await supabase.rpc('get_all_stores_for_admin', {
+        p_phone: session.phone,
+        p_password_hash: session.password_hash
+      });
+
+      if (!error && data) {
+        // Transformer les données pour correspondre au format attendu
+        const stores = data.map(store => ({
+          id: store.id,
+          name: store.name,
+          slug: store.slug,
+          subscription_plan: store.subscription_plan,
+          is_active: store.is_active,
+          activity_category: store.activity_category,
+          city: store.city,
+          region: store.region,
+          created_at: store.created_at,
+          total_orders: store.total_orders,
+          total_revenue: store.total_revenue,
+          owner: {
+            id: store.owner_id,
+            full_name: store.owner_name,
+            phone: store.owner_phone,
+            last_login: store.owner_last_login
+          }
+        }));
+
+        // Appliquer les filtres côté client
+        let filteredStores = stores;
+        if (filters.is_active !== undefined) {
+          filteredStores = filteredStores.filter(s => s.is_active === filters.is_active);
+        }
+        if (filters.plan) {
+          filteredStores = filteredStores.filter(s => s.subscription_plan === filters.plan);
+        }
+
+        return filteredStores;
+      }
+    } catch (error) {
+      console.warn('Erreur RPC get_all_stores_for_admin, utilisation du fallback:', error);
+      // Continuer avec la méthode normale en cas d'erreur
+    }
+  }
+
+  // Fallback: méthode normale (peut échouer si RLS bloque)
+  return getStoresFallback(filters);
+}
+
+/**
+ * Méthode fallback pour obtenir les boutiques (sans RPC)
+ */
+async function getStoresFallback(filters = {}) {
   let query = supabase
     .from('stores')
     .select(`
@@ -319,11 +408,15 @@ async function getStores(filters = {}) {
       is_active,
       total_orders,
       total_revenue,
+      activity_category,
+      city,
+      region,
       created_at,
       owner:users!stores_owner_id_fkey (
         id,
         full_name,
-        phone
+        phone,
+        last_login
       )
     `)
     .order('created_at', { ascending: false });
@@ -338,8 +431,13 @@ async function getStores(filters = {}) {
 
   const { data, error } = await query;
 
-  if (error) throw error;
-  return data;
+  if (error) {
+    console.error('Erreur getStoresFallback:', error);
+    // Si RLS bloque, retourner un tableau vide avec un message d'erreur
+    throw new Error('Accès refusé aux boutiques. Assurez-vous que les fonctions RPC sont installées dans Supabase.');
+  }
+  
+  return data || [];
 }
 
 // ================= EXPORT =================
@@ -355,3 +453,4 @@ export const adminAuth = {
   getStatsAdmin,
   getStores
 };
+

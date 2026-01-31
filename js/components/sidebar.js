@@ -2,7 +2,7 @@
  * Composant Sidebar réutilisable pour toutes les pages vendeur
  */
 export function initSidebar(activePage = '') {
-    const session = window.authMaJay?.getSession();
+    const session = window.authSAMASTORE?.getSession();
     if (!session) return;
 
     // Déterminer la page active depuis le nom de la page
@@ -12,7 +12,7 @@ export function initSidebar(activePage = '') {
     const sidebarHTML = `
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ MA-JAY</div>
+                <div class="sidebar-logo">🛍️ SAMASTORE</div>
             </div>
             
             <nav class="sidebar-nav" id="mainNav">
@@ -34,7 +34,7 @@ export function initSidebar(activePage = '') {
     // Remplace le sidebar existant ou l'insère
     const existingSidebar = document.querySelector('.dashboard-sidebar');
     const wrapper = document.querySelector('.dashboard-wrapper');
-    
+
     if (existingSidebar && wrapper) {
         existingSidebar.outerHTML = sidebarHTML;
     } else if (wrapper) {
@@ -75,7 +75,7 @@ export function initSidebar(activePage = '') {
  */
 export function initSidebarNavigation() {
     document.querySelectorAll('[data-route]').forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const route = this.getAttribute('data-route');
             if (window.vendorRouter) {
@@ -89,7 +89,7 @@ export function initSidebarNavigation() {
 }
 
 // Fonction toggle submenu (global)
-window.toggleSubmenu = function(element) {
+window.toggleSubmenu = function (element) {
     const submenu = element.nextElementSibling;
     if (submenu) {
         submenu.classList.toggle('open');

@@ -1,15 +1,16 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription - MA-JAY</title>
+    <title>Inscription - SAMASTORE</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
 </head>
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-header">
-            <h1 class="logo">🛍️ <span class="text-primary">MA-JAY</span></h1>
+            <h1 class="logo">🛍️ <span class="text-primary">SAMASTORE</span></h1>
             <p class="tagline">Créez votre boutique en ligne en 2 minutes</p>
         </div>
 
@@ -27,12 +28,12 @@
                 <div class="form-group">
                     <label for="slug" class="form-label">Adresse de votre boutique *</label>
                     <div class="input-with-prefix">
-                        <span class="prefix" aria-hidden="true">ma-jay.com/</span>
+                        <span class="prefix" aria-hidden="true">SAMASTORE.com/</span>
                         <input type="text" id="slug" class="form-control" required placeholder="ma-boutique" aria-required="true" aria-label="Adresse de votre boutique" aria-describedby="slugHint slugExample">
                     </div>
                     <span class="form-hint" id="slugHint">Lettres minuscules, chiffres et tirets uniquement</span>
                     <span class="form-hint" style="color: #25D366; font-weight: 600; margin-top: 4px; display: block;" id="slugExample">
-                        Exemple : ma-jay.com/<span id="slugPreview">ma-boutique</span>
+                        Exemple : SAMASTORE.com/<span id="slugPreview">ma-boutique</span>
                     </span>
                 </div>
 
@@ -97,7 +98,7 @@
         </div>
     </div>
 <script type="module">
-import { authMaJay } from "../js/auth.js";
+import { authSAMASTORE } from "../js/auth.js";
 import { detectUserLocation, createCountrySelector, formatPhoneWithPrefix, saveUserLocation } from "../js/geolocation.js";
 
 // Variables globales pour la géolocalisation
@@ -223,7 +224,7 @@ document.getElementById('inscriptionForm').addEventListener('submit', async func
             }
         }
         
-        const result = await authMaJay.inscrireVendeur({
+        const result = await authSAMASTORE.inscrireVendeur({
             nom: document.getElementById('nom').value.trim(),
             slug: document.getElementById('slug').value.trim(),
             full_name: document.getElementById('full_name').value.trim(),
@@ -244,10 +245,10 @@ document.getElementById('inscriptionForm').addEventListener('submit', async func
             // #endregion
             
             // Stocker le numéro formaté pour la vérification OTP
-            sessionStorage.setItem('majay_otp_phone', result.phone);
+            sessionStorage.setItem('SAMASTORE_otp_phone', result.phone);
             
             // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:245',message:'STORED phone verification',data:{stored_value:sessionStorage.getItem('majay_otp_phone')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
+            fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:245',message:'STORED phone verification',data:{stored_value:sessionStorage.getItem('SAMASTORE_otp_phone')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
             // #endregion
             
             // Afficher le formulaire OTP
@@ -277,14 +278,14 @@ document.getElementById('otpForm').addEventListener('submit', async function(e) 
 
     try {
         // Récupérer le numéro formaté utilisé lors de l'envoi du code
-        const telephone = sessionStorage.getItem('majay_otp_phone') || document.getElementById('telephone').value.trim();
+        const telephone = sessionStorage.getItem('SAMASTORE_otp_phone') || document.getElementById('telephone').value.trim();
         const code = document.getElementById('otpCode').value.trim();
 
         // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:267',message:'BEFORE finaliserInscription call',data:{telephone_retrieved:telephone,code_length:code.length,from_sessionStorage:!!sessionStorage.getItem('majay_otp_phone')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'D'})}).catch(()=>{});
+        fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:267',message:'BEFORE finaliserInscription call',data:{telephone_retrieved:telephone,code_length:code.length,from_sessionStorage:!!sessionStorage.getItem('SAMASTORE_otp_phone')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'D'})}).catch(()=>{});
         // #endregion
 
-        const result = await authMaJay.finaliserInscription(telephone, code);
+        const result = await authSAMASTORE.finaliserInscription(telephone, code);
 
         if (result.success) {
             const { showSuccess } = await import("../js/notifications.js");
@@ -314,3 +315,5 @@ window.retourInfos = function() {
 
 </body>
 </html>
+
+

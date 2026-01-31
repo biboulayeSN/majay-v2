@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abonnements - MAJAY</title>
+    <title>Abonnements - SAMASTORE</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
 </head>
 <body class="dashboard-page">
@@ -20,7 +21,7 @@
         <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ MA-JAY</div>
+                <div class="sidebar-logo">🛍️ SAMASTORE</div>
             </div>
             
             <nav class="sidebar-nav" id="mainNav">
@@ -78,10 +79,10 @@
 
     <script type="module">
         import { subscriptionsUtils } from "../js/subscriptions.js";
-        import { authMaJay } from "../js/auth.js";
+        import { authSAMASTORE } from "../js/auth.js";
         import { ADMIN_PHONE } from "../js/config.js";
 
-        const session = authMaJay.getSession();
+        const session = authSAMASTORE.getSession();
         if (!session) window.location.href = 'connexion.html';
 
         // Sidebar toggle functions
@@ -236,5 +237,7 @@
     </script>
 </body>
 </html>
+
+
 
 

@@ -1,6 +1,6 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
-Serveur HTTP personnalisé pour MAJAY
+Serveur HTTP personnalisé pour SAMASTORE
 Gère le routage et empêche l'affichage de la liste des fichiers
 """
 
@@ -58,7 +58,7 @@ def run_server(port=8000):
     handler = CustomHTTPRequestHandler
     
     with socketserver.TCPServer(("", port), handler) as httpd:
-        print(f"🚀 Serveur MAJAY démarré sur http://localhost:{port}")
+        print(f"🚀 Serveur SAMASTORE démarré sur http://localhost:{port}")
         print(f"📁 Répertoire: {os.getcwd()}")
         print(f"🛑 Appuyez sur Ctrl+C pour arrêter")
         try:
@@ -71,4 +71,5 @@ if __name__ == "__main__":
     import sys
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
     run_server(port)
+
 

@@ -1,4 +1,4 @@
-import { supabase } from "./config.js";
+﻿import { supabase } from "./config.js";
 
 // ================= AUTHENTIFICATION SUPABASE PHONE =================
 
@@ -159,7 +159,7 @@ async function inscrireVendeur(data) {
     // #endregion
 
     // Stocker temporairement les données d'inscription
-    sessionStorage.setItem('majay_inscription_temp', JSON.stringify({
+    sessionStorage.setItem('SAMASTORE_inscription_temp', JSON.stringify({
       nom,
       slug,
       telephone: phone,
@@ -223,7 +223,7 @@ async function finaliserInscription(telephone, code) {
     if (authError) throw authError;
 
     // Récupérer les données temporaires
-    const tempData = JSON.parse(sessionStorage.getItem('majay_inscription_temp') || '{}');
+    const tempData = JSON.parse(sessionStorage.getItem('SAMASTORE_inscription_temp') || '{}');
     
     if (!tempData.nom) {
       throw new Error('Données d\'inscription introuvables. Veuillez recommencer.');
@@ -281,7 +281,7 @@ async function finaliserInscription(telephone, code) {
     // #endregion
 
     // Nettoyer les données temporaires
-    sessionStorage.removeItem('majay_inscription_temp');
+    sessionStorage.removeItem('SAMASTORE_inscription_temp');
 
     // Créer la session avec les données qu'on a déjà (de Auth et Store)
     const sessionData = {
@@ -436,7 +436,7 @@ async function connexionVendeur(telephone) {
     }
 
     // Stocker le numéro pour la vérification
-    sessionStorage.setItem('majay_connexion_phone', phone);
+    sessionStorage.setItem('SAMASTORE_connexion_phone', phone);
     
     return { 
       success: true, 
@@ -453,14 +453,14 @@ async function connexionVendeur(telephone) {
  */
 async function verifierConnexion(code) {
   try {
-    const phone = sessionStorage.getItem('majay_connexion_phone');
+    const phone = sessionStorage.getItem('SAMASTORE_connexion_phone');
     if (!phone) {
       throw new Error('Session de connexion expirée. Veuillez recommencer.');
     }
 
     const result = await verifierOTP(phone, code);
     if (result.success) {
-      sessionStorage.removeItem('majay_connexion_phone');
+      sessionStorage.removeItem('SAMASTORE_connexion_phone');
     }
     return result;
   } catch (error) {
@@ -471,11 +471,11 @@ async function verifierConnexion(code) {
 // ================= SESSION =================
 
 function sauvegarderSession(session) {
-  localStorage.setItem("majay_session", JSON.stringify(session));
+  localStorage.setItem("SAMASTORE_session", JSON.stringify(session));
 }
 
 function getSession() {
-  const s = localStorage.getItem("majay_session");
+  const s = localStorage.getItem("SAMASTORE_session");
   if (!s) return null;
   
   try {
@@ -499,9 +499,9 @@ function getSession() {
 }
 
 function deconnexion() {
-  localStorage.removeItem("majay_session");
-  sessionStorage.removeItem('majay_inscription_temp');
-  sessionStorage.removeItem('majay_connexion_phone');
+  localStorage.removeItem("SAMASTORE_session");
+  sessionStorage.removeItem('SAMASTORE_inscription_temp');
+  sessionStorage.removeItem('SAMASTORE_connexion_phone');
   supabase.auth.signOut();
   window.location.href = "connexion.html";
 }
@@ -517,7 +517,7 @@ async function connexionVendeurAncien(telephone) {
   return await connexionVendeur(telephone);
 }
 
-export const authMaJay = {
+export const authSAMASTORE = {
   // Nouvelles fonctions
   envoyerOTP,
   verifierOTP,
@@ -531,3 +531,4 @@ export const authMaJay = {
   // Compatibilité
   connexionVendeurAncien
 };
+

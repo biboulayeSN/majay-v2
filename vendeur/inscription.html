@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
 </head>
+
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-header">
@@ -22,24 +24,28 @@
             <form id="inscriptionForm" class="auth-form" style="display: block;">
                 <div class="form-group">
                     <label for="nom" class="form-label">Nom de votre boutique *</label>
-                    <input type="text" id="nom" class="form-control" required placeholder="Ex: Fashion Store" aria-required="true" aria-label="Nom de votre boutique">
+                    <input type="text" id="nom" class="form-control" required placeholder="Ex: Fashion Store"
+                        aria-required="true" aria-label="Nom de votre boutique">
                 </div>
 
                 <div class="form-group">
                     <label for="slug" class="form-label">Adresse de votre boutique *</label>
                     <div class="input-with-prefix">
-                        <span class="prefix" aria-hidden="true">SAMASTORE.com/</span>
-                        <input type="text" id="slug" class="form-control" required placeholder="ma-boutique" aria-required="true" aria-label="Adresse de votre boutique" aria-describedby="slugHint slugExample">
+                        <span class="prefix" aria-hidden="true">Nayatoo.com/</span>
+                        <input type="text" id="slug" class="form-control" required placeholder="ma-boutique"
+                            aria-required="true" aria-label="Adresse de votre boutique"
+                            aria-describedby="slugHint slugExample">
                     </div>
                     <span class="form-hint" id="slugHint">Lettres minuscules, chiffres et tirets uniquement</span>
-                    <span class="form-hint" style="color: #25D366; font-weight: 600; margin-top: 4px; display: block;" id="slugExample">
-                        Exemple : SAMASTORE.com/<span id="slugPreview">ma-boutique</span>
+                    <span class="form-hint text-success font-semibold mt-1 block" id="slugExample">
+                        Exemple : www.nayatoo.com/<span id="slugPreview">ma-boutique</span>
                     </span>
                 </div>
 
                 <div class="form-group">
                     <label for="full_name" class="form-label">Votre nom complet *</label>
-                    <input type="text" id="full_name" class="form-control" required placeholder="Ex: Amadou Diallo" aria-required="true" aria-label="Votre nom complet">
+                    <input type="text" id="full_name" class="form-control" required placeholder="Ex: Amadou Diallo"
+                        aria-required="true" aria-label="Votre nom complet">
                 </div>
 
                 <div class="form-group">
@@ -50,25 +56,32 @@
                 <div class="form-group">
                     <label for="telephone" class="form-label">Numéro de téléphone *</label>
                     <div class="input-with-prefix">
-                        <span class="prefix" id="phonePrefix" aria-hidden="true">+221</span>
-                        <input type="tel" id="telephone" class="form-control" required placeholder="77 123 45 67" aria-required="true" aria-label="Numéro de téléphone" aria-describedby="phoneHint">
+                        <span class="prefix" id="phonePrefix" aria-hidden="true"></span>
+                        <input type="tel" id="telephone" class="form-control" required placeholder="77 123 45 67"
+                            aria-required="true" aria-label="Numéro de téléphone" aria-describedby="phoneHint">
                     </div>
-                    <span class="form-hint" id="phoneHint">Le préfixe est détecté automatiquement selon votre pays</span>
+                    <span class="form-hint" id="phoneHint">Le préfixe est détecté automatiquement selon votre
+                        pays</span>
                 </div>
 
                 <div class="form-group">
                     <label for="whatsapp" class="form-label">WhatsApp</label>
-                    <input type="tel" id="whatsapp" class="form-control" placeholder="Même numéro ou autre" aria-label="Numéro WhatsApp">
+                    <input type="tel" id="whatsapp" class="form-control" placeholder="Même numéro ou autre"
+                        aria-label="Numéro WhatsApp">
                 </div>
 
                 <div class="form-group checkbox-group">
                     <label for="cgu" class="flex items-center gap-3 cursor-pointer min-h-[44px]">
-                        <input type="checkbox" id="cgu" required aria-required="true" class="w-5 h-5 cursor-pointer" style="min-width: 20px; min-height: 20px;">
-                        <span class="text-base">J'accepte les <a href="../cgu.html" target="_blank" class="text-primary font-semibold underline hover:text-primary-dark">conditions d'utilisation</a></span>
+                        <input type="checkbox" id="cgu" required aria-required="true" class="w-5 h-5 cursor-pointer"
+                            style="min-width: 20px; min-height: 20px;">
+                        <span class="text-base">J'accepte les <a href="../cgu.html" target="_blank"
+                                class="text-primary font-semibold underline hover:text-primary-dark">conditions
+                                d'utilisation</a></span>
                     </label>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg" id="btnSubmit" style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
+                <button type="submit" class="btn btn-primary btn-lg" id="btnSubmit"
+                    style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
                     <span class="btn-text">📱 Envoyer le code</span>
                     <span class="btn-loader" style="display:none">⏳</span>
                 </button>
@@ -78,16 +91,20 @@
             <form id="otpForm" class="auth-form" style="display: none;">
                 <div class="form-group">
                     <label for="otpCode" class="form-label">Code de vérification</label>
-                    <input type="text" id="otpCode" class="form-control" required placeholder="123456" maxlength="6" pattern="[0-9]{6}" aria-required="true" aria-label="Code de vérification" aria-describedby="otpHint">
+                    <input type="text" id="otpCode" class="form-control" required placeholder="123456" maxlength="6"
+                        pattern="[0-9]{6}" aria-required="true" aria-label="Code de vérification"
+                        aria-describedby="otpHint">
                     <span class="form-hint" id="otpHint">Entrez le code reçu par SMS</span>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg" id="btnVerify" style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
+                <button type="submit" class="btn btn-primary btn-lg" id="btnVerify"
+                    style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
                     <span class="btn-text">🚀 Créer ma boutique</span>
                     <span class="btn-loader" style="display:none">⏳</span>
                 </button>
 
-                <button type="button" class="btn btn-secondary" onclick="retourInfos()" style="margin-top: 15px; width: 100%; padding: 14px 24px; min-height: 48px;">
+                <button type="button" class="btn btn-secondary" onclick="retourInfos()"
+                    style="margin-top: 15px; width: 100%; padding: 14px 24px; min-height: 48px;">
                     ← Retour
                 </button>
             </form>
@@ -97,223 +114,205 @@
             </div>
         </div>
     </div>
-<script type="module">
-import { authSAMASTORE } from "../js/auth.js";
-import { detectUserLocation, createCountrySelector, formatPhoneWithPrefix, saveUserLocation } from "../js/geolocation.js";
+    <script type="module">
+        import { authSAMASTORE } from "../js/auth.js";
+        import { detectUserLocation, createCountrySelector, formatPhoneWithPrefix, saveUserLocation } from "../js/geolocation.js";
 
-// Variables globales pour la géolocalisation
-let userLocation = null;
+        // Variables globales pour la géolocalisation
+        let userLocation = null;
 
-// Initialiser la détection de géolocalisation au chargement
-(async function initGeolocation() {
-    try {
-        // Détecter la localisation
-        userLocation = await detectUserLocation();
-        
-        // Créer le sélecteur de pays
-        const countryContainer = document.getElementById('countrySelectContainer');
-        countryContainer.innerHTML = createCountrySelector(userLocation.country);
-        
-        // Afficher le préfixe dans le champ téléphone
-        const phoneInput = document.getElementById('telephone');
-        const phonePrefix = document.createElement('div');
-        phonePrefix.id = 'phonePrefix';
-        phonePrefix.style.cssText = `
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-weight: 700;
-            color: #25D366;
-            font-size: 1em;
-            pointer-events: none;
-            z-index: 1;
+        // Initialiser la détection de géolocalisation au chargement
+        (async function initGeolocation() {
+            try {
+                // Détecter la localisation
+                userLocation = await detectUserLocation();
+
+                // Créer le sélecteur de pays
+                const countryContainer = document.getElementById('countrySelectContainer');
+                countryContainer.innerHTML = createCountrySelector(userLocation.country);
+
+                // Afficher le préfixe dans le champ téléphone
+                const phoneInput = document.getElementById('telephone');
+                // Utiliser l'élément existant au lieu d'en créer un nouveau
+                const phonePrefix = document.getElementById('phonePrefix');
+
+                if (phonePrefix) {
+                    phonePrefix.className = 'absolute left-4 top-1/2 -translate-y-1/2 font-bold text-success text-base pointer-events-none z-10';
+                    phonePrefix.textContent = userLocation.prefix;
+                    // Note: L'élément est déjà dans le DOM, pas besoin de insertBefore
+                }
+
+                // Mettre à jour le placeholder
+                phoneInput.placeholder = 'Ex: 77 123 45 67';
+
+                // Mettre à jour le hint
+                document.getElementById('phoneHint').innerHTML = `
+            <span class="text-success">✓</span> Pays détecté: ${userLocation.flag} ${userLocation.countryName}
         `;
-        phonePrefix.textContent = userLocation.prefix;
-        phoneInput.parentElement.insertBefore(phonePrefix, phoneInput);
-        
-        // Mettre à jour le placeholder
-        phoneInput.placeholder = 'Ex: 77 123 45 67';
-        
-        // Mettre à jour le hint
-        document.getElementById('phoneHint').innerHTML = `
-            <span style="color: #25D366;">✓</span> Pays détecté: ${userLocation.flag} ${userLocation.countryName}
-        `;
-        
-        // Gérer le changement de pays
-        const countrySelector = document.getElementById('countrySelector');
-        countrySelector.addEventListener('change', (e) => {
-            const selected = e.target.selectedOptions[0];
-            const newPrefix = selected.dataset.prefix;
-            phonePrefix.textContent = newPrefix;
-            phoneInput.style.paddingLeft = `${newPrefix.length * 12 + 20}px`;
-        });
-        
-    } catch (error) {
-        console.error('Erreur initialisation géolocalisation:', error);
-    }
-})();
 
-// Prévisualisation de l'URL de la boutique en temps réel
-document.getElementById('slug').addEventListener('input', function(e) {
-    const slugPreview = document.getElementById('slugPreview');
-    const value = e.target.value.trim();
-    
-    if (value) {
-        slugPreview.textContent = value;
-    } else {
-        slugPreview.textContent = 'ma-boutique';
-    }
-    
-    // Validation en temps réel : seulement lettres minuscules, chiffres et tirets
-    const validPattern = /^[a-z0-9-]*$/;
-    if (!validPattern.test(value)) {
-        e.target.style.borderColor = '#ff4757';
-        document.getElementById('slugHint').style.color = '#ff4757';
-        document.getElementById('slugHint').textContent = '⚠️ Uniquement lettres minuscules, chiffres et tirets';
-    } else {
-        e.target.style.borderColor = '#25D366';
-        document.getElementById('slugHint').style.color = '#25D366';
-        document.getElementById('slugHint').textContent = '✓ Adresse valide';
-    }
-});
+                // Gérer le changement de pays
+                const countrySelector = document.getElementById('countrySelector');
+                countrySelector.addEventListener('change', (e) => {
+                    const selected = e.target.selectedOptions[0];
+                    const newPrefix = selected.dataset.prefix;
+                    phonePrefix.textContent = newPrefix;
+                    phoneInput.style.paddingLeft = `${newPrefix.length * 12 + 20}px`;
+                });
 
-document.getElementById('inscriptionForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const btn = document.getElementById('btnSubmit');
-    btn.disabled = true;
-    btn.querySelector('.btn-text').style.display = 'none';
-    btn.querySelector('.btn-loader').style.display = 'inline';
-
-    try {
-        // Récupérer les valeurs
-        let telephone = document.getElementById('telephone').value.trim();
-        const whatsapp = document.getElementById('whatsapp').value.trim() || telephone;
-        
-        // Formater le numéro avec le préfixe du pays sélectionné
-        const countrySelector = document.getElementById('countrySelector');
-        if (countrySelector) {
-            const selectedCountry = countrySelector.value;
-            const selectedPrefix = countrySelector.selectedOptions[0].dataset.prefix;
-            
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:197',message:'BEFORE formatting in form',data:{telephone_raw:telephone,selectedPrefix:selectedPrefix},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A'})}).catch(()=>{});
-            // #endregion
-            
-            // Ajouter le préfixe si nécessaire
-            if (!telephone.startsWith('+')) {
-                telephone = selectedPrefix + telephone.replace(/^0+/, '');
+            } catch (error) {
+                console.error('Erreur initialisation géolocalisation:', error);
             }
-            
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:210',message:'AFTER formatting in form',data:{telephone_formatted:telephone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A'})}).catch(()=>{});
-            // #endregion
-            
-            // Sauvegarder la localisation pour analytics
-            if (userLocation) {
-                localStorage.setItem('user_signup_location', JSON.stringify({
-                    country: selectedCountry,
-                    city: userLocation.city,
-                    region: userLocation.region,
-                    latitude: userLocation.latitude,
-                    longitude: userLocation.longitude,
-                    ip: userLocation.ip,
-                    timestamp: Date.now()
-                }));
+        })();
+
+        // Prévisualisation de l'URL de la boutique en temps réel
+        document.getElementById('slug').addEventListener('input', function (e) {
+            const slugPreview = document.getElementById('slugPreview');
+            const value = e.target.value.trim();
+
+            if (value) {
+                slugPreview.textContent = value;
+            } else {
+                slugPreview.textContent = 'ma-boutique';
             }
-        }
-        
-        const result = await authSAMASTORE.inscrireVendeur({
-            nom: document.getElementById('nom').value.trim(),
-            slug: document.getElementById('slug').value.trim(),
-            full_name: document.getElementById('full_name').value.trim(),
-            telephone: telephone,
-            whatsapp: whatsapp
+
+            // Validation en temps réel : seulement lettres minuscules, chiffres et tirets
+            const validPattern = /^[a-z0-9-]*$/;
+            if (!validPattern.test(value)) {
+                e.target.style.borderColor = '#ff4757';
+                document.getElementById('slugHint').style.color = '#ff4757';
+                document.getElementById('slugHint').textContent = '⚠️ Uniquement lettres minuscules, chiffres et tirets';
+            } else {
+                e.target.style.borderColor = '#25D366';
+                document.getElementById('slugHint').style.color = '#25D366';
+                document.getElementById('slugHint').textContent = '✓ Adresse valide';
+            }
         });
 
-        btn.disabled = false;
-        btn.querySelector('.btn-text').style.display = 'inline';
-        btn.querySelector('.btn-loader').style.display = 'none';
+        document.getElementById('inscriptionForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-        if (result.success) {
-            const { showSuccess } = await import("../js/notifications.js");
-            showSuccess("Code envoyé ! Vérifiez votre téléphone.");
-            
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:236',message:'STORING phone in sessionStorage',data:{phone_to_store:result.phone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
-            // #endregion
-            
-            // Stocker le numéro formaté pour la vérification OTP
-            sessionStorage.setItem('SAMASTORE_otp_phone', result.phone);
-            
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:245',message:'STORED phone verification',data:{stored_value:sessionStorage.getItem('SAMASTORE_otp_phone')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
-            // #endregion
-            
-            // Afficher le formulaire OTP
-            document.getElementById("inscriptionForm").style.display = 'none';
-            document.getElementById("otpForm").style.display = 'block';
-            document.getElementById("otpCode").focus();
-        } else {
-            throw new Error(result.error);
-        }
+            const btn = document.getElementById('btnSubmit');
+            btn.disabled = true;
+            btn.querySelector('.btn-text').style.display = 'none';
+            btn.querySelector('.btn-loader').style.display = 'inline';
 
-    } catch (error) {
-        const { showError } = await import("../js/notifications.js");
-        showError(error.message);
-        btn.disabled = false;
-        btn.querySelector('.btn-text').style.display = 'inline';
-        btn.querySelector('.btn-loader').style.display = 'none';
-    }
-});
+            try {
+                // Récupérer les valeurs
+                let telephone = document.getElementById('telephone').value.trim();
+                const whatsapp = document.getElementById('whatsapp').value.trim() || telephone;
 
-document.getElementById('otpForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+                // Formater le numéro avec le préfixe du pays sélectionné
+                const countrySelector = document.getElementById('countrySelector');
+                if (countrySelector) {
+                    const selectedCountry = countrySelector.value;
+                    const selectedPrefix = countrySelector.selectedOptions[0].dataset.prefix;
 
-    const btn = document.getElementById('btnVerify');
-    btn.disabled = true;
-    btn.querySelector('.btn-text').style.display = 'none';
-    btn.querySelector('.btn-loader').style.display = 'inline';
+                    // Debug log removed
 
-    try {
-        // Récupérer le numéro formaté utilisé lors de l'envoi du code
-        const telephone = sessionStorage.getItem('SAMASTORE_otp_phone') || document.getElementById('telephone').value.trim();
-        const code = document.getElementById('otpCode').value.trim();
+                    // Ajouter le préfixe si nécessaire
+                    if (!telephone.startsWith('+')) {
+                        telephone = selectedPrefix + telephone.replace(/^0+/, '');
+                    }
 
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'inscription.html:267',message:'BEFORE finaliserInscription call',data:{telephone_retrieved:telephone,code_length:code.length,from_sessionStorage:!!sessionStorage.getItem('SAMASTORE_otp_phone')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'D'})}).catch(()=>{});
-        // #endregion
+                    // Debug log removed
 
-        const result = await authSAMASTORE.finaliserInscription(telephone, code);
+                    // Sauvegarder la localisation pour analytics
+                    if (userLocation) {
+                        localStorage.setItem('user_signup_location', JSON.stringify({
+                            country: selectedCountry,
+                            city: userLocation.city,
+                            region: userLocation.region,
+                            latitude: userLocation.latitude,
+                            longitude: userLocation.longitude,
+                            ip: userLocation.ip,
+                            timestamp: Date.now()
+                        }));
+                    }
+                }
 
-        if (result.success) {
-            const { showSuccess } = await import("../js/notifications.js");
-            showSuccess('Boutique créée avec succès ! Redirection...');
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 1500);
-        } else {
-            throw new Error(result.error);
-        }
+                const result = await authSAMASTORE.inscrireVendeur({
+                    nom: document.getElementById('nom').value.trim(),
+                    slug: document.getElementById('slug').value.trim(),
+                    full_name: document.getElementById('full_name').value.trim(),
+                    telephone: telephone,
+                    whatsapp: whatsapp
+                });
 
-    } catch (error) {
-        const { showError } = await import("../js/notifications.js");
-        showError(error.message);
-        btn.disabled = false;
-        btn.querySelector('.btn-text').style.display = 'inline';
-        btn.querySelector('.btn-loader').style.display = 'none';
-    }
-});
+                btn.disabled = false;
+                btn.querySelector('.btn-text').style.display = 'inline';
+                btn.querySelector('.btn-loader').style.display = 'none';
 
-window.retourInfos = function() {
-    document.getElementById("inscriptionForm").style.display = 'block';
-    document.getElementById("otpForm").style.display = 'none';
-    document.getElementById("otpCode").value = '';
-};
-</script>
+                if (result.success) {
+                    const { showSuccess } = await import("../js/notifications.js");
+                    showSuccess("Code envoyé ! Vérifiez votre téléphone.");
+
+                    // Debug log removed
+
+                    // Stocker le numéro formaté pour la vérification OTP
+                    sessionStorage.setItem('SAMASTORE_otp_phone', result.phone);
+
+                    // Debug log removed
+
+                    // Afficher le formulaire OTP
+                    document.getElementById("inscriptionForm").style.display = 'none';
+                    document.getElementById("otpForm").style.display = 'block';
+                    document.getElementById("otpCode").focus();
+                } else {
+                    throw new Error(result.error);
+                }
+
+            } catch (error) {
+                const { showError } = await import("../js/notifications.js");
+                showError(error.message);
+                btn.disabled = false;
+                btn.querySelector('.btn-text').style.display = 'inline';
+                btn.querySelector('.btn-loader').style.display = 'none';
+            }
+        });
+
+        document.getElementById('otpForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('btnVerify');
+            btn.disabled = true;
+            btn.querySelector('.btn-text').style.display = 'none';
+            btn.querySelector('.btn-loader').style.display = 'inline';
+
+            try {
+                // Récupérer le numéro formaté utilisé lors de l'envoi du code
+                const telephone = sessionStorage.getItem('SAMASTORE_otp_phone') || document.getElementById('telephone').value.trim();
+                const code = document.getElementById('otpCode').value.trim();
+
+                // Debug log removed
+
+                const result = await authSAMASTORE.finaliserInscription(telephone, code);
+
+                if (result.success) {
+                    const { showSuccess } = await import("../js/notifications.js");
+                    showSuccess('Boutique créée avec succès ! Redirection...');
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    throw new Error(result.error);
+                }
+
+            } catch (error) {
+                const { showError } = await import("../js/notifications.js");
+                showError(error.message);
+                btn.disabled = false;
+                btn.querySelector('.btn-text').style.display = 'inline';
+                btn.querySelector('.btn-loader').style.display = 'none';
+            }
+        });
+
+        window.retourInfos = function () {
+            document.getElementById("inscriptionForm").style.display = 'block';
+            document.getElementById("otpForm").style.display = 'none';
+            document.getElementById("otpCode").value = '';
+        };
+    </script>
 
 </body>
+
 </html>
-
-

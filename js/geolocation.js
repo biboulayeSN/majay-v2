@@ -35,7 +35,7 @@ let cachedLocation = null;
 
 // URL du Cloudflare Worker (à configurer après déploiement)
 // Remplacez par l'URL de votre Worker : https://SAMASTORE-geolocation.workers.dev
-const CLOUDFLARE_WORKER_URL = null; // null = utiliser API tierce par défaut
+const CLOUDFLARE_WORKER_URL = 'https://nayatoo.com/api/location'; // URL configurée via Cloudflare
 
 /**
  * Détecte la localisation de l'utilisateur via son IP
@@ -76,11 +76,11 @@ export async function detectUserLocation() {
 
             if (response.ok) {
                 const location = await response.json();
-                
+
                 // Sauvegarder dans le cache
                 cachedLocation = location;
                 localStorage.setItem('user_location', JSON.stringify(location));
-                
+
                 console.log('✅ Localisation détectée via Cloudflare:', location.country);
                 return location;
             }
@@ -251,7 +251,7 @@ export async function saveUserLocation(supabase, userId, location) {
  */
 export function createCountrySelector(selectedCountry = 'SN') {
     const countries = getCountriesList();
-    
+
     return `
         <select id="countrySelector" style="
             width: 100%;

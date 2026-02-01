@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
 </head>
+
 <body class="dashboard-page">
     <!-- Sidebar Toggle Button (Mobile) -->
     <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
@@ -23,76 +25,80 @@
             <div class="sidebar-header">
                 <div class="sidebar-logo">🛍️ SAMASTORE</div>
             </div>
-            
+
             <nav class="sidebar-nav" id="mainNav">
                 <!-- Le sidebar sera injecté par initSidebar() -->
             </nav>
 
             <div class="sidebar-footer">
-                <a href="#" data-route="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <a href="#" data-route="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan"
+                    title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
             </div>
         </aside>
 
         <!-- Main Content -->
         <main class="dashboard-main">
             <div class="dashboard-main-content">
-        <div class="page-header">
-            <div>
-                <h1 class="page-title">TABLEAU DE BORD - <span id="userName">Vendeur</span> 👋</h1>
-                <p class="page-subtitle">Voici un aperçu de votre activité</p>
-            </div>
-        </div>
-
-        <div class="stats-grid" id="statsGrid">
-            <div style="grid-column: 1/-1; text-align: center; padding: var(--spacing-2xl);" class="fade-in">
-                <div class="loader"></div>
-                <p style="margin-top: var(--spacing-md); color: var(--color-text-light);">Chargement des statistiques...</p>
-            </div>
-        </div>
-
-        <div class="actions-grid">
-            <a href="#" data-route="produits.html" class="action-card" role="button" aria-label="Gérer mes produits">
-                <div class="flex justify-between items-center">
+                <div class="page-header">
                     <div>
-                        <h3 class="text-lg font-bold text-text mb-2">Gérer mes produits</h3>
-                        <p class="text-text-light text-base">Ajouter, modifier ou supprimer</p>
+                        <h1 class="page-title">TABLEAU DE BORD - <span id="userName">Vendeur</span> 👋</h1>
+                        <p class="page-subtitle">Voici un aperçu de votre activité</p>
                     </div>
-                    <div class="text-5xl">📦</div>
                 </div>
-            </a>
 
-            <button type="button" onclick="copierLien()" class="action-card" aria-label="Partager ma boutique">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h3 class="text-lg font-bold text-text mb-2">Partager ma boutique</h3>
-                        <p class="text-text-light text-base">Copier le lien</p>
+                <div class="stats-grid" id="statsGrid">
+                    <div style="grid-column: 1/-1; text-align: center; padding: var(--spacing-2xl);" class="fade-in">
+                        <div class="loader"></div>
+                        <p style="margin-top: var(--spacing-md); color: var(--color-text-light);">Chargement des
+                            statistiques...</p>
                     </div>
-                    <div class="text-5xl">🔗</div>
                 </div>
-            </button>
 
-            <a href="#" data-route="commandes.html" class="action-card" role="button" aria-label="Mes commandes">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h3 class="text-lg font-bold text-text mb-2">Mes commandes</h3>
-                        <p class="text-text-light text-base">Historique et suivi</p>
+                <div class="actions-grid">
+                    <a href="#" data-route="produits.html" class="action-card" role="button"
+                        aria-label="Gérer mes produits">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-lg font-bold text-text mb-2">Gérer mes produits</h3>
+                                <p class="text-text-light text-base">Ajouter, modifier ou supprimer</p>
+                            </div>
+                            <div class="text-5xl">📦</div>
+                        </div>
+                    </a>
+
+                    <button type="button" onclick="copierLien()" class="action-card" aria-label="Partager ma boutique">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-lg font-bold text-text mb-2">Partager ma boutique</h3>
+                                <p class="text-text-light text-base">Copier le lien</p>
+                            </div>
+                            <div class="text-5xl">🔗</div>
+                        </div>
+                    </button>
+
+                    <a href="#" data-route="commandes.html" class="action-card" role="button"
+                        aria-label="Mes commandes">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-lg font-bold text-text mb-2">Mes commandes</h3>
+                                <p class="text-text-light text-base">Historique et suivi</p>
+                            </div>
+                            <div class="text-5xl">🛒</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📈 Commandes récentes</h2>
                     </div>
-                    <div class="text-5xl">🛒</div>
+                    <div class="card-body" id="commandesRecentes">
+                        <div class="empty-state">
+                            <div class="loader"></div>
+                            <p style="margin-top: var(--spacing-md);">Chargement...</p>
+                        </div>
+                    </div>
                 </div>
-            </a>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h2>📈 Commandes récentes</h2>
-            </div>
-            <div class="card-body" id="commandesRecentes">
-                <div class="empty-state">
-                    <div class="loader"></div>
-                    <p style="margin-top: var(--spacing-md);">Chargement...</p>
-                </div>
-            </div>
-        </div>
             </div>
         </main>
     </div>
@@ -109,8 +115,8 @@
 
         const session = authSAMASTORE.getSession();
         if (!session) window.location.href = 'connexion.html';
-        
-        window.upgradePlan = function(plan) {
+
+        window.upgradePlan = function (plan) {
             const msg = `
 Bonjour,
 Je souhaite passer au plan ${plan.toUpperCase()}.
@@ -131,7 +137,7 @@ Slug : ${session.store_slug}
             // Afficher la barre de chargement pendant 5 secondes minimum
             const startTime = Date.now();
             const minLoadTime = 5000; // 5 secondes
-            
+
             // Afficher la barre de progression
             document.getElementById('statsGrid').innerHTML = `
                 <div style="grid-column: 1/-1; padding: var(--spacing-2xl); text-align: center;">
@@ -172,7 +178,7 @@ Slug : ${session.store_slug}
                 // Calculer le temps écoulé et attendre si nécessaire pour atteindre 5 secondes
                 const elapsedTime = Date.now() - startTime;
                 const remainingTime = Math.max(0, minLoadTime - elapsedTime);
-                
+
                 if (remainingTime > 0) {
                     await new Promise(resolve => setTimeout(resolve, remainingTime));
                 }
@@ -261,19 +267,19 @@ Slug : ${session.store_slug}
                         </thead>
                         <tbody>
                             ${data.map(cmd => {
-                                const itemsCount = Array.isArray(cmd.items) ? cmd.items.length : 0;
-                                const statusClass = cmd.status === 'delivered' ? 'success' : 
-                                                   cmd.status === 'confirmed' ? 'success' : 
-                                                   cmd.status === 'cancelled' ? 'danger' : 'warning';
-                                const statusNames = {
-                                    pending: 'En attente',
-                                    confirmed: 'Confirmée',
-                                    preparing: 'En préparation',
-                                    ready: 'Prête',
-                                    delivered: 'Livrée',
-                                    cancelled: 'Annulée'
-                                };
-                                return `
+                const itemsCount = Array.isArray(cmd.items) ? cmd.items.length : 0;
+                const statusClass = cmd.status === 'delivered' ? 'success' :
+                    cmd.status === 'confirmed' ? 'success' :
+                        cmd.status === 'cancelled' ? 'danger' : 'warning';
+                const statusNames = {
+                    pending: 'En attente',
+                    confirmed: 'Confirmée',
+                    preparing: 'En préparation',
+                    ready: 'Prête',
+                    delivered: 'Livrée',
+                    cancelled: 'Annulée'
+                };
+                return `
                                 <tr>
                                     <td>${new Date(cmd.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
                                     <td>${itemsCount} article(s)</td>
@@ -281,17 +287,17 @@ Slug : ${session.store_slug}
                                     <td><span class="badge badge-${statusClass}">${statusNames[cmd.status] || cmd.status || 'pending'}</span></td>
                                 </tr>
                             `;
-                            }).join('')}
+            }).join('')}
                         </tbody>
                     </table>
                 </div>
             `;
         }
 
-        window.copierLien = async function() {
+        window.copierLien = async function () {
             // Nouveau format : www.site.com/slug-boutique
-            const lien = window.location.origin + '/' + session.store_slug;
-            
+            const lien = 'https://www.nayatoo.com/' + session.store_slug;
+
             try {
                 // Méthode moderne avec Clipboard API (nécessite HTTPS ou localhost)
                 if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -303,7 +309,7 @@ Slug : ${session.store_slug}
             } catch (err) {
                 console.warn('Clipboard API non disponible, utilisation du fallback');
             }
-            
+
             // Fallback : méthode ancienne avec execCommand (fonctionne en HTTP)
             try {
                 const textArea = document.createElement('textarea');
@@ -314,10 +320,10 @@ Slug : ${session.store_slug}
                 document.body.appendChild(textArea);
                 textArea.focus();
                 textArea.select();
-                
+
                 const successful = document.execCommand('copy');
                 document.body.removeChild(textArea);
-                
+
                 if (successful) {
                     const { showSuccess } = await import('../js/notifications.js');
                     showSuccess('Lien copié ! Partagez-le avec vos clients');
@@ -335,7 +341,5 @@ Slug : ${session.store_slug}
         chargerCommandes();
     </script>
 </body>
+
 </html>
-
-
-

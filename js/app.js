@@ -50,7 +50,7 @@ async function chargerProduits() {
             // Ajouter un badge de démo
             const header = document.querySelector('.header');
             const demoBadge = document.createElement('div');
-            demoBadge.style.cssText = 'background: #25D366; color: white; padding: 10px 20px; text-align: center; font-weight: 700;';
+            demoBadge.className = 'bg-success text-white py-2.5 px-5 text-center font-bold block w-full';
             demoBadge.textContent = '🎭 Mode Démonstration - Ces produits sont des exemples';
             header.insertAdjacentElement('afterend', demoBadge);
 
@@ -417,24 +417,15 @@ async function ouvrirModalContact() {
         if (!phonePrefix) {
             phonePrefix = document.createElement('div');
             phonePrefix.id = 'clientPhonePrefix';
-            phonePrefix.style.cssText = `
-                position: absolute;
-                left: 15px;
-                top: 50%;
-                transform: translateY(-50%);
-                font-weight: 700;
-                color: #25D366;
-                font-size: 1em;
-                pointer-events: none;
-                z-index: 1;
-            `;
+            phonePrefix.className = 'absolute left-4 top-1/2 -translate-y-1/2 font-bold text-success text-base pointer-events-none z-10';
+            // phonePrefix.style.cssText removed in favor of className
             phoneInput.parentElement.insertBefore(phonePrefix, phoneInput);
         }
         phonePrefix.textContent = location.prefix;
 
         // Mettre à jour le hint
         document.getElementById('clientPhoneHint').innerHTML = `
-            <span style="color: #25D366;">✓</span> Pays détecté: ${location.flag} ${location.countryName}
+            <span class="text-success">✓</span> Pays détecté: ${location.flag} ${location.countryName}
         `;
 
         // Stocker la localisation pour l'utiliser lors de la soumission

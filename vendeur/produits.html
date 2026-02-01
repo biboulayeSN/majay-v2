@@ -7,9 +7,35 @@
     <title>Stock et Catalogue</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
+    <!-- Désactiver le cache pour le développement -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 
 <body class="dashboard-page bg-bg">
+    <!-- Initialize sidebar functions immediately -->
+    <script>
+        // Define toggleSubmenu globally BEFORE any HTML that uses it
+        window.toggleSubmenu = function (element) {
+            element.classList.toggle('open');
+            const submenu = element.nextElementSibling;
+            if (submenu) {
+                submenu.classList.toggle('open');
+            }
+        };
+
+        // Event delegation for submenu triggers
+        document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('click', function (e) {
+                const trigger = e.target.closest('[data-submenu-trigger]');
+                if (trigger) {
+                    toggleSubmenu(trigger);
+                }
+            });
+        });
+    </script>
+
     <!-- Sidebar Toggle Button (Mobile) -->
     <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
         <span id="toggleIcon">☰</span>
@@ -28,7 +54,17 @@
 
             <nav class="sidebar-nav" id="mainNav">
                 <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link active">📦 Produits</a>
+                <!-- SUBMENU: PRODUITS -->
+                <div class="nav-item">
+                    <div class="sidebar-nav-link has-submenu active open" data-submenu-trigger>
+                        <span>📦 Produits</span>
+                    </div>
+                    <div class="sidebar-submenu open"
+                        style="max-height: 1000px; margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                        <a href="produits.html" class="sidebar-submenu-link active">Liste Produits</a>
+                        <a href="inventaire.html" class="sidebar-submenu-link">Inventaire</a>
+                    </div>
+                </div>
                 <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
                 <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
                 <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
@@ -84,8 +120,7 @@
                 <div class="flex gap-2 mb-4 overflow-x-auto pb-2">
                     <button class="filter-btn active" data-filter="tous">Tous</button>
                     <button class="filter-btn" data-filter="en-stock">En stock</button>
-                    <button class="filter-btn" data-filter="stock-faible">Stock faible</button>
-                    <button class="filter-btn" data-filter="rupture">Rupture</button>
+                    <button class="filter-btn" data-filter="stock-faible">Faible</button>
                 </div>
 
                 <!-- PRODUCTS LIST -->
@@ -477,7 +512,7 @@
                 // Initialiser
                 // Mettre à jour le lien du catalogue avec le slug dynamique
                 if (session && session.store_slug) {
-                    const shopLink = window.location.origin + '/' + session.store_slug;
+                    const shopLink = 'https://www.nayatoo.com/' + session.store_slug;
                     document.getElementById('catalogueLink').value = shopLink;
                 }
 
@@ -537,6 +572,25 @@
     </div>
     </main>
     </div>
+    <script>
+        // Ensure DOM is ready before initializing
+        document.addEventListener('DOMContentLoaded', function () {
+            // Toggle Submenu Logic
+            window.toggleSubmenu = function (element) {
+                element.classList.toggle('open');
+                const submenu = element.nextElementSibling;
+                if (submenu) {
+                    submenu.classList.toggle('open');
+                }
+            };
+
+            // Ensure sidebar is visible on load
+            const sidebar = document.getElementById('dashboardSidebar');
+            if (sidebar && window.innerWidth >= 769) {
+                sidebar.classList.remove('closed');
+            }
+        });
+    </script>
 </body>
 
 </html>

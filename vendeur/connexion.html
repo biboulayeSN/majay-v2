@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
 </head>
+
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-header">
@@ -23,13 +25,15 @@
                 <div class="form-group">
                     <label for="telephone" class="form-label">Numéro de téléphone</label>
                     <div class="input-with-prefix">
-                        <span class="prefix" id="phonePrefix" aria-hidden="true">+221</span>
-                        <input type="tel" id="telephone" class="form-control" required placeholder="77 123 45 67" aria-required="true" aria-label="Numéro de téléphone" aria-describedby="telHint">
+                        <span class="prefix" id="phonePrefix" aria-hidden="true"></span>
+                        <input type="tel" id="telephone" class="form-control" required placeholder="77 123 45 67"
+                            aria-required="true" aria-label="Numéro de téléphone" aria-describedby="telHint">
                     </div>
                     <span class="form-hint" id="telHint">Le préfixe est détecté automatiquement selon votre pays</span>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg" id="btnSubmit" style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
+                <button type="submit" class="btn btn-primary btn-lg" id="btnSubmit"
+                    style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
                     <span class="btn-text">📱 Envoyer le code</span>
                     <span class="btn-loader" style="display:none">⏳</span>
                 </button>
@@ -39,16 +43,20 @@
             <form id="otpForm" class="auth-form" style="display: none;">
                 <div class="form-group">
                     <label for="otpCode" class="form-label">Code de vérification</label>
-                    <input type="text" id="otpCode" class="form-control" required placeholder="123456" maxlength="6" pattern="[0-9]{6}" aria-required="true" aria-label="Code de vérification" aria-describedby="otpHint">
+                    <input type="text" id="otpCode" class="form-control" required placeholder="123456" maxlength="6"
+                        pattern="[0-9]{6}" aria-required="true" aria-label="Code de vérification"
+                        aria-describedby="otpHint">
                     <span class="form-hint" id="otpHint">Entrez le code reçu par SMS</span>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg" id="btnVerify" style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
+                <button type="submit" class="btn btn-primary btn-lg" id="btnVerify"
+                    style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
                     <span class="btn-text">✅ Vérifier</span>
                     <span class="btn-loader" style="display:none">⏳</span>
                 </button>
 
-                <button type="button" class="btn btn-secondary" onclick="retourTelephone()" style="margin-top: 15px; width: 100%; padding: 14px 24px; min-height: 48px;">
+                <button type="button" class="btn btn-secondary" onclick="retourTelephone()"
+                    style="margin-top: 15px; width: 100%; padding: 14px 24px; min-height: 48px;">
                     ← Retour
                 </button>
             </form>
@@ -60,135 +68,130 @@
     </div>
 
     <script type="module">
-import { authSAMASTORE } from "../js/auth.js";
-import { detectUserLocation } from "../js/geolocation.js";
+        import { authSAMASTORE } from "../js/auth.js";
+        import { detectUserLocation } from "../js/geolocation.js";
 
-// Variable pour stocker la localisation
-let userLocation = null;
+        // Variable pour stocker la localisation
+        let userLocation = null;
 
-// Initialiser la détection de géolocalisation au chargement
-(async function initGeolocation() {
-    try {
-        // Détecter la localisation
-        userLocation = await detectUserLocation();
-        
-        // Mettre à jour le préfixe dans le span
-        const phonePrefix = document.getElementById('phonePrefix');
-        if (phonePrefix && userLocation) {
-            phonePrefix.textContent = userLocation.prefix;
-        }
-        
-        // Mettre à jour le placeholder
-        const phoneInput = document.getElementById('telephone');
-        if (phoneInput) {
-            phoneInput.placeholder = 'Ex: 77 123 45 67';
-        }
-        
-        // Mettre à jour le hint
-        const telHint = document.getElementById('telHint');
-        if (telHint && userLocation) {
-            telHint.innerHTML = `<span style="color: #25D366;">✓</span> Pays détecté: ${userLocation.flag} ${userLocation.countryName}`;
-        }
-    } catch (error) {
-        console.error('Erreur initialisation géolocalisation:', error);
-    }
-})();
+        // Initialiser la détection de géolocalisation au chargement
+        (async function initGeolocation() {
+            try {
+                // Détecter la localisation
+                userLocation = await detectUserLocation();
 
-let phoneNumber = '';
+                // Mettre à jour le préfixe dans le span
+                const phonePrefix = document.getElementById('phonePrefix');
+                if (phonePrefix && userLocation) {
+                    phonePrefix.textContent = userLocation.prefix;
+                }
 
-document.getElementById("connexionForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+                // Mettre à jour le placeholder
+                const phoneInput = document.getElementById('telephone');
+                if (phoneInput) {
+                    phoneInput.placeholder = 'Ex: 77 123 45 67';
+                }
 
-  const btn = document.getElementById("btnSubmit");
-  btn.disabled = true;
-  btn.querySelector('.btn-text').style.display = 'none';
-  btn.querySelector('.btn-loader').style.display = 'inline';
+                // Mettre à jour le hint
+                const telHint = document.getElementById('telHint');
+                if (telHint && userLocation) {
+                    telHint.innerHTML = `<span style="color: #25D366;">✓</span> Pays détecté: ${userLocation.flag} ${userLocation.countryName}`;
+                }
+            } catch (error) {
+                console.error('Erreur initialisation géolocalisation:', error);
+            }
+        })();
 
-  // Récupérer le numéro saisi
-  phoneNumber = document.getElementById("telephone").value.trim();
-  
-  // Récupérer le préfixe depuis le span ou la localisation détectée
-  const phonePrefix = document.getElementById('phonePrefix');
-  const prefix = phonePrefix ? phonePrefix.textContent.trim() : (userLocation?.prefix || '+221');
-  
-  // Ajouter le préfixe si nécessaire
-  if (phoneNumber && !phoneNumber.startsWith('+')) {
-    phoneNumber = prefix + phoneNumber.replace(/^0+/, '');
-  }
+        let phoneNumber = '';
 
-  const result = await authSAMASTORE.connexionVendeur(phoneNumber);
+        document.getElementById("connexionForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-  btn.disabled = false;
-  btn.querySelector('.btn-text').style.display = 'inline';
-  btn.querySelector('.btn-loader').style.display = 'none';
+            const btn = document.getElementById("btnSubmit");
+            btn.disabled = true;
+            btn.querySelector('.btn-text').style.display = 'none';
+            btn.querySelector('.btn-loader').style.display = 'inline';
 
-  if (!result.success) {
-    const { showError } = await import("../js/notifications.js");
-    showError(result.error);
-    return;
-  }
-  
-  // Si bypass OTP (mode développement), rediriger directement
-  if (result.bypassOTP) {
-    const { showSuccess } = await import("../js/notifications.js");
-    showSuccess("Connexion directe réussie ! Redirection...");
-    setTimeout(() => {
-      window.location.href = "dashboard.html";
-    }, 1000);
-    return;
-  }
-  
-  const { showSuccess } = await import("../js/notifications.js");
-  showSuccess("Code envoyé ! Vérifiez votre téléphone.");
+            // Récupérer le numéro saisi
+            phoneNumber = document.getElementById("telephone").value.trim();
 
-  // Afficher le formulaire OTP
-  document.getElementById("connexionForm").style.display = 'none';
-  document.getElementById("otpForm").style.display = 'block';
-  document.getElementById("otpCode").focus();
-});
+            // Récupérer le préfixe depuis le span ou la localisation détectée
+            const phonePrefix = document.getElementById('phonePrefix');
+            const prefix = phonePrefix ? phonePrefix.textContent.trim() : (userLocation?.prefix || '+221');
 
-document.getElementById("otpForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+            // Ajouter le préfixe si nécessaire
+            if (phoneNumber && !phoneNumber.startsWith('+')) {
+                phoneNumber = prefix + phoneNumber.replace(/^0+/, '');
+            }
 
-  const btn = document.getElementById("btnVerify");
-  btn.disabled = true;
-  btn.querySelector('.btn-text').style.display = 'none';
-  btn.querySelector('.btn-loader').style.display = 'inline';
+            const result = await authSAMASTORE.connexionVendeur(phoneNumber);
 
-  const code = document.getElementById("otpCode").value.trim();
+            btn.disabled = false;
+            btn.querySelector('.btn-text').style.display = 'inline';
+            btn.querySelector('.btn-loader').style.display = 'none';
 
-  const result = await authSAMASTORE.verifierConnexion(code);
+            if (!result.success) {
+                const { showError } = await import("../js/notifications.js");
+                showError(result.error);
+                return;
+            }
 
-  btn.disabled = false;
-  btn.querySelector('.btn-text').style.display = 'inline';
-  btn.querySelector('.btn-loader').style.display = 'none';
+            // Si bypass OTP (mode développement), rediriger directement
+            if (result.bypassOTP) {
+                const { showSuccess } = await import("../js/notifications.js");
+                showSuccess("Connexion directe réussie ! Redirection...");
+                setTimeout(() => {
+                    window.location.href = "dashboard.html";
+                }, 1000);
+                return;
+            }
 
-  if (!result.success) {
-    const { showError } = await import("../js/notifications.js");
-    showError(result.error);
-    return;
-  }
+            const { showSuccess } = await import("../js/notifications.js");
+            showSuccess("Code envoyé ! Vérifiez votre téléphone.");
 
-  const { showSuccess } = await import("../js/notifications.js");
-  showSuccess("Connexion réussie ! Redirection...");
-  setTimeout(() => {
-    window.location.href = "dashboard.html";
-  }, 1000);
-});
+            // Afficher le formulaire OTP
+            document.getElementById("connexionForm").style.display = 'none';
+            document.getElementById("otpForm").style.display = 'block';
+            document.getElementById("otpCode").focus();
+        });
 
-window.retourTelephone = function() {
-  document.getElementById("connexionForm").style.display = 'block';
-  document.getElementById("otpForm").style.display = 'none';
-  document.getElementById("otpCode").value = '';
-};
-</script>
+        document.getElementById("otpForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const btn = document.getElementById("btnVerify");
+            btn.disabled = true;
+            btn.querySelector('.btn-text').style.display = 'none';
+            btn.querySelector('.btn-loader').style.display = 'inline';
+
+            const code = document.getElementById("otpCode").value.trim();
+
+            const result = await authSAMASTORE.verifierConnexion(code);
+
+            btn.disabled = false;
+            btn.querySelector('.btn-text').style.display = 'inline';
+            btn.querySelector('.btn-loader').style.display = 'none';
+
+            if (!result.success) {
+                const { showError } = await import("../js/notifications.js");
+                showError(result.error);
+                return;
+            }
+
+            const { showSuccess } = await import("../js/notifications.js");
+            showSuccess("Connexion réussie ! Redirection...");
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 1000);
+        });
+
+        window.retourTelephone = function () {
+            document.getElementById("connexionForm").style.display = 'block';
+            document.getElementById("otpForm").style.display = 'none';
+            document.getElementById("otpCode").value = '';
+        };
+    </script>
 
 
 </body>
+
 </html>
-
-
-
-
-
-

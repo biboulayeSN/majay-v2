@@ -1,25 +1,17 @@
 # Configuration Cloudflare Workers
 # Documentation: https://developers.cloudflare.com/workers/wrangler/configuration/
 
-name = "majay-geolocation"
-main = "worker.js"
-compatibility_date = "2024-01-01"
+name="nayatoo-geo"
+main="worker.js"
+compatibility_date ="2024-01-01"
 
-# Account ID (à remplacer par votre ID Cloudflare)
-# Trouvez-le sur: https://dash.cloudflare.com/ > Workers & Pages
-# account_id = "votre-account-id-ici"
+account_id="b16e15660ee3c4313271ac7db544d372"
 
-# Routes (à configurer après déploiement)
-# Option 1: Sous-domaine workers.dev (gratuit)
-# URL sera: https://majay-geolocation.workers.dev
-
-# Option 2: Route personnalisée sur votre domaine
-# routes = [
-#   { pattern = "majay.com/api/location", zone_name = "majay.com" }
-# ]
+# Route personnalisée sur votre domaine (après déploiement)
+routes=[{pattern="https://nayatoo.com/api/location*",zone_name="nayatoo.com"}]
 
 [env.production]
-name = "majay-geolocation"
+name="nayatoo-geo"
 
 [env.staging]
-name = "majay-geolocation-staging"
+name="nayatoo-geo-staging"

@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
 </head>
+
 <body class="dashboard-page">
     <!-- Sidebar Toggle Button (Mobile) -->
     <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
@@ -23,7 +25,7 @@
             <div class="sidebar-header">
                 <div class="sidebar-logo">🛍️ SAMASTORE</div>
             </div>
-            
+
             <nav class="sidebar-nav" id="mainNav">
                 <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
                 <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
@@ -35,7 +37,8 @@
             </nav>
 
             <div class="sidebar-footer">
-                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan"
+                    title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
                 <!-- Bouton déconnecter masqué sur la page profil -->
             </div>
         </aside>
@@ -64,7 +67,8 @@
                     <form id="profilForm" class="auth-form">
                         <div class="form-group">
                             <label for="nom" class="form-label">Nom de la boutique *</label>
-                            <input type="text" id="nom" class="form-control" required placeholder="Ex: Ma Super Boutique">
+                            <input type="text" id="nom" class="form-control" required
+                                placeholder="Ex: Ma Super Boutique">
                             <span class="form-hint">Le nom visible par vos clients</span>
                         </div>
 
@@ -76,13 +80,15 @@
 
                         <div class="form-group">
                             <label for="whatsapp" class="form-label">WhatsApp *</label>
-                            <input type="tel" id="whatsapp" class="form-control" required placeholder="Ex: +221 77 123 45 67">
+                            <input type="tel" id="whatsapp" class="form-control" required
+                                placeholder="Ex: +221 77 123 45 67">
                             <span class="form-hint">Numéro WhatsApp pour les commandes</span>
                         </div>
 
                         <div class="form-group">
                             <label for="bio" class="form-label">Bio / Description</label>
-                            <textarea id="bio" class="form-control" rows="3" placeholder="Décrivez votre boutique en quelques mots..."></textarea>
+                            <textarea id="bio" class="form-control" rows="3"
+                                placeholder="Décrivez votre boutique en quelques mots..."></textarea>
                             <span class="form-hint">Cette description apparaîtra sur votre catalogue</span>
                         </div>
 
@@ -90,7 +96,8 @@
                             <label for="shopLink" class="form-label">Lien de votre boutique</label>
                             <div class="input-with-prefix">
                                 <input type="text" id="shopLink" class="form-control" readonly>
-                                <button type="button" class="btn btn-primary btn-sm" onclick="copierLien()" style="margin-left: 10px; min-width: 100px;">📋 Copier</button>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="copierLien()"
+                                    style="margin-left: 10px; min-width: 100px;">📋 Copier</button>
                             </div>
                             <span class="form-hint">Partagez ce lien avec vos clients</span>
                         </div>
@@ -155,7 +162,7 @@
             equipeLink.className = 'sidebar-nav-link';
             equipeLink.textContent = '👥 Équipe';
             nav.insertBefore(equipeLink, nav.lastElementChild);
-            
+
             const multiLink = document.createElement('a');
             multiLink.href = 'multi-boutiques.html';
             multiLink.className = 'sidebar-nav-link';
@@ -168,7 +175,7 @@
             const sidebar = document.getElementById('dashboardSidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const isOpen = sidebar.classList.contains('open');
-            
+
             if (isOpen) {
                 closeSidebar();
             } else {
@@ -212,12 +219,12 @@
             document.getElementById('whatsapp').value = store.whatsapp_number || '';
             document.getElementById('bio').value = store.description || '';
             // Nouveau format : www.site.com/slug-boutique
-            document.getElementById('shopLink').value = window.location.origin + '/' + store.slug;
+            document.getElementById('shopLink').value = 'https://www.nayatoo.com/' + store.slug;
         }
 
         chargerProfil();
 
-        window.copierLien = async function() {
+        window.copierLien = async function () {
             const input = document.getElementById('shopLink');
             input.select();
             try {
@@ -231,19 +238,19 @@
             }
         };
 
-        window.deconnexion = function() {
+        window.deconnexion = function () {
             if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
                 authSAMASTORE.deconnexion();
             }
         };
 
-        document.getElementById('profilForm').addEventListener('submit', async function(e) {
+        document.getElementById('profilForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const submitBtn = e.target.querySelector('button[type="submit"]');
             const btnText = submitBtn.querySelector('.btn-text');
             const originalText = btnText.textContent;
-            
+
             submitBtn.disabled = true;
             btnText.textContent = '⏳ Enregistrement...';
 
@@ -274,14 +281,14 @@
             }
         });
 
-        window.supprimerCompte = async function() {
+        window.supprimerCompte = async function () {
             if (!confirm('⚠️ ATTENTION ! Cette action est irréversible. Voulez-vous vraiment supprimer votre compte ?')) return;
             if (!confirm('Toutes vos données (produits, commandes) seront perdues. Continuer ?')) return;
 
             // Soft delete : désactiver la boutique
             const { error } = await supabase
                 .from('stores')
-                .update({ 
+                .update({
                     is_active: false,
                     updated_at: new Date().toISOString()
                 })
@@ -300,6 +307,5 @@
         };
     </script>
 </body>
+
 </html>
-
-

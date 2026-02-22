@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -12,57 +12,56 @@
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-header">
-            <h1 class="logo">🛍️ <span class="text-primary">SAMASTORE</span></h1>
-            <p class="tagline">Gérez votre boutique en ligne</p>
+            <h1 class="logo">SAMASTORE</h1>
+            <p class="tagline">Gerez votre boutique en ligne</p>
         </div>
 
         <div class="auth-card">
             <h2>Connexion Vendeur</h2>
-            <p class="auth-subtitle">Gérez votre boutique</p>
+            <p class="auth-subtitle">Gerez votre boutique</p>
 
-            <!-- Étape 1 : Entrer le téléphone -->
+            <!-- Etape 1 : Entrer le telephone -->
             <form id="connexionForm" class="auth-form" style="display: block;">
                 <div class="form-group">
-                    <label for="telephone" class="form-label">Numéro de téléphone</label>
+                    <label for="telephone" class="form-label">Numero de telephone</label>
                     <div class="input-with-prefix">
                         <span class="prefix" id="phonePrefix" aria-hidden="true"></span>
                         <input type="tel" id="telephone" class="form-control" required placeholder="77 123 45 67"
-                            aria-required="true" aria-label="Numéro de téléphone" aria-describedby="telHint">
+                            aria-required="true" aria-label="Numero de telephone" aria-describedby="telHint">
                     </div>
-                    <span class="form-hint" id="telHint">Le préfixe est détecté automatiquement selon votre pays</span>
+                    <span class="form-hint" id="telHint">Le prefixe est detecte automatiquement selon votre pays</span>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg" id="btnSubmit"
-                    style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
-                    <span class="btn-text">📱 Envoyer le code</span>
-                    <span class="btn-loader" style="display:none">⏳</span>
+                <button type="submit" class="btn btn-primary w-full" id="btnSubmit"
+                    style="min-height: 40px;">
+                    <span class="btn-text">Envoyer le code</span>
+                    <span class="btn-loader" style="display:none">...</span>
                 </button>
             </form>
 
-            <!-- Étape 2 : Entrer le code OTP -->
+            <!-- Etape 2 : Entrer le code OTP -->
             <form id="otpForm" class="auth-form" style="display: none;">
                 <div class="form-group">
-                    <label for="otpCode" class="form-label">Code de vérification</label>
+                    <label for="otpCode" class="form-label">Code de verification</label>
                     <input type="text" id="otpCode" class="form-control" required placeholder="123456" maxlength="6"
-                        pattern="[0-9]{6}" aria-required="true" aria-label="Code de vérification"
+                        pattern="[0-9]{6}" aria-required="true" aria-label="Code de verification"
                         aria-describedby="otpHint">
-                    <span class="form-hint" id="otpHint">Entrez le code reçu par SMS</span>
+                    <span class="form-hint" id="otpHint">Entrez le code recu par SMS</span>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg" id="btnVerify"
-                    style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
-                    <span class="btn-text">✅ Vérifier</span>
-                    <span class="btn-loader" style="display:none">⏳</span>
+                <button type="submit" class="btn btn-primary w-full" id="btnVerify"
+                    style="min-height: 40px;">
+                    <span class="btn-text">Verifier</span>
+                    <span class="btn-loader" style="display:none">...</span>
                 </button>
 
-                <button type="button" class="btn btn-secondary" onclick="retourTelephone()"
-                    style="margin-top: 15px; width: 100%; padding: 14px 24px; min-height: 48px;">
-                    ← Retour
+                <button type="button" class="btn btn-secondary w-full mt-3" onclick="retourTelephone()">
+                    Retour
                 </button>
             </form>
 
-            <div class="auth-footer">
-                <p>Pas de boutique ? <a href="inscription.html">Créer maintenant</a></p>
+            <div class="auth-footer mt-4">
+                <p>Pas de boutique ? <a href="inscription.html">Creer maintenant</a></p>
             </div>
         </div>
     </div>
@@ -71,34 +70,28 @@
         import { authSAMASTORE } from "../js/auth.js";
         import { detectUserLocation } from "../js/geolocation.js";
 
-        // Variable pour stocker la localisation
         let userLocation = null;
 
-        // Initialiser la détection de géolocalisation au chargement
         (async function initGeolocation() {
             try {
-                // Détecter la localisation
                 userLocation = await detectUserLocation();
 
-                // Mettre à jour le préfixe dans le span
                 const phonePrefix = document.getElementById('phonePrefix');
                 if (phonePrefix && userLocation) {
                     phonePrefix.textContent = userLocation.prefix;
                 }
 
-                // Mettre à jour le placeholder
                 const phoneInput = document.getElementById('telephone');
                 if (phoneInput) {
                     phoneInput.placeholder = 'Ex: 77 123 45 67';
                 }
 
-                // Mettre à jour le hint
                 const telHint = document.getElementById('telHint');
                 if (telHint && userLocation) {
-                    telHint.innerHTML = `<span style="color: #25D366;">✓</span> Pays détecté: ${userLocation.flag} ${userLocation.countryName}`;
+                    telHint.innerHTML = `<span style="color: #4daa57;">&#10003;</span> Pays detecte: ${userLocation.flag} ${userLocation.countryName}`;
                 }
             } catch (error) {
-                console.error('Erreur initialisation géolocalisation:', error);
+                console.error('Erreur initialisation geolocalisation:', error);
             }
         })();
 
@@ -112,14 +105,11 @@
             btn.querySelector('.btn-text').style.display = 'none';
             btn.querySelector('.btn-loader').style.display = 'inline';
 
-            // Récupérer le numéro saisi
             phoneNumber = document.getElementById("telephone").value.trim();
 
-            // Récupérer le préfixe depuis le span ou la localisation détectée
             const phonePrefix = document.getElementById('phonePrefix');
             const prefix = phonePrefix ? phonePrefix.textContent.trim() : (userLocation?.prefix || '+221');
 
-            // Ajouter le préfixe si nécessaire
             if (phoneNumber && !phoneNumber.startsWith('+')) {
                 phoneNumber = prefix + phoneNumber.replace(/^0+/, '');
             }
@@ -136,10 +126,9 @@
                 return;
             }
 
-            // Si bypass OTP (mode développement), rediriger directement
             if (result.bypassOTP) {
                 const { showSuccess } = await import("../js/notifications.js");
-                showSuccess("Connexion directe réussie ! Redirection...");
+                showSuccess("Connexion directe reussie ! Redirection...");
                 setTimeout(() => {
                     window.location.href = "dashboard.html";
                 }, 1000);
@@ -147,9 +136,8 @@
             }
 
             const { showSuccess } = await import("../js/notifications.js");
-            showSuccess("Code envoyé ! Vérifiez votre téléphone.");
+            showSuccess("Code envoye ! Verifiez votre telephone.");
 
-            // Afficher le formulaire OTP
             document.getElementById("connexionForm").style.display = 'none';
             document.getElementById("otpForm").style.display = 'block';
             document.getElementById("otpCode").focus();
@@ -178,7 +166,7 @@
             }
 
             const { showSuccess } = await import("../js/notifications.js");
-            showSuccess("Connexion réussie ! Redirection...");
+            showSuccess("Connexion reussie ! Redirection...");
             setTimeout(() => {
                 window.location.href = "dashboard.html";
             }, 1000);
@@ -190,8 +178,6 @@
             document.getElementById("otpCode").value = '';
         };
     </script>
-
-
 </body>
 
 </html>

@@ -7,36 +7,37 @@
     <link rel="stylesheet" href="../css/output.css">
     <style>
         .admin-header {
-            background: linear-gradient(135deg, #2d5016 0%, #4a7c2a 100%);
-            color: white;
+            background: #ffffff;
+            color: #37352f;
+            border-bottom: 1px solid #e5e5e3;
         }
-        .admin-nav a { color: white; }
-        .admin-nav a.active { background: rgba(255,255,255,0.2); }
+        .admin-nav a { color: #37352f; }
+        .admin-nav a.active { background: #f7f7f5; }
     </style>
 </head>
 <body class="dashboard-page">
     <header class="dashboard-header admin-header">
         <div class="dashboard-header-content">
-            <div class="dashboard-logo">📋 ADMIN GESTIONNAIRE</div>
+            <div class="dashboard-logo" style="color: #37352f; font-weight: 700;">ADMIN GESTIONNAIRE</div>
             <nav class="dashboard-nav admin-nav">
-                <a href="gestionnaire.html" class="nav-link active">🏪 Boutiques</a>
-                <a href="gestionnaire-enterprise.html" class="nav-link">👥 Vendeurs Entreprise</a>
+                <a href="gestionnaire.html" class="nav-link active">Boutiques</a>
+                <a href="gestionnaire-enterprise.html" class="nav-link">Vendeurs Entreprise</a>
             </nav>
-            <button onclick="deconnexionAdmin()" class="btn btn-outline btn-sm" style="color: white; border-color: rgba(255,255,255,0.3);">🚪 Déconnexion</button>
+            <button onclick="deconnexionAdmin()" class="btn btn-outline btn-sm" style="color: #37352f; border-color: #e5e5e3;">Deconnexion</button>
         </div>
     </header>
 
     <div class="dashboard-container">
         <div class="page-header">
             <div>
-                <h1 class="page-title">Gestion des Boutiques</h1>
-                <p class="page-subtitle">Restrictions, bannissements et gestion des produits</p>
+                <h1 class="page-title" style="color: #37352f; font-weight: 700;">Gestion des Boutiques</h1>
+                <p class="page-subtitle" style="color: #6b6b6b; font-size: 14px;">Restrictions, bannissements et gestion des produits</p>
             </div>
         </div>
 
         <div class="filters-bar">
-            <input type="text" class="search-input" id="searchInput" placeholder="Rechercher une boutique...">
-            <select class="filter-select" id="statusFilter">
+            <input type="text" class="search-input" id="searchInput" placeholder="Rechercher une boutique..." style="border: 1px solid #e5e5e3; border-radius: 6px;">
+            <select class="filter-select" id="statusFilter" style="border: 1px solid #e5e5e3; border-radius: 6px;">
                 <option value="">Tous les statuts</option>
                 <option value="active">Actives</option>
                 <option value="banned">Bannies</option>
@@ -44,19 +45,19 @@
             </select>
         </div>
 
-        <div class="card">
+        <div class="card" style="border: 1px solid #e5e5e3; border-radius: 8px; box-shadow: none;">
             <div class="card-body">
                 <div style="overflow-x: auto;">
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>Boutique</th>
-                                <th>Propriétaire</th>
-                                <th>Plan</th>
-                                <th>Produits</th>
-                                <th>Statut</th>
-                                <th>Restrictions</th>
-                                <th>Actions</th>
+                            <tr style="background: #f7f7f5;">
+                                <th style="color: #37352f;">Boutique</th>
+                                <th style="color: #37352f;">Proprietaire</th>
+                                <th style="color: #37352f;">Plan</th>
+                                <th style="color: #37352f;">Produits</th>
+                                <th style="color: #37352f;">Statut</th>
+                                <th style="color: #37352f;">Restrictions</th>
+                                <th style="color: #37352f;">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="storesTable">
@@ -108,7 +109,6 @@
                 if (!stores || stores.length === 0) {
                     document.getElementById('storesTable').innerHTML = `
                         <tr><td colspan="7" class="empty-state">
-                            <div class="empty-state-icon">🏪</div>
                             <h3>Aucune boutique</h3>
                         </td></tr>
                     `;
@@ -118,11 +118,11 @@
                 document.getElementById('storesTable').innerHTML = stores.map(store => {
                     const activeProducts = store.products?.filter(p => p.is_active).length || 0;
                     const totalProducts = store.products?.length || 0;
-                    
+
                     return `
                         <tr>
-                            <td><strong>${store.name}</strong><br><small>${store.slug}</small></td>
-                            <td>${store.owner?.full_name || 'N/A'}<br><small>${store.owner?.phone || ''}</small></td>
+                            <td><strong>${store.name}</strong><br><small style="color: #6b6b6b;">${store.slug}</small></td>
+                            <td>${store.owner?.full_name || 'N/A'}<br><small style="color: #6b6b6b;">${store.owner?.phone || ''}</small></td>
                             <td><span class="badge badge-${store.subscription_plan}">${store.subscription_plan.toUpperCase()}</span></td>
                             <td>${activeProducts} / ${totalProducts}</td>
                             <td>
@@ -132,12 +132,12 @@
                             </td>
                             <td>-</td>
                             <td>
-                                <button onclick="banStore('${store.id}', ${!store.is_active})" 
-                                        class="btn btn-sm ${store.is_active ? 'btn-danger' : 'btn-success'}">
-                                    ${store.is_active ? 'Bannir' : 'Débannir'}
+                                <button onclick="banStore('${store.id}', ${!store.is_active})"
+                                        class="btn btn-sm ${store.is_active ? 'btn-danger' : 'btn-success'}" style="min-height: 32px; font-size: 13px;">
+                                    ${store.is_active ? 'Bannir' : 'Debannir'}
                                 </button>
-                                <button onclick="restrictProducts('${store.id}')" 
-                                        class="btn btn-sm btn-warning">
+                                <button onclick="restrictProducts('${store.id}')"
+                                        class="btn btn-sm btn-warning" style="min-height: 32px; font-size: 13px;">
                                     Restreindre
                                 </button>
                             </td>
@@ -151,11 +151,11 @@
 
         window.banStore = async function(storeId, isBanned) {
             if (!await requirePermission('ban_stores')) return;
-            
+
             try {
                 const { error } = await supabase
                     .from('stores')
-                    .update({ 
+                    .update({
                         is_active: !isBanned,
                         updated_at: new Date().toISOString()
                     })
@@ -178,5 +178,3 @@
     </script>
 </body>
 </html>
-
-

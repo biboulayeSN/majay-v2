@@ -7,41 +7,42 @@
     <link rel="stylesheet" href="../css/output.css">
     <style>
         .admin-header {
-            background: linear-gradient(135deg, #1a5490 0%, #2d7fc4 100%);
-            color: white;
+            background: #ffffff;
+            color: #37352f;
+            border-bottom: 1px solid #e5e5e3;
         }
-        .admin-nav a { color: white; }
-        .admin-nav a.active { background: rgba(255,255,255,0.2); }
+        .admin-nav a { color: #37352f; }
+        .admin-nav a.active { background: #f7f7f5; }
     </style>
 </head>
 <body class="dashboard-page">
     <header class="dashboard-header admin-header">
         <div class="dashboard-header-content">
-            <div class="dashboard-logo">💼 ADMIN COMMERCIAL</div>
+            <div class="dashboard-logo" style="color: #37352f; font-weight: 700;">ADMIN COMMERCIAL</div>
             <nav class="dashboard-nav admin-nav">
-                <a href="commercial.html" class="nav-link active">👥 Vendeurs</a>
-                <a href="commercial-stores.html" class="nav-link">🏪 Boutiques</a>
+                <a href="commercial.html" class="nav-link active">Vendeurs</a>
+                <a href="commercial-stores.html" class="nav-link">Boutiques</a>
             </nav>
-            <button onclick="deconnexionAdmin()" class="btn btn-outline btn-sm" style="color: white; border-color: rgba(255,255,255,0.3);">🚪 Déconnexion</button>
+            <button onclick="deconnexionAdmin()" class="btn btn-outline btn-sm" style="color: #37352f; border-color: #e5e5e3;">Deconnexion</button>
         </div>
     </header>
 
     <div class="dashboard-container">
         <div class="page-header">
             <div>
-                <h1 class="page-title">Gestion des Vendeurs Propriétaires</h1>
-                <p class="page-subtitle">Gérer les vendeurs et leurs boutiques</p>
+                <h1 class="page-title" style="color: #37352f; font-weight: 700;">Gestion des Vendeurs Proprietaires</h1>
+                <p class="page-subtitle" style="color: #6b6b6b; font-size: 14px;">Gerer les vendeurs et leurs boutiques</p>
             </div>
         </div>
 
         <div class="filters-bar">
-            <input type="text" class="search-input" id="searchInput" placeholder="Rechercher un vendeur...">
-            <select class="filter-select" id="statusFilter">
+            <input type="text" class="search-input" id="searchInput" placeholder="Rechercher un vendeur..." style="border: 1px solid #e5e5e3; border-radius: 6px;">
+            <select class="filter-select" id="statusFilter" style="border: 1px solid #e5e5e3; border-radius: 6px;">
                 <option value="">Tous les statuts</option>
                 <option value="active">Actifs</option>
                 <option value="inactive">Inactifs</option>
             </select>
-            <select class="filter-select" id="planFilter">
+            <select class="filter-select" id="planFilter" style="border: 1px solid #e5e5e3; border-radius: 6px;">
                 <option value="">Tous les plans</option>
                 <option value="free">Free</option>
                 <option value="pro">Pro</option>
@@ -49,19 +50,19 @@
             </select>
         </div>
 
-        <div class="card">
+        <div class="card" style="border: 1px solid #e5e5e3; border-radius: 8px; box-shadow: none;">
             <div class="card-body">
                 <div style="overflow-x: auto;">
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Téléphone</th>
-                                <th>Boutique</th>
-                                <th>Plan</th>
-                                <th>Statut</th>
-                                <th>Commandes</th>
-                                <th>Actions</th>
+                            <tr style="background: #f7f7f5;">
+                                <th style="color: #37352f;">Nom</th>
+                                <th style="color: #37352f;">Telephone</th>
+                                <th style="color: #37352f;">Boutique</th>
+                                <th style="color: #37352f;">Plan</th>
+                                <th style="color: #37352f;">Statut</th>
+                                <th style="color: #37352f;">Commandes</th>
+                                <th style="color: #37352f;">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="vendorsTable">
@@ -116,7 +117,6 @@
                 if (!vendors || vendors.length === 0) {
                     document.getElementById('vendorsTable').innerHTML = `
                         <tr><td colspan="7" class="empty-state">
-                            <div class="empty-state-icon">👥</div>
                             <h3>Aucun vendeur</h3>
                         </td></tr>
                     `;
@@ -126,7 +126,7 @@
                 document.getElementById('vendorsTable').innerHTML = vendors.map(vendor => {
                     const store = vendor.stores && vendor.stores.length > 0 ? vendor.stores[0] : null;
                     const plan = store?.subscription_plan || 'free';
-                    
+
                     return `
                         <tr>
                             <td><strong>${vendor.full_name || 'N/A'}</strong></td>
@@ -140,9 +140,9 @@
                             </td>
                             <td>${store?.total_orders || 0}</td>
                             <td>
-                                <button onclick="toggleVendor('${vendor.id}', ${!vendor.is_active})" 
-                                        class="btn btn-sm ${vendor.is_active ? 'btn-danger' : 'btn-success'}">
-                                    ${vendor.is_active ? 'Désactiver' : 'Activer'}
+                                <button onclick="toggleVendor('${vendor.id}', ${!vendor.is_active})"
+                                        class="btn btn-sm ${vendor.is_active ? 'btn-danger' : 'btn-success'}" style="min-height: 32px; font-size: 13px;">
+                                    ${vendor.is_active ? 'Desactiver' : 'Activer'}
                                 </button>
                             </td>
                         </tr>
@@ -155,7 +155,7 @@
 
         window.toggleVendor = async function(userId, isActive) {
             if (!await requirePermission('activate_vendors')) return;
-            
+
             try {
                 const { error } = await supabase
                     .from('users')
@@ -174,5 +174,3 @@
     </script>
 </body>
 </html>
-
-

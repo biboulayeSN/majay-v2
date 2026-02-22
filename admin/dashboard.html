@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - MAJAY</title>
+    <title>Dashboard Admin - SAMASTORE</title>
     <link rel="stylesheet" href="../css/output.css">
 </head>
-<body class="dashboard-page admin-dashboard">
+<body class="dashboard-page">
     <!-- Sidebar Toggle Button (Mobile) -->
     <button class="admin-sidebar-toggle" onclick="toggleAdminSidebar()" aria-label="Toggle sidebar">
-        <span id="adminToggleIcon">☰</span>
+        <span id="adminToggleIcon">&#9776;</span>
     </button>
 
     <!-- Sidebar Overlay (Mobile) -->
@@ -17,46 +17,39 @@
 
     <!-- Dashboard Wrapper -->
     <div class="dashboard-wrapper admin-wrapper">
-        <!-- Sidebar injecté par initAdminNav() -->
-        
+        <!-- Sidebar injecte par initAdminNav() -->
+
         <!-- Main Content -->
         <main class="dashboard-main admin-main">
             <div class="admin-main-content">
-                <div class="page-header" style="margin-bottom: 30px;">
-                    <h1 class="page-title" style="font-size: 2.5em; font-weight: 900; color: #1a1a2e; margin-bottom: 10px;">
-                        Tableau de bord SuperAdmin
-                    </h1>
-                    <p class="page-subtitle" style="color: #718096; font-size: 1.1em;">Vue d'ensemble de la plateforme</p>
-                </div>
-
-                <div class="stats-grid" id="statsGrid" style="margin-bottom: 30px;">
-                    <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
-                        <div class="loader"></div>
-                        <p style="margin-top: 15px; color: #718096;">Chargement des statistiques...</p>
+                <div class="page-header mb-6">
+                    <div>
+                        <h1 class="page-title">Tableau de bord SuperAdmin</h1>
+                        <p class="page-subtitle">Vue d'ensemble de la plateforme</p>
                     </div>
                 </div>
 
-                <div class="admin-card-relief" style="margin-bottom: 30px;">
-                    <div class="card-header" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid rgba(0,0,0,0.05);">
-                        <h2 style="font-size: 1.5em; font-weight: 700; color: #1a1a2e; display: flex; align-items: center; gap: 10px;">
-                            📋 Comptes en attente d'approbation
-                        </h2>
+                <div class="stats-grid" id="statsGrid" style="margin-bottom: 24px;">
+                    <div style="grid-column: 1/-1; text-align: center; padding: 32px;">
+                        <p class="text-text-secondary text-sm">Chargement des statistiques...</p>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2 class="text-base font-semibold text-text">Comptes en attente d'approbation</h2>
                     </div>
                     <div id="demandesListe">
-                        <div class="loader"></div>
-                        <p style="text-align: center; margin-top: 15px; color: #718096;">Chargement...</p>
+                        <p class="text-text-secondary text-sm text-center py-4">Chargement...</p>
                     </div>
                 </div>
 
-                <div class="admin-card-relief">
-                    <div class="card-header" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid rgba(0,0,0,0.05);">
-                        <h2 style="font-size: 1.5em; font-weight: 700; color: #1a1a2e; display: flex; align-items: center; gap: 10px;">
-                            📈 Dernières commandes
-                        </h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="text-base font-semibold text-text">Dernieres commandes</h2>
                     </div>
                     <div id="commandesRecentes">
-                        <div class="loader"></div>
-                        <p style="text-align: center; margin-top: 15px; color: #718096;">Chargement...</p>
+                        <p class="text-text-secondary text-sm text-center py-4">Chargement...</p>
                     </div>
                 </div>
             </div>
@@ -69,10 +62,8 @@
         import { initAdminApp } from "../js/admin-app.js";
         import { afficherEtatVide } from "../js/admin-utils.js";
 
-        // Initialiser l'app admin (charge le sidebar et le router)
         initAdminApp();
 
-        // Vérifier l'authentification
         const admin = adminAuth.verifierAuthAdmin();
         if (!admin) {
             window.location.href = 'connexion.html';
@@ -83,29 +74,21 @@
                 const stats = await adminAuth.getStatsAdmin();
 
                 document.getElementById('statsGrid').innerHTML = `
-                    <div class="stat-card admin-stat-relief">
-                        <div class="stat-icon">👥</div>
+                    <div class="stat-card">
                         <div class="stat-label">Total Vendeurs</div>
                         <div class="stat-value">${stats.total_vendeurs}</div>
-                        <p style="font-size: 0.9em; color: #718096; margin-top: 10px;">
-                            Actifs: ${stats.vendeurs_actifs} | Inactifs: ${stats.vendeurs_inactifs}
-                        </p>
+                        <p class="text-xs text-text-secondary mt-1">Actifs: ${stats.vendeurs_actifs} | Inactifs: ${stats.vendeurs_inactifs}</p>
                     </div>
-                    <div class="stat-card admin-stat-relief">
-                        <div class="stat-icon">📦</div>
+                    <div class="stat-card">
                         <div class="stat-label">Produits</div>
                         <div class="stat-value">${stats.total_produits}</div>
-                        <p style="font-size: 0.9em; color: #718096; margin-top: 10px;">
-                            Free: ${stats.vendeurs_free} | Pro: ${stats.vendeurs_pro} | Ent: ${stats.vendeurs_entreprise}
-                        </p>
+                        <p class="text-xs text-text-secondary mt-1">Free: ${stats.vendeurs_free} | Pro: ${stats.vendeurs_pro} | Ent: ${stats.vendeurs_entreprise}</p>
                     </div>
-                    <div class="stat-card admin-stat-relief">
-                        <div class="stat-icon">🛒</div>
+                    <div class="stat-card">
                         <div class="stat-label">Commandes</div>
                         <div class="stat-value">${stats.total_commandes}</div>
                     </div>
-                    <div class="stat-card admin-stat-relief">
-                        <div class="stat-icon">💰</div>
+                    <div class="stat-card">
                         <div class="stat-label">Volume Total</div>
                         <div class="stat-value">${parseFloat(stats.volume_ventes_total).toLocaleString()} FCFA</div>
                     </div>
@@ -113,8 +96,8 @@
             } catch (error) {
                 console.error(error);
                 document.getElementById('statsGrid').innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #718096;">
-                        ❌ Erreur lors du chargement des statistiques
+                    <div style="grid-column: 1/-1; text-align: center; padding: 32px;">
+                        <p class="text-danger text-sm">Erreur lors du chargement des statistiques</p>
                     </div>
                 `;
             }
@@ -125,15 +108,8 @@
                 const { data, error } = await supabase
                     .from('stores')
                     .select(`
-                        id,
-                        name,
-                        slug,
-                        is_active,
-                        created_at,
-                        owner:users!stores_owner_id_fkey (
-                            phone,
-                            full_name
-                        )
+                        id, name, slug, is_active, created_at,
+                        owner:users!stores_owner_id_fkey ( phone, full_name )
                     `)
                     .eq('is_active', false)
                     .order('created_at', { ascending: false });
@@ -141,33 +117,30 @@
                 if (error) throw error;
 
                 if (!data || data.length === 0) {
-                    document.getElementById('demandesListe').innerHTML = afficherEtatVide("Aucune demande d'approbation en attente", "✅");
+                    document.getElementById('demandesListe').innerHTML = `
+                        <div class="empty-state py-6">
+                            <p class="text-text-secondary text-sm">Aucune demande d'approbation en attente</p>
+                        </div>
+                    `;
                     return;
                 }
 
                 document.getElementById('demandesListe').innerHTML = data.map(store => {
                     const owner = Array.isArray(store.owner) ? store.owner[0] : store.owner;
                     return `
-                    <div class="admin-card-relief" style="border: 2px solid #ffa502; background: linear-gradient(135deg, #fffbf5 0%, #ffffff 100%); margin-bottom: 20px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-                            <div style="flex: 1; min-width: 250px;">
-                                <h3 style="margin-bottom: 12px; color: #1a1a2e; font-size: 1.3em; font-weight: 700;">${store.name}</h3>
-                                <div style="display: flex; flex-direction: column; gap: 8px;">
-                                    <p style="color: #718096; font-size: 15px;">👤 ${owner?.full_name || 'N/A'}</p>
-                                    <p style="color: #718096; font-size: 15px;">📞 ${owner?.phone || 'N/A'}</p>
-                                    <p style="color: #718096; font-size: 15px;">🔗 majay.com/${store.slug}</p>
-                                    <p style="color: #718096; font-size: 14px; margin-top: 8px;">
-                                        Inscrit le ${new Date(store.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}
-                                    </p>
-                                </div>
+                    <div class="p-4 border border-warning rounded-lg mb-3">
+                        <div class="flex justify-between items-start flex-wrap gap-4">
+                            <div class="flex-1 min-w-0">
+                                <h3 class="text-sm font-semibold text-text mb-2">${store.name}</h3>
+                                <p class="text-xs text-text-secondary">${owner?.full_name || 'N/A'} &mdash; ${owner?.phone || 'N/A'}</p>
+                                <p class="text-xs text-text-secondary">nayatoo.com/${store.slug}</p>
+                                <p class="text-xs text-text-tertiary mt-1">
+                                    Inscrit le ${new Date(store.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}
+                                </p>
                             </div>
-                            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                                <button onclick="approuverStore('${store.id}')" class="btn btn-primary" style="padding: 12px 24px; font-weight: 600;">
-                                    ✅ Approuver
-                                </button>
-                                <button onclick="rejeterStore('${store.id}')" class="btn btn-danger" style="padding: 12px 24px; font-weight: 600;">
-                                    ❌ Rejeter
-                                </button>
+                            <div class="flex gap-2">
+                                <button onclick="approuverStore('${store.id}')" class="btn btn-primary btn-sm">Approuver</button>
+                                <button onclick="rejeterStore('${store.id}')" class="btn btn-sm" style="background: #fbe9e9; color: #c53030; border: 1px solid #e5e5e3;">Rejeter</button>
                             </div>
                         </div>
                     </div>
@@ -180,27 +153,25 @@
 
         window.approuverStore = async function(id) {
             if (!confirm('Approuver cette boutique ?')) return;
-
             try {
                 await adminAuth.toggleStore(id, true);
-                alert('✅ Boutique approuvée !');
+                alert('Boutique approuvee !');
                 chargerDemandes();
                 chargerStats();
             } catch (error) {
-                alert('❌ ' + error.message);
+                alert(error.message);
             }
         };
 
         window.rejeterStore = async function(id) {
-            if (!confirm('Rejeter cette boutique ? Elle sera désactivée.')) return;
-
+            if (!confirm('Rejeter cette boutique ?')) return;
             try {
                 await adminAuth.supprimerStore(id);
-                alert('✅ Boutique rejetée');
+                alert('Boutique rejetee');
                 chargerDemandes();
                 chargerStats();
             } catch (error) {
-                alert('❌ ' + error.message);
+                alert(error.message);
             }
         };
 
@@ -208,26 +179,24 @@
             try {
                 const { data, error } = await supabase
                     .from('orders')
-                    .select(`
-                        *,
-                        stores!inner (
-                            name,
-                            slug
-                        )
-                    `)
+                    .select(`*, stores!inner ( name, slug )`)
                     .order('created_at', { ascending: false })
                     .limit(10);
 
                 if (error) throw error;
 
                 if (!data || data.length === 0) {
-                    document.getElementById('commandesRecentes').innerHTML = afficherEtatVide("Aucune commande récente", "🛒");
+                    document.getElementById('commandesRecentes').innerHTML = `
+                        <div class="empty-state py-6">
+                            <p class="text-text-secondary text-sm">Aucune commande recente</p>
+                        </div>
+                    `;
                     return;
                 }
 
                 document.getElementById('commandesRecentes').innerHTML = `
                     <div style="overflow-x: auto;">
-                        <table class="admin-table-relief" style="width: 100%; border-collapse: separate; border-spacing: 0;">
+                        <table class="admin-table-relief w-full">
                             <thead>
                                 <tr>
                                     <th>Date</th>
@@ -245,7 +214,7 @@
                                         <td>${new Date(c.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}</td>
                                         <td>${store?.name || 'N/A'}</td>
                                         <td>${itemsCount} article(s)</td>
-                                        <td style="font-weight: 700; color: #25D366; font-size: 16px;">${parseInt(c.total || 0).toLocaleString()} ${c.currency || 'XOF'}</td>
+                                        <td class="font-semibold">${parseInt(c.total || 0).toLocaleString()} ${c.currency || 'XOF'}</td>
                                     </tr>
                                 `;
                                 }).join('')}

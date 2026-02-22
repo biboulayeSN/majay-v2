@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -21,17 +21,17 @@
         <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
-            
+
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link active">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link active">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">Abonnements</a>
+                <a href="profil.html" class="sidebar-nav-link">Profil</a>
             </nav>
 
             <div class="sidebar-footer">
@@ -44,7 +44,7 @@
             <div class="dashboard-main-content">
         <!-- SEARCH BAR -->
         <div class="search-bar mb-3">
-            <span class="text-text-light">🔍</span>
+            <span class="text-text-light"></span>
             <input type="text" placeholder="Client, ID commande, téléphone..." id="searchInput">
         </div>
 
@@ -115,7 +115,7 @@
         function obtenirAvatar(nom) {
             // Générer un avatar basé sur la première lettre du nom
             const initiale = nom ? nom.charAt(0).toUpperCase() : '?';
-            const colors = ['#25D366', '#075E54', '#128C7E', '#20BA5A', '#0A5D52'];
+            const colors = ['#2383e2', '#37352f', '#4a7ebb', '#2383e2', '#37352f'];
             const colorIndex = nom ? nom.charCodeAt(0) % colors.length : 0;
             return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><circle cx="24" cy="24" r="24" fill="${colors[colorIndex]}"/><text x="24" y="24" font-family="Arial" font-size="20" fill="white" text-anchor="middle" dominant-baseline="central">${initiale}</text></svg>`)}`;
         }
@@ -124,11 +124,11 @@
             if (statut === 'paid' || (montantPaye && montantPaye >= montantTotal)) {
                 return { text: 'SOLDÉE', class: 'soldee', icon: '✓' };
             } else if (statut === 'partial' || (montantPaye && montantPaye > 0 && montantPaye < montantTotal)) {
-                return { text: 'PARTIELLE', class: 'partielle', icon: '⏳' };
+                return { text: 'PARTIELLE', class: 'partielle', icon: '...' };
             } else if (statut === 'credit' || statut === 'bor') {
                 return { text: 'BOR', class: 'bor', icon: '!' };
             }
-            return { text: 'EN ATTENTE', class: 'en-attente', icon: '⏳' };
+            return { text: 'EN ATTENTE', class: 'en-attente', icon: '...' };
         }
 
         function afficherCommandes() {
@@ -150,8 +150,8 @@
                     const nomClient = cmd.customer?.first_name || cmd.customer_name || '';
                     const telClient = cmd.customer?.phone || cmd.customer_phone || '';
                     const orderId = cmd.id?.toString() || '';
-                    if (!nomClient.toLowerCase().includes(searchLower) && 
-                        !telClient.includes(searchTerm) && 
+                    if (!nomClient.toLowerCase().includes(searchLower) &&
+                        !telClient.includes(searchTerm) &&
                         !orderId.includes(searchTerm)) {
                         return false;
                     }
@@ -163,7 +163,6 @@
             if (commandesFiltrees.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">🛒</div>
                         <p class="empty-state-text">Aucune commande trouvée</p>
                     </div>
                 `;
@@ -185,7 +184,7 @@
                 } else if (statut === 'partial' || (montantPaye > 0 && montantPaye < montantTotal)) {
                     montantAffichage = `${montantPaye.toLocaleString('fr-FR')} / ${montantTotal.toLocaleString('fr-FR')} FCFA`;
                 } else {
-                    montantAffichage = `À Crédit: ${montantTotal.toLocaleString('fr-FR')} FCFA`;
+                    montantAffichage = `A Credit: ${montantTotal.toLocaleString('fr-FR')} FCFA`;
                 }
 
                 const orderId = cmd.id ? `#WS-${cmd.id}` : '';
@@ -197,14 +196,13 @@
                         <div class="order-info">
                             <div class="order-name">
                                 ${nomComplet}
-                                <span class="text-accent">💬</span>
                             </div>
-                            <div class="order-details">${orderId} • ${dateAffichage}</div>
+                            <div class="order-details">${orderId} · ${dateAffichage}</div>
                             <div class="order-amount ${statut === 'paid' ? 'text-accent' : (statut === 'partial' ? 'text-warning' : 'text-danger')}">${montantAffichage}</div>
                         </div>
                         <div class="flex flex-col items-end gap-2">
                             <span class="status-badge ${badge.class}">${badge.text}</span>
-                            <span class="text-text-light text-lg">→</span>
+                            <span class="text-text-light text-base">→</span>
                         </div>
                     </div>
                 `;
@@ -232,7 +230,7 @@
             const sidebar = document.getElementById('dashboardSidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const isOpen = sidebar.classList.contains('open');
-            
+
             if (isOpen) {
                 closeSidebar();
             } else {
@@ -267,13 +265,13 @@
             const equipeLink = document.createElement('a');
             equipeLink.href = 'equipe.html';
             equipeLink.className = 'sidebar-nav-link';
-            equipeLink.textContent = '👥 Équipe';
+            equipeLink.textContent = 'Equipe';
             nav.insertBefore(equipeLink, nav.lastElementChild);
-            
+
             const multiLink = document.createElement('a');
             multiLink.href = 'multi-boutiques.html';
             multiLink.className = 'sidebar-nav-link';
-            multiLink.textContent = '🏪 Multi-Boutiques';
+            multiLink.textContent = 'Multi-Boutiques';
             nav.insertBefore(multiLink, nav.lastElementChild);
         }
 
@@ -285,5 +283,3 @@
     </div>
 </body>
 </html>
-
-

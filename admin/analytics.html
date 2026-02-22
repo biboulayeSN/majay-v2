@@ -18,41 +18,41 @@
     <!-- Dashboard Wrapper -->
     <div class="dashboard-wrapper admin-wrapper">
         <!-- Sidebar injecté par initAdminNav() -->
-        
+
         <!-- Main Content -->
         <main class="dashboard-main admin-main">
             <div class="admin-main-content">
-                <div class="page-header" style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+                <div class="page-header" style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
                     <div>
-                        <h1 class="page-title" style="font-size: 2.5em; font-weight: 900; color: #1a1a2e; margin-bottom: 10px;">
+                        <h1 class="page-title" style="font-size: 1.8em; font-weight: 700; color: #37352f; margin-bottom: 6px;">
                             Statistiques de la Plateforme
                         </h1>
-                        <p class="page-subtitle" style="color: #718096; font-size: 1.1em;">Analyses et données de la base de données</p>
+                        <p class="page-subtitle" style="color: #6b6b6b; font-size: 14px;">Analyses et donnees de la base de donnees</p>
                     </div>
-                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                        <button onclick="exporterRapportGlobal()" class="btn btn-primary btn-lg" id="exportGlobalBtn">
-                            📊 Exporter le rapport global
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button onclick="exporterRapportGlobal()" class="btn btn-primary" id="exportGlobalBtn" style="background: #2383e2; min-height: 40px; border: none; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;">
+                            Exporter le rapport global
                         </button>
-                        <button onclick="exporterDonnees()" class="btn btn-outline btn-lg">📥 Exporter les données</button>
+                        <button onclick="exporterDonnees()" class="btn btn-outline" style="min-height: 40px; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; border: 1px solid #e5e5e3; background: white; color: #37352f;">Exporter les donnees</button>
                     </div>
                 </div>
 
-                <div class="stats-grid" id="analyticsGrid" style="margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div class="stats-grid" id="analyticsGrid" style="margin-bottom: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
                     <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
                         <div class="loader"></div>
-                        <p style="margin-top: 15px; color: #718096;">Chargement des statistiques...</p>
+                        <p style="margin-top: 15px; color: #6b6b6b; font-size: 13px;">Chargement des statistiques...</p>
                     </div>
                 </div>
 
-                <div class="admin-card-relief">
-                    <div class="card-header" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid rgba(0,0,0,0.05);">
-                        <h2 style="font-size: 1.5em; font-weight: 700; color: #1a1a2e; display: flex; align-items: center; gap: 10px;">
-                            📊 Analyses détaillées
+                <div class="admin-card-relief" style="border: 1px solid #e5e5e3; border-radius: 8px; padding: 20px;">
+                    <div class="card-header" style="margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #e5e5e3;">
+                        <h2 style="font-size: 1.2em; font-weight: 600; color: #37352f;">
+                            Analyses detaillees
                         </h2>
                     </div>
                     <div class="card-body" id="analyticsDetails">
                         <div class="loader"></div>
-                        <p style="text-align: center; margin-top: 15px; color: #718096;">Chargement...</p>
+                        <p style="text-align: center; margin-top: 15px; color: #6b6b6b; font-size: 13px;">Chargement...</p>
                     </div>
                 </div>
             </div>
@@ -88,25 +88,21 @@
                 ]);
 
                 document.getElementById('analyticsGrid').innerHTML = `
-                    <div class="stat-card admin-stat-relief">
-                        <div class="stat-icon">🏪</div>
-                        <div class="stat-label">Boutiques</div>
-                        <div class="stat-value">${storesCount.count || 0}</div>
+                    <div class="stat-card admin-stat-relief" style="border: 1px solid #e5e5e3; border-radius: 8px; padding: 16px;">
+                        <div class="stat-label" style="color: #6b6b6b; font-size: 13px;">Boutiques</div>
+                        <div class="stat-value" style="font-size: 1.8em; font-weight: 700; color: #37352f;">${storesCount.count || 0}</div>
                     </div>
-                    <div class="stat-card admin-stat-relief">
-                        <div class="stat-icon">📦</div>
-                        <div class="stat-label">Produits</div>
-                        <div class="stat-value">${productsCount.count || 0}</div>
+                    <div class="stat-card admin-stat-relief" style="border: 1px solid #e5e5e3; border-radius: 8px; padding: 16px;">
+                        <div class="stat-label" style="color: #6b6b6b; font-size: 13px;">Produits</div>
+                        <div class="stat-value" style="font-size: 1.8em; font-weight: 700; color: #37352f;">${productsCount.count || 0}</div>
                     </div>
-                    <div class="stat-card admin-stat-relief">
-                        <div class="stat-icon">🛒</div>
-                        <div class="stat-label">Commandes</div>
-                        <div class="stat-value">${ordersCount.count || 0}</div>
+                    <div class="stat-card admin-stat-relief" style="border: 1px solid #e5e5e3; border-radius: 8px; padding: 16px;">
+                        <div class="stat-label" style="color: #6b6b6b; font-size: 13px;">Commandes</div>
+                        <div class="stat-value" style="font-size: 1.8em; font-weight: 700; color: #37352f;">${ordersCount.count || 0}</div>
                     </div>
-                    <div class="stat-card admin-stat-relief">
-                        <div class="stat-icon">👥</div>
-                        <div class="stat-label">Utilisateurs</div>
-                        <div class="stat-value">${usersCount.count || 0}</div>
+                    <div class="stat-card admin-stat-relief" style="border: 1px solid #e5e5e3; border-radius: 8px; padding: 16px;">
+                        <div class="stat-label" style="color: #6b6b6b; font-size: 13px;">Utilisateurs</div>
+                        <div class="stat-value" style="font-size: 1.8em; font-weight: 700; color: #37352f;">${usersCount.count || 0}</div>
                     </div>
                 `;
 
@@ -123,15 +119,15 @@
                 });
 
                 if (!orders || orders.length === 0) {
-                    document.getElementById('analyticsDetails').innerHTML = afficherEtatVide("Aucune commande enregistrée", "📊");
+                    document.getElementById('analyticsDetails').innerHTML = afficherEtatVide("Aucune commande enregistree");
                 } else {
                     document.getElementById('analyticsDetails').innerHTML = `
-                        <h3 style="font-size: 1.2em; font-weight: 700; color: #2d3748; margin-bottom: 20px;">Répartition des commandes par statut</h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                        <h3 style="font-size: 1em; font-weight: 600; color: #37352f; margin-bottom: 16px;">Repartition des commandes par statut</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
                             ${Object.entries(statsByStatus).map(([status, count]) => `
-                                <div class="admin-card-relief" style="text-align: center; padding: 25px;">
-                                    <div style="font-size: 2.5em; font-weight: 900; color: #1a1a2e; margin-bottom: 10px;">${count}</div>
-                                    <div style="color: #718096; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">${status}</div>
+                                <div style="text-align: center; padding: 20px; border: 1px solid #e5e5e3; border-radius: 8px;">
+                                    <div style="font-size: 2em; font-weight: 700; color: #37352f; margin-bottom: 6px;">${count}</div>
+                                    <div style="color: #6b6b6b; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">${status}</div>
                                 </div>
                             `).join('')}
                         </div>
@@ -156,15 +152,15 @@
 
             const btn = document.getElementById('exportGlobalBtn');
             const originalText = btn.innerHTML;
-            
+
             try {
                 btn.disabled = true;
-                btn.innerHTML = '⏳ Génération du rapport...';
-                
+                btn.innerHTML = 'Generation du rapport...';
+
                 showInfo('Génération du rapport en cours... Cela peut prendre quelques instants.');
-                
+
                 await exporterRapportGlobal('rapport-global-majay');
-                
+
                 showSuccess('Rapport exporté avec succès !');
             } catch (error) {
                 console.error('Erreur export rapport:', error);
@@ -179,5 +175,3 @@
     </script>
 </body>
 </html>
-
-

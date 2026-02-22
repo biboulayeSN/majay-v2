@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -7,16 +7,10 @@
     <title>Stock et Catalogue</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
-    <!-- Désactiver le cache pour le développement -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
 </head>
 
-<body class="dashboard-page bg-bg">
-    <!-- Initialize sidebar functions immediately -->
+<body class="dashboard-page bg-white">
     <script>
-        // Define toggleSubmenu globally BEFORE any HTML that uses it
         window.toggleSubmenu = function (element) {
             element.classList.toggle('open');
             const submenu = element.nextElementSibling;
@@ -24,21 +18,11 @@
                 submenu.classList.toggle('open');
             }
         };
-
-        // Event delegation for submenu triggers
-        document.addEventListener('DOMContentLoaded', function () {
-            document.addEventListener('click', function (e) {
-                const trigger = e.target.closest('[data-submenu-trigger]');
-                if (trigger) {
-                    toggleSubmenu(trigger);
-                }
-            });
-        });
     </script>
 
     <!-- Sidebar Toggle Button (Mobile) -->
     <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-        <span id="toggleIcon">☰</span>
+        <span id="toggleIcon">&#9776;</span>
     </button>
 
     <!-- Sidebar Overlay (Mobile) -->
@@ -49,32 +33,31 @@
         <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
 
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <!-- SUBMENU: PRODUITS -->
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
                 <div class="nav-item">
                     <div class="sidebar-nav-link has-submenu active open" data-submenu-trigger>
-                        <span>📦 Produits</span>
+                        <span>Produits</span>
                     </div>
-                    <div class="sidebar-submenu open"
-                        style="max-height: 1000px; margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                    <div class="sidebar-submenu open" style="max-height: 500px;">
                         <a href="produits.html" class="sidebar-submenu-link active">Liste Produits</a>
                         <a href="inventaire.html" class="sidebar-submenu-link">Inventaire</a>
                     </div>
                 </div>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <a href="commandes.html" class="sidebar-nav-link">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">Abonnements</a>
+                <a href="profil.html" class="sidebar-nav-link">Profil</a>
             </nav>
 
             <div class="sidebar-footer">
-                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan"
-                    title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <a href="abonnements.html" class="sidebar-plan-badge" id="userPlan"
+                    title="Gerer mon abonnement" aria-label="Plan actuel"
+                    style="background: #f7f7f5; color: #37352f; border: 1px solid #e5e5e3;">FREE</a>
             </div>
         </aside>
 
@@ -82,19 +65,14 @@
         <main class="dashboard-main">
             <div class="dashboard-main-content">
                 <!-- PUBLIC CATALOGUE LINK -->
-                <div class="bg-gradient-to-r from-primary-light to-accent rounded-xl p-5 mb-4 relative overflow-hidden">
-                    <div class="relative z-10">
-                        <h2 class="text-base font-black text-white mb-1">Lien du catalogue public</h2>
-                        <p class="text-sm text-white/90 mb-3">Partagez votre boutique sur WhatsApp, TikTok, Instagram et
-                            Telegram pour que vos clients puissent voir vos produits</p>
-                        <div class="flex gap-2 items-center">
-                            <input type="text" readonly
-                                class="flex-1 bg-white/20 backdrop-blur-sm text-white rounded-lg px-3 py-2 text-sm border-none outline-none placeholder-white/70"
-                                id="catalogueLink">
-                            <button
-                                class="bg-white text-accent px-4 py-2 rounded-lg font-bold text-sm min-h-[44px] hover:bg-white/90 transition-all"
-                                onclick="copierLien()">Copier</button>
-                        </div>
+                <div class="card mb-4">
+                    <h2 class="text-sm font-semibold text-text mb-1">Lien du catalogue public</h2>
+                    <p class="text-xs text-text-secondary mb-3">Partagez votre boutique sur WhatsApp, TikTok, Instagram et Telegram</p>
+                    <div class="flex gap-2 items-center">
+                        <input type="text" readonly
+                            class="flex-1 form-control text-sm"
+                            id="catalogueLink">
+                        <button class="btn btn-primary btn-sm" onclick="copierLien()">Copier</button>
                     </div>
                 </div>
 
@@ -112,7 +90,7 @@
 
                 <!-- SEARCH BAR -->
                 <div class="search-bar mb-3">
-                    <span class="text-text-light">🔍</span>
+                    <span class="text-text-tertiary text-sm">&#128269;</span>
                     <input type="text" placeholder="Rechercher un produit..." id="searchInput">
                 </div>
 
@@ -125,13 +103,11 @@
 
                 <!-- PRODUCTS LIST -->
                 <div class="mb-4">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
-                        <h2 class="text-lg font-black text-text">Liste des produits</h2>
+                    <div class="flex justify-between items-center mb-3 flex-wrap gap-3">
+                        <h2 class="text-base font-semibold text-text">Liste des produits</h2>
                         <div id="viewToggleContainer"></div>
                     </div>
-                    <div id="productsList" class="space-y-3">
-                        <!-- Products will be loaded here -->
+                    <div id="productsList" class="space-y-2">
                     </div>
                 </div>
             </div>
@@ -139,17 +115,15 @@
             <!-- FAB -->
             <button class="fab" onclick="ouvrirModalAjout()" title="Ajouter un produit">+</button>
 
-
-            <!-- MODAL AJOUT/ÉDITION -->
-            <div class="hidden fixed inset-0 bg-black/50 z-50 items-center justify-center p-4" id="productModalBackdrop"
+            <!-- MODAL AJOUT/EDITION -->
+            <div class="hidden fixed inset-0 bg-black/40 z-50 items-center justify-center p-4" id="productModalBackdrop"
                 onclick="fermerModal()"></div>
             <div class="hidden fixed inset-0 z-50 items-center justify-center p-4 pointer-events-none"
                 id="productModal">
-                <div class="bg-white rounded-2xl w-full max-w-md p-6 pointer-events-auto max-h-[90vh] overflow-y-auto">
-                    <div class="flex justify-between items-center mb-5">
-                        <h2 class="text-2xl font-black text-text" id="modalTitle">Ajouter un produit</h2>
-                        <button class="text-3xl text-text-light hover:text-danger"
-                            onclick="fermerModal()">&times;</button>
+                <div class="bg-white rounded-lg w-full max-w-md p-5 pointer-events-auto max-h-[90vh] overflow-y-auto border border-border">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-bold text-text" id="modalTitle">Ajouter un produit</h2>
+                        <button class="text-2xl text-text-secondary hover:text-danger" onclick="fermerModal()">&times;</button>
                     </div>
                     <form id="productForm">
                         <input type="hidden" id="productId">
@@ -170,71 +144,67 @@
                             <input type="number" class="form-control" id="productStock" required min="0" value="0">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Catégorie *</label>
+                            <label class="form-label">Categorie *</label>
                             <select class="form-control" id="productCategory" required>
-                                <optgroup label="📱 Multimédia & High-Tech">
-                                    <option value="telephones_tablettes">Téléphones & Tablettes</option>
+                                <optgroup label="Multimedia & High-Tech">
+                                    <option value="telephones_tablettes">Telephones & Tablettes</option>
                                     <option value="informatique_ordinateurs">Informatique & Ordinateurs</option>
-                                    <option value="electronique_tv_video">Électronique, TV & Vidéo</option>
-                                    <option value="consoles_jeux_video">Consoles & Jeux Vidéo</option>
+                                    <option value="electronique_tv_video">Electronique, TV & Video</option>
+                                    <option value="consoles_jeux_video">Consoles & Jeux Video</option>
                                 </optgroup>
-                                <optgroup label="🏠 Maison & Électroménager">
-                                    <option value="gros_electromenager">Gros Électroménager</option>
-                                    <option value="petit_electromenager">Petit Électroménager</option>
-                                    <option value="ameublement_decoration">Ameublement & Décoration</option>
+                                <optgroup label="Maison & Electromenager">
+                                    <option value="gros_electromenager">Gros Electromenager</option>
+                                    <option value="petit_electromenager">Petit Electromenager</option>
+                                    <option value="ameublement_decoration">Ameublement & Decoration</option>
                                     <option value="cuisine_entretien">Cuisine & Entretien</option>
                                 </optgroup>
-                                <optgroup label="👗 Mode, Beauté & Santé">
-                                    <option value="vetements_chaussures">Vêtements & Chaussures</option>
+                                <optgroup label="Mode, Beaute & Sante">
+                                    <option value="vetements_chaussures">Vetements & Chaussures</option>
                                     <option value="bijoux_montres_sacs">Bijoux, Montres & Sacs</option>
-                                    <option value="cosmetiques_parfumerie">Cosmétiques & Parfumerie</option>
-                                    <option value="sante_bienetre">Santé & Bien-être</option>
+                                    <option value="cosmetiques_parfumerie">Cosmetiques & Parfumerie</option>
+                                    <option value="sante_bienetre">Sante & Bien-etre</option>
                                 </optgroup>
-                                <optgroup label="🚗 Véhicules & Transport">
-                                    <option value="voitures_particulieres">Voitures Particulières</option>
+                                <optgroup label="Vehicules & Transport">
+                                    <option value="voitures_particulieres">Voitures Particulieres</option>
                                     <option value="motos_scooters">Motos & Scooters</option>
-                                    <option value="pieces_detachees">Pièces Détachées</option>
+                                    <option value="pieces_detachees">Pieces Detachees</option>
                                 </optgroup>
-                                <optgroup label="🏢 Immobilier">
+                                <optgroup label="Immobilier">
                                     <option value="vente_maisons_terrains">Vente Maisons & Terrains</option>
                                     <option value="location_appartements">Location Appartements</option>
                                 </optgroup>
-                                <optgroup label="🥕 Agroalimentaire">
-                                    <option value="supermarche_epicerie">Supermarché & Épicerie</option>
+                                <optgroup label="Agroalimentaire">
+                                    <option value="supermarche_epicerie">Supermarche & Epicerie</option>
                                     <option value="produits_frais_locaux">Produits Frais & Locaux</option>
                                 </optgroup>
-                                <optgroup label="⚽ Divers & Loisirs">
+                                <optgroup label="Divers & Loisirs">
                                     <option value="sport_fitness">Sport & Fitness</option>
-                                    <option value="jouets_puericulture">Jouets & Puériculture</option>
-                                    <option value="materiaux_construction">Matériaux & Construction</option>
+                                    <option value="jouets_puericulture">Jouets & Puericulture</option>
+                                    <option value="materiaux_construction">Materiaux & Construction</option>
                                 </optgroup>
-                                <optgroup label="💼 Emploi & Services">
+                                <optgroup label="Emploi & Services">
                                     <option value="prestations_services">Prestations de Services</option>
                                 </optgroup>
-                                <option value="autres">🔄 Autres</option>
+                                <option value="autres">Autres</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Image du produit</label>
-                            <div class="image-upload-container"
-                                style="border: 2px dashed #e2e8f0; padding: 20px; text-align: center; border-radius: 8px; cursor: pointer;"
+                            <div class="border border-dashed border-border rounded-lg p-4 text-center cursor-pointer"
                                 onclick="document.getElementById('productImageFile').click()">
                                 <input type="file" id="productImageFile" accept="image/*" class="hidden"
                                     style="display: none;" onchange="previewImage(this)">
                                 <div id="uploadPlaceholder">
-                                    <div class="text-4xl mb-2">📷</div>
-                                    <p class="text-sm text-text-light">Cliquez pour ajouter une photo</p>
+                                    <p class="text-sm text-text-secondary">Cliquez pour ajouter une photo</p>
                                 </div>
                                 <img id="imagePreview" src="" class="hidden w-full h-48 object-cover rounded-lg mt-2"
                                     style="display: none;">
                             </div>
-                            <!-- Hidden input to store URL after upload or edit -->
                             <input type="hidden" id="productImageUrl">
                         </div>
-                        <div class="flex gap-3 mt-6">
-                            <button type="submit" class="btn btn-primary flex-1">💾 Enregistrer</button>
-                            <button type="button" class="btn btn-outline flex-1"
-                                onclick="fermerModal()">Annuler</button>
+                        <div class="flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary flex-1">Enregistrer</button>
+                            <button type="button" class="btn btn-secondary flex-1" onclick="fermerModal()">Annuler</button>
                         </div>
                     </form>
                 </div>
@@ -249,7 +219,6 @@
                 const session = authSAMASTORE.getSession();
                 if (!session) window.location.href = 'connexion.html';
 
-                // Exposer la fonction de prévisualisation globalement
                 window.previewImage = function (input) {
                     if (input.files && input.files[0]) {
                         const reader = new FileReader();
@@ -266,13 +235,11 @@
                 let filterActif = 'tous';
                 let searchTerm = '';
 
-                // Initialiser le toggle grille/liste
                 const viewToggleContainer = document.getElementById('viewToggleContainer');
                 if (viewToggleContainer) {
                     window.viewToggle = new ViewToggle('productsList');
                 }
 
-                // Charger les produits
                 async function chargerProduits() {
                     const { data, error } = await supabase
                         .from('products')
@@ -300,22 +267,17 @@
                     const container = document.getElementById('productsList');
 
                     let produitsFiltres = produits.filter(p => {
-                        // Filtre par statut
                         if (filterActif === 'en-stock' && (p.stock || 0) <= 0) return false;
                         if (filterActif === 'stock-faible' && ((p.stock || 0) >= 10 || (p.stock || 0) <= 0)) return false;
                         if (filterActif === 'rupture' && (p.stock || 0) > 0) return false;
-
-                        // Recherche
                         if (searchTerm && !p.name.toLowerCase().includes(searchTerm.toLowerCase())) return false;
-
                         return true;
                     });
 
                     if (produitsFiltres.length === 0) {
                         container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">📦</div>
-                        <p class="empty-state-text">Aucun produit trouvé</p>
+                        <p class="empty-state-text">Aucun produit trouve</p>
                     </div>
                 `;
                         return;
@@ -324,10 +286,10 @@
                     container.innerHTML = produitsFiltres.map(produit => {
                         const stock = produit.stock || 0;
                         const stockBadge = stock === 0
-                            ? '<span class="status-badge badge-danger">RUPTURE DE STOCK</span>'
+                            ? '<span class="badge badge-danger">RUPTURE</span>'
                             : stock < 10
-                                ? `<span class="text-xs text-warning font-semibold">Stock: ${stock}</span>`
-                                : `<span class="text-xs text-text-light">Stock: ${stock}</span>`;
+                                ? `<span class="text-xs text-warning font-medium">Stock: ${stock}</span>`
+                                : `<span class="text-xs text-text-secondary">Stock: ${stock}</span>`;
 
                         const imageUrl = produit.images && produit.images.length > 0
                             ? produit.images[0]
@@ -342,13 +304,12 @@
                             <div class="product-price">${parseInt(produit.price).toLocaleString('fr-FR')} FCFA</div>
                             ${stockBadge}
                         </div>
-                        <button class="text-text-light text-xl" onclick="event.stopPropagation(); supprimerProduit(${produit.id})">⋯</button>
+                        <button class="text-text-secondary text-lg border-none bg-transparent cursor-pointer" onclick="event.stopPropagation(); supprimerProduit(${produit.id})">&#8943;</button>
                     </div>
                 `;
                     }).join('');
                 }
 
-                // Filtres
                 document.querySelectorAll('.filter-btn').forEach(btn => {
                     btn.addEventListener('click', function () {
                         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -358,13 +319,11 @@
                     });
                 });
 
-                // Recherche
                 document.getElementById('searchInput').addEventListener('input', function () {
                     searchTerm = this.value;
                     afficherProduits();
                 });
 
-                // Modal
                 window.ouvrirModalAjout = function () {
                     document.getElementById('productModal').classList.remove('hidden');
                     document.getElementById('productModal').classList.add('flex');
@@ -372,13 +331,10 @@
                     document.getElementById('productModalBackdrop').classList.add('flex');
                     document.getElementById('productId').value = '';
                     document.getElementById('productForm').reset();
-
-                    // Reset image preview
                     document.getElementById('imagePreview').src = '';
                     document.getElementById('imagePreview').style.display = 'none';
                     document.getElementById('uploadPlaceholder').style.display = 'block';
                     document.getElementById('productImageUrl').value = '';
-
                     document.getElementById('modalTitle').textContent = 'Ajouter un produit';
                 };
 
@@ -400,7 +356,6 @@
                     document.getElementById('productStock').value = produit.stock || 0;
                     document.getElementById('productCategory').value = produit.category;
 
-                    // Gestion de l'image
                     const imageUrl = produit.images && produit.images.length > 0 ? produit.images[0] : '';
                     document.getElementById('productImageUrl').value = imageUrl;
 
@@ -422,7 +377,7 @@
                 };
 
                 window.supprimerProduit = async function (id) {
-                    if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) return;
+                    if (!confirm('Etes-vous sur de vouloir supprimer ce produit ?')) return;
 
                     const { error } = await supabase
                         .from('products')
@@ -442,25 +397,23 @@
                     const input = document.getElementById('catalogueLink');
                     input.select();
                     document.execCommand('copy');
-                    alert('Lien copié !');
+                    alert('Lien copie !');
                 };
 
-                // Formulaire
                 document.getElementById('productForm').addEventListener('submit', async function (e) {
                     e.preventDefault();
 
                     const submitBtn = this.querySelector('button[type="submit"]');
                     const originalText = submitBtn.textContent;
                     submitBtn.disabled = true;
-                    submitBtn.textContent = '⏳ Enregistrement...';
+                    submitBtn.textContent = 'Enregistrement...';
 
                     try {
                         let imageUrl = document.getElementById('productImageUrl').value;
                         const imageFile = document.getElementById('productImageFile').files[0];
 
-                        // Si un nouveau fichier est sélectionné, l'uploader
                         if (imageFile) {
-                            submitBtn.textContent = '📤 Upload image...';
+                            submitBtn.textContent = 'Upload image...';
                             const uploadResult = await storage.uploadProductImage(imageFile);
                             if (uploadResult.error) {
                                 throw new Error('Erreur upload image: ' + uploadResult.error);
@@ -509,38 +462,32 @@
                     }
                 });
 
-                // Initialiser
-                // Mettre à jour le lien du catalogue avec le slug dynamique
                 if (session && session.store_slug) {
                     const shopLink = 'https://www.nayatoo.com/' + session.store_slug;
                     document.getElementById('catalogueLink').value = shopLink;
                 }
 
-                // Mettre à jour le badge du plan
                 const userPlan = document.getElementById('userPlan');
                 if (userPlan && session) {
                     userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
-                    userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
                 }
 
-                // Afficher les liens conditionnels selon le plan
                 const plan = session?.subscription_plan || 'free';
                 if (plan === 'entreprise') {
                     const nav = document.getElementById('mainNav');
                     const equipeLink = document.createElement('a');
                     equipeLink.href = 'equipe.html';
                     equipeLink.className = 'sidebar-nav-link';
-                    equipeLink.textContent = '👥 Équipe';
+                    equipeLink.textContent = 'Equipe';
                     nav.insertBefore(equipeLink, nav.lastElementChild);
 
                     const multiLink = document.createElement('a');
                     multiLink.href = 'multi-boutiques.html';
                     multiLink.className = 'sidebar-nav-link';
-                    multiLink.textContent = '🏪 Multi-Boutiques';
+                    multiLink.textContent = 'Multi-Boutiques';
                     nav.insertBefore(multiLink, nav.lastElementChild);
                 }
 
-                // Sidebar toggle functions
                 function toggleSidebar() {
                     const sidebar = document.getElementById('dashboardSidebar');
                     const overlay = document.getElementById('sidebarOverlay');
@@ -551,7 +498,7 @@
                     } else {
                         sidebar.classList.add('open');
                         overlay.classList.add('active');
-                        document.getElementById('toggleIcon').textContent = '✕';
+                        document.getElementById('toggleIcon').textContent = '\u2715';
                     }
                 }
 
@@ -560,10 +507,9 @@
                     const overlay = document.getElementById('sidebarOverlay');
                     sidebar.classList.remove('open');
                     overlay.classList.remove('active');
-                    document.getElementById('toggleIcon').textContent = '☰';
+                    document.getElementById('toggleIcon').textContent = '\u2630';
                 }
 
-                // Expose functions globally
                 window.toggleSidebar = toggleSidebar;
                 window.closeSidebar = closeSidebar;
 
@@ -572,25 +518,6 @@
     </div>
     </main>
     </div>
-    <script>
-        // Ensure DOM is ready before initializing
-        document.addEventListener('DOMContentLoaded', function () {
-            // Toggle Submenu Logic
-            window.toggleSubmenu = function (element) {
-                element.classList.toggle('open');
-                const submenu = element.nextElementSibling;
-                if (submenu) {
-                    submenu.classList.toggle('open');
-                }
-            };
-
-            // Ensure sidebar is visible on load
-            const sidebar = document.getElementById('dashboardSidebar');
-            if (sidebar && window.innerWidth >= 769) {
-                sidebar.classList.remove('closed');
-            }
-        });
-    </script>
 </body>
 
 </html>

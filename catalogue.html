@@ -4,118 +4,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Samastore - Catalogue en Ligne</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link rel="stylesheet" href="css/output.css">
 </head>
 
-<body class="min-h-screen bg-gray-50 pb-24">
+<body class="min-h-screen bg-white pb-20">
     <!-- HEADER -->
-    <header class="header bg-white border-b border-gray-200 py-4 px-5 text-center shadow-sm sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto flex justify-center items-center">
-            <a href="index.html" class="no-underline hover:opacity-80 transition-opacity">
-                <h1
-                    class="logo text-3xl md:text-4xl font-black text-gray-900 tracking-tighter flex items-center gap-2 justify-center">
-                    🛍️ <span class="text-primary">SAMASTORE</span>
-                </h1>
+    <header class="bg-white border-b border-border py-3 px-4 text-center sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto flex justify-center items-center">
+            <a href="index.html" class="no-underline">
+                <h1 class="text-lg font-bold text-text">SAMASTORE</h1>
             </a>
         </div>
-        <p class="tagline text-sm text-gray-500 mt-2 font-medium">La plateforme tout-en-un pour booster vos ventes sur
-            WhatsApp et Telegram</p>
+        <p class="text-xs text-text-secondary mt-1">La plateforme tout-en-un pour booster vos ventes sur WhatsApp et Telegram</p>
     </header>
 
     <!-- NAVIGATION CATEGORIES -->
-    <nav class="bg-white py-3 px-4 flex gap-3 overflow-x-auto shadow-sm sticky top-[73px] z-40 scrollbar-hide"
-        role="navigation" aria-label="Filtres de catégories">
-        <button class="category-btn active" data-category="tous" aria-label="Afficher tous les produits"
-            aria-pressed="true">
-            <span class="text-lg" aria-hidden="true">🌟</span>
-            <span class="hidden md:inline">Tous</span>
+    <nav class="bg-white py-2 px-4 flex gap-2 overflow-x-auto border-b border-border sticky top-[52px] z-40"
+        role="navigation" aria-label="Filtres de categories">
+        <button class="category-btn active" data-category="tous" aria-label="Afficher tous les produits" aria-pressed="true">
+            Tous
         </button>
-        <button class="category-btn" data-category="multimedia_hightech" aria-label="Multimédia" aria-pressed="false">
-            <span class="text-lg" aria-hidden="true">📱</span>
-            <span class="hidden md:inline">Multimédia</span>
+        <button class="category-btn" data-category="multimedia_hightech" aria-label="Multimedia" aria-pressed="false">
+            Multimedia
         </button>
-        <button class="category-btn" data-category="Mode_Beaute_Sante" aria-label="Mode & Beauté" aria-pressed="false">
-            <span class="text-lg" aria-hidden="true">👗</span>
-            <span class="hidden md:inline">Mode & Beauté</span>
+        <button class="category-btn" data-category="Mode_Beaute_Sante" aria-label="Mode & Beaute" aria-pressed="false">
+            Mode & Beaute
         </button>
         <button class="category-btn" data-category="Maison_Electromenager" aria-label="Maison" aria-pressed="false">
-            <span class="text-lg" aria-hidden="true">🏠</span>
-            <span class="hidden md:inline">Maison</span>
+            Maison
         </button>
         <button class="category-btn" data-category="Agroalimentaire" aria-label="Alimentaire" aria-pressed="false">
-            <span class="text-lg" aria-hidden="true">🥕</span>
-            <span class="hidden md:inline">Alimentaire</span>
+            Alimentaire
         </button>
         <button class="category-btn" data-category="Vehicules_Transport" aria-label="Auto-Moto" aria-pressed="false">
-            <span class="text-lg" aria-hidden="true">🚗</span>
-            <span class="hidden md:inline">Auto-Moto</span>
+            Auto-Moto
         </button>
         <button class="category-btn" data-category="Immobilier" aria-label="Immobilier" aria-pressed="false">
-            <span class="text-lg" aria-hidden="true">🏢</span>
-            <span class="hidden md:inline">Immo</span>
+            Immo
         </button>
         <button class="category-btn" data-category="Emploi_Services" aria-label="Services" aria-pressed="false">
-            <span class="text-lg" aria-hidden="true">💼</span>
-            <span class="hidden md:inline">Services</span>
+            Services
         </button>
         <button class="category-btn" data-category="Divers_Loisirs" aria-label="Loisirs" aria-pressed="false">
-            <span class="text-lg" aria-hidden="true">⚽</span>
-            <span class="hidden md:inline">Loisirs</span>
+            Loisirs
         </button>
         <button class="category-btn" data-category="autres" aria-label="Autres" aria-pressed="false">
-            <span class="text-lg" aria-hidden="true">🔄</span>
-            <span class="hidden md:inline">Autres</span>
+            Autres
         </button>
     </nav>
 
     <!-- GRILLE PRODUITS -->
-    <main class="max-w-6xl mx-auto py-6 px-4">
+    <main class="max-w-5xl mx-auto py-6 px-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 items-stretch"
             id="productsGrid">
-            <!-- Les produits seront chargés ici par JavaScript -->
         </div>
     </main>
 
     <!-- BOUTON PANIER FLOTTANT -->
     <button
-        class="fixed bottom-6 right-6 bg-gradient-to-r from-accent to-primary-light text-white border-none py-3 px-5 rounded-full text-base font-bold cursor-pointer shadow-lg transition-all duration-200 z-999 flex items-center gap-2 hover:scale-105 hover:shadow-xl min-h-[44px] min-w-[44px]"
+        class="fab"
         id="cartBtn" aria-label="Voir le panier" aria-describedby="cartBadge">
-        <span class="text-lg" aria-hidden="true">🛒</span>
-        <span class="hidden md:inline">Panier</span>
-        <span class="bg-danger rounded-full py-0.5 px-2 text-xs min-w-[20px] text-center font-bold" id="cartBadge"
+        <span aria-hidden="true">&#128722;</span>
+        <span class="bg-danger rounded text-white py-0.5 px-1.5 text-xs font-medium absolute -top-1 -right-1 min-w-[18px] text-center" id="cartBadge"
             aria-label="Nombre d'articles dans le panier">0</span>
     </button>
 
     <!-- MODAL PANIER -->
     <div class="hidden fixed top-0 left-0 w-screen h-screen z-[9999] items-center justify-center p-4" id="cartModal">
-        <div class="fixed top-0 left-0 w-full h-full bg-black/75 backdrop-blur-sm -z-10" id="modalOverlay"></div>
-        <div
-            class="relative bg-white rounded-xl w-[90%] max-w-[500px] max-h-[85vh] flex flex-col shadow-xl z-10 mx-auto">
-            <div class="flex justify-between items-center py-4 px-5 border-b border-border">
-                <h2 class="text-2xl text-text font-black">Mon Panier</h2>
-                <button
-                    class="bg-none border-none text-3xl text-text-light cursor-pointer transition-all duration-200 leading-none hover:text-danger min-w-[44px] min-h-[44px] flex items-center justify-center"
+        <div class="fixed top-0 left-0 w-full h-full bg-black/40 -z-10" id="modalOverlay"></div>
+        <div class="relative bg-white rounded-lg w-[90%] max-w-[500px] max-h-[85vh] flex flex-col border border-border z-10 mx-auto">
+            <div class="flex justify-between items-center py-3 px-4 border-b border-border">
+                <h2 class="text-lg text-text font-bold">Mon Panier</h2>
+                <button class="text-2xl text-text-secondary cursor-pointer hover:text-danger min-w-[36px] min-h-[36px] flex items-center justify-center border-none bg-transparent"
                     id="closeBtn" aria-label="Fermer le panier">&times;</button>
             </div>
-
-            <div class="flex-1 overflow-y-auto py-4 px-5" id="cartItems">
-                <!-- Items du panier ici -->
-            </div>
-
-            <div class="py-4 px-5 border-t border-border bg-bg">
-                <div class="flex justify-between items-center mb-4 text-xl font-bold text-text">
+            <div class="flex-1 overflow-y-auto py-3 px-4" id="cartItems"></div>
+            <div class="py-3 px-4 border-t border-border">
+                <div class="flex justify-between items-center mb-3 text-base font-bold text-text">
                     <span>Total:</span>
-                    <span class="bg-gradient-to-r from-accent to-primary-light bg-clip-text text-transparent text-xl"
-                        id="totalAmount">0 CFA</span>
+                    <span class="text-primary" id="totalAmount">0 CFA</span>
                 </div>
-                <button
-                    class="w-full bg-gradient-to-r from-accent to-primary-light text-white border-none py-3 rounded-xl text-base font-bold cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 min-h-[44px]"
+                <button class="w-full bg-primary text-white border-none py-2.5 rounded-md text-sm font-medium cursor-pointer hover:bg-primary-hover flex items-center justify-center gap-2 min-h-[36px]"
                     id="whatsappBtn" aria-label="Commander sur WhatsApp">
-                    <span aria-hidden="true">📲</span>
-                    <span>Commander sur WhatsApp</span>
+                    Commander sur WhatsApp
                 </button>
             </div>
         </div>
@@ -123,121 +96,85 @@
 
     <!-- MODAL CONTACT CLIENT -->
     <div class="hidden fixed top-0 left-0 w-screen h-screen z-[9999] items-center justify-center p-4" id="contactModal">
-        <div class="fixed top-0 left-0 w-full h-full bg-black/75 backdrop-blur-sm -z-10" id="contactOverlay"></div>
-        <div
-            class="relative bg-white rounded-xl w-[90%] max-w-[500px] max-h-[85vh] flex flex-col shadow-xl z-10 mx-auto">
-            <div class="flex justify-between items-center py-4 px-5 border-b border-border">
-                <h2 class="text-2xl text-text font-black">📝 Vos coordonnées</h2>
-                <button
-                    class="bg-none border-none text-3xl text-text-light cursor-pointer transition-all duration-200 leading-none hover:text-danger min-w-[44px] min-h-[44px] flex items-center justify-center"
+        <div class="fixed top-0 left-0 w-full h-full bg-black/40 -z-10" id="contactOverlay"></div>
+        <div class="relative bg-white rounded-lg w-[90%] max-w-[500px] max-h-[85vh] flex flex-col border border-border z-10 mx-auto">
+            <div class="flex justify-between items-center py-3 px-4 border-b border-border">
+                <h2 class="text-lg text-text font-bold">Vos coordonnees</h2>
+                <button class="text-2xl text-text-secondary cursor-pointer hover:text-danger min-w-[36px] min-h-[36px] flex items-center justify-center border-none bg-transparent"
                     id="contactCloseBtn" aria-label="Fermer le formulaire de contact">&times;</button>
             </div>
-
-            <div class="p-5">
-                <p class="text-text-light mb-5 leading-relaxed text-base">
-                    Pour finaliser votre commande, merci de nous fournir vos coordonnées.
-                    Elles seront utilisées uniquement pour traiter votre commande.
+            <div class="p-4">
+                <p class="text-text-secondary mb-4 text-sm leading-relaxed">
+                    Pour finaliser votre commande, merci de nous fournir vos coordonnees.
                 </p>
-
                 <form id="contactForm">
                     <div class="form-group">
-                        <label for="clientFirstName" class="form-label">
-                            Prénom *
-                        </label>
+                        <label for="clientFirstName" class="form-label">Prenom *</label>
                         <input type="text" id="clientFirstName" class="form-control" required placeholder="Ex: Mamadou"
-                            aria-required="true" aria-label="Prénom">
+                            aria-required="true" aria-label="Prenom">
                     </div>
-
                     <div class="form-group">
-                        <label for="clientLastName" class="form-label">
-                            Nom
-                        </label>
-                        <input type="text" id="clientLastName" class="form-control" placeholder="Ex: Diallo"
-                            aria-label="Nom">
+                        <label for="clientLastName" class="form-label">Nom</label>
+                        <input type="text" id="clientLastName" class="form-control" placeholder="Ex: Diallo" aria-label="Nom">
                     </div>
-
                     <div class="form-group">
-                        <label for="clientPhone" class="form-label">
-                            Téléphone / WhatsApp *
-                        </label>
+                        <label for="clientPhone" class="form-label">Telephone / WhatsApp *</label>
                         <div class="input-with-prefix">
                             <span class="prefix" id="clientPhonePrefix" aria-hidden="true">+221</span>
                             <input type="tel" id="clientPhone" class="form-control" required placeholder="77 123 45 67"
-                                aria-required="true" aria-label="Téléphone / WhatsApp"
-                                aria-describedby="clientPhoneHint">
+                                aria-required="true" aria-label="Telephone / WhatsApp" aria-describedby="clientPhoneHint">
                         </div>
-                        <span class="form-hint" id="clientPhoneHint">
-                            Le préfixe est détecté automatiquement
-                        </span>
+                        <span class="form-hint" id="clientPhoneHint">Le prefixe est detecte automatiquement</span>
                     </div>
-
                     <div class="form-group">
-                        <label for="clientAddress" class="form-label">
-                            Adresse de livraison
-                        </label>
+                        <label for="clientAddress" class="form-label">Adresse de livraison</label>
                         <textarea id="clientAddress" class="form-control" rows="2"
-                            placeholder="Ex: Quartier Liberté 6, près de la station Total"
+                            placeholder="Ex: Quartier Liberte 6, pres de la station Total"
                             aria-label="Adresse de livraison"></textarea>
                     </div>
-
-                    <button type="submit" class="btn btn-primary btn-lg w-full mt-3" aria-label="Valider et commander">
-                        <span aria-hidden="true">✅</span>
-                        <span>Valider et commander</span>
+                    <button type="submit" class="btn btn-primary w-full mt-2" aria-label="Valider et commander">
+                        Valider et commander
                     </button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DÉTAILS PRODUIT -->
+    <!-- MODAL DETAILS PRODUIT -->
     <div class="hidden fixed top-0 left-0 w-screen h-screen z-[9999] items-center justify-center p-4"
         id="productDetailModal" role="dialog" aria-labelledby="productDetailTitle" aria-modal="true">
-        <div class="fixed top-0 left-0 w-full h-full bg-black/75 backdrop-blur-sm -z-10 cursor-pointer"
-            id="productDetailOverlay"></div>
-        <div
-            class="relative bg-white rounded-xl w-[90%] max-w-[900px] max-h-[90vh] flex flex-col shadow-xl z-10 mx-auto overflow-hidden">
-            <div class="flex justify-between items-center py-4 px-5 border-b border-border flex-shrink-0">
-                <h2 class="text-2xl text-text font-black" id="productDetailTitle">Détails du produit</h2>
-                <button
-                    class="bg-none border-none text-3xl text-text-light cursor-pointer transition-all duration-200 leading-none hover:text-danger min-w-[44px] min-h-[44px] flex items-center justify-center"
-                    id="productDetailCloseBtn" aria-label="Fermer les détails du produit">&times;</button>
+        <div class="fixed top-0 left-0 w-full h-full bg-black/40 -z-10 cursor-pointer" id="productDetailOverlay"></div>
+        <div class="relative bg-white rounded-lg w-[90%] max-w-[900px] max-h-[90vh] flex flex-col border border-border z-10 mx-auto overflow-hidden">
+            <div class="flex justify-between items-center py-3 px-4 border-b border-border flex-shrink-0">
+                <h2 class="text-lg text-text font-bold" id="productDetailTitle">Details du produit</h2>
+                <button class="text-2xl text-text-secondary cursor-pointer hover:text-danger min-w-[36px] min-h-[36px] flex items-center justify-center border-none bg-transparent"
+                    id="productDetailCloseBtn" aria-label="Fermer les details du produit">&times;</button>
             </div>
-
-            <div class="flex-1 overflow-y-auto p-5">
-            </div>
-
-            <!-- Informations produit -->
-            <div class="space-y-4">
+            <div class="flex-1 overflow-y-auto p-4"></div>
+            <div class="space-y-3">
                 <div>
-                    <span id="productDetailCategory"
-                        class="inline-block bg-gradient-to-r from-primary to-primary-light text-white py-1 px-3 rounded-full text-xs font-bold uppercase mb-3"></span>
-                    <h3 id="productDetailName" class="text-3xl font-black text-text mb-3"></h3>
-                    <p id="productDetailDescription" class="text-base text-text-light leading-relaxed mb-4"></p>
+                    <span id="productDetailCategory" class="inline-block bg-primary text-white py-0.5 px-2 rounded text-xs font-medium uppercase mb-2"></span>
+                    <h3 id="productDetailName" class="text-xl font-bold text-text mb-2"></h3>
+                    <p id="productDetailDescription" class="text-sm text-text-secondary leading-relaxed mb-3"></p>
                 </div>
-
-                <div class="border-t border-border pt-4">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-lg font-semibold text-text">Prix:</span>
-                        <span id="productDetailPrice"
-                            class="text-3xl font-black bg-gradient-to-r from-accent to-primary-light bg-clip-text text-transparent"></span>
+                <div class="border-t border-border pt-3">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-medium text-text">Prix:</span>
+                        <span id="productDetailPrice" class="text-xl font-bold text-primary"></span>
                     </div>
-
                     <button id="productDetailAddBtn"
-                        class="w-full bg-gradient-to-r from-accent to-primary-light text-white border-none py-4 rounded-xl text-lg font-bold cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 min-h-[48px]"
+                        class="w-full bg-primary text-white border-none py-2.5 rounded-md text-sm font-medium cursor-pointer hover:bg-primary-hover flex items-center justify-center gap-2 min-h-[36px]"
                         aria-label="Ajouter au panier">
-                        <span aria-hidden="true">🛒</span>
-                        <span>Ajouter au panier</span>
+                        Ajouter au panier
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    </div>
-    </div>
 
     <!-- FOOTER -->
-    <footer class="bg-gray-900 text-white text-center py-6 mt-12">
-        <p>&copy; 2024 Samastore - Tous droits réservés</p>
+    <footer class="bg-text text-white text-center py-4 mt-8">
+        <p class="text-sm">&copy; 2024 Samastore - Tous droits reserves</p>
     </footer>
 
     <!-- SCRIPTS -->

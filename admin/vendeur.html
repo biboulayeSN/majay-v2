@@ -8,6 +8,7 @@
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 14px;
         }
         .admin-header-content {
             max-width: 1400px;
@@ -20,25 +21,28 @@
             gap: 20px;
         }
         .dashboard-logo {
-            font-size: 1.5em;
-            font-weight: bold;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #37352f;
         }
         .admin-nav {
             display: flex;
             gap: 15px;
         }
         .admin-nav a {
-            color: white;
+            color: #37352f;
             text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.3s;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.2s;
+            font-size: 14px;
         }
         .admin-nav a:hover {
-            background: rgba(255,255,255,0.1);
+            background: #f7f7f5;
         }
         .admin-nav a.active {
-            background: rgba(255,255,255,0.2);
+            background: #f7f7f5;
+            font-weight: 600;
         }
         .dashboard-container {
             max-width: 1400px;
@@ -47,9 +51,9 @@
         }
         .badge {
             display: inline-block;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8em;
             font-weight: 600;
         }
         .badge-active {
@@ -77,13 +81,13 @@
             color: #721c24;
         }
         .btn {
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 6px 14px;
+            border-radius: 6px;
             border: none;
             cursor: pointer;
-            font-size: 0.9em;
-            transition: all 0.3s;
+            font-size: 0.85em;
             font-weight: 500;
+            min-height: 40px;
         }
         .btn:disabled {
             opacity: 0.5;
@@ -95,7 +99,6 @@
         }
         .btn-danger:hover:not(:disabled) {
             background: #ee5a6f;
-            transform: translateY(-1px);
         }
         .btn-success {
             background: #2ed573;
@@ -103,77 +106,70 @@
         }
         .btn-success:hover:not(:disabled) {
             background: #26de81;
-            transform: translateY(-1px);
         }
         .btn-logout {
             background: none;
-            border: 2px solid white;
-            color: white;
+            border: 1px solid #e5e5e3;
+            color: #37352f;
             cursor: pointer;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: all 0.3s;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.9em;
         }
         .btn-logout:hover {
-            background: rgba(255,255,255,0.1);
+            background: #f7f7f5;
         }
         select {
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 2px solid #e2e8f0;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #e5e5e3;
             background: white;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-        select:hover {
-            border-color: #cbd5e0;
         }
         select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #2383e2;
         }
         table {
             border-collapse: separate;
             border-spacing: 0;
         }
         tr:hover {
-            background: #f7fafc;
+            background: #f7f7f5;
         }
         th {
             font-weight: 600;
-            color: #2d3748;
+            color: #37352f;
         }
         .search-box {
-            padding: 12px 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            padding: 10px 16px;
+            border: 1px solid #e5e5e3;
+            border-radius: 6px;
             width: 300px;
             max-width: 100%;
-            font-size: 1em;
-            transition: all 0.3s;
+            font-size: 14px;
         }
         .search-box:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #2383e2;
         }
         .stat-card {
             background: white;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 8px;
             flex: 1;
             min-width: 200px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e5e3;
         }
         .stat-number {
-            font-size: 2em;
+            font-size: 1.8em;
             font-weight: bold;
-            color: #1a1a2e;
+            color: #37352f;
         }
         .stat-label {
-            color: #718096;
-            margin-top: 5px;
+            color: #6b6b6b;
+            margin-top: 4px;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -189,64 +185,60 @@
     <!-- Dashboard Wrapper -->
     <div class="dashboard-wrapper admin-wrapper">
         <!-- Sidebar injecté par initAdminNav() -->
-        
+
         <!-- Main Content -->
         <main class="dashboard-main admin-main">
             <div class="admin-main-content">
                 <!-- Page Header -->
-                <div class="page-header" style="margin-bottom: 30px;">
-                    <h1 class="page-title" style="font-size: 2.5em; font-weight: 900; color: #1a1a2e; margin-bottom: 10px;">
+                <div class="page-header" style="margin-bottom: 24px;">
+                    <h1 class="page-title" style="font-size: 1.8em; font-weight: 700; color: #37352f; margin-bottom: 6px;">
                         Gestion des Vendeurs
                     </h1>
-                    <p class="page-subtitle" style="color: #718096; font-size: 1.1em;">Surveillance et gestion des boutiques</p>
+                    <p class="page-subtitle" style="color: #6b6b6b; font-size: 14px;">Surveillance et gestion des boutiques</p>
                 </div>
 
                 <!-- Statistiques rapides -->
-                <div class="stats-grid" id="statsRow" style="margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                    <div class="admin-stat-relief">
-                        <div class="stat-icon">👥</div>
-                        <div class="stat-label">Total Vendeurs</div>
-                        <div class="stat-value" id="totalVendeurs">-</div>
+                <div class="stats-grid" id="statsRow" style="margin-bottom: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    <div class="admin-stat-relief" style="border: 1px solid #e5e5e3; border-radius: 8px; padding: 16px;">
+                        <div class="stat-label" style="color: #6b6b6b; font-size: 13px;">Total Vendeurs</div>
+                        <div class="stat-value" id="totalVendeurs" style="font-size: 1.8em; font-weight: 700; color: #37352f;">-</div>
                     </div>
-                    <div class="admin-stat-relief">
-                        <div class="stat-icon">✅</div>
-                        <div class="stat-label">Actifs</div>
-                        <div class="stat-value" id="vendeursActifs">-</div>
+                    <div class="admin-stat-relief" style="border: 1px solid #e5e5e3; border-radius: 8px; padding: 16px;">
+                        <div class="stat-label" style="color: #6b6b6b; font-size: 13px;">Actifs</div>
+                        <div class="stat-value" id="vendeursActifs" style="font-size: 1.8em; font-weight: 700; color: #37352f;">-</div>
                     </div>
-                    <div class="admin-stat-relief">
-                        <div class="stat-icon">⭐</div>
-                        <div class="stat-label">Plan Pro</div>
-                        <div class="stat-value" id="vendeursPro">-</div>
+                    <div class="admin-stat-relief" style="border: 1px solid #e5e5e3; border-radius: 8px; padding: 16px;">
+                        <div class="stat-label" style="color: #6b6b6b; font-size: 13px;">Plan Pro</div>
+                        <div class="stat-value" id="vendeursPro" style="font-size: 1.8em; font-weight: 700; color: #37352f;">-</div>
                     </div>
                 </div>
 
                 <!-- Barre de recherche -->
-                <div class="admin-card-relief" style="margin-bottom: 30px;">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Rechercher par nom, catégorie, localité, téléphone..." style="font-size: 16px; padding: 16px 20px;">
+                <div class="admin-card-relief" style="margin-bottom: 24px; border: 1px solid #e5e5e3; border-radius: 8px;">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher par nom, categorie, localite, telephone..." style="font-size: 14px; padding: 12px 16px; border: none;">
                 </div>
 
                 <!-- Tableau des vendeurs -->
-                <div class="admin-card-relief" style="padding: 0; overflow: hidden;">
+                <div class="admin-card-relief" style="padding: 0; overflow: hidden; border: 1px solid #e5e5e3; border-radius: 8px;">
                     <div style="overflow-x: auto;">
                         <table class="admin-table-relief" style="width: 100%; min-width: 1200px; border-collapse: separate; border-spacing: 0;">
                             <thead>
-                                <tr>
-                                    <th>Identité</th>
-                                    <th>Localisation</th>
-                                    <th>Contact</th>
-                                    <th>Plan</th>
-                                    <th style="text-align: center;">Produits</th>
-                                    <th style="text-align: center;">Disponibilité</th>
-                                    <th style="text-align: center;">Dernière connexion</th>
-                                    <th style="text-align: center;">Statut</th>
-                                    <th style="text-align: center;">Actions</th>
+                                <tr style="background: #f7f7f5;">
+                                    <th style="color: #37352f;">Identite</th>
+                                    <th style="color: #37352f;">Localisation</th>
+                                    <th style="color: #37352f;">Contact</th>
+                                    <th style="color: #37352f;">Plan</th>
+                                    <th style="text-align: center; color: #37352f;">Produits</th>
+                                    <th style="text-align: center; color: #37352f;">Disponibilite</th>
+                                    <th style="text-align: center; color: #37352f;">Derniere connexion</th>
+                                    <th style="text-align: center; color: #37352f;">Statut</th>
+                                    <th style="text-align: center; color: #37352f;">Actions</th>
                                 </tr>
                             </thead>
                 <tbody id="vendeursTable">
                     <tr>
-                        <td colspan="9" style="text-align: center; padding: 60px; color: #718096;">
-                            <div style="font-size: 3em;">⏳</div>
-                            <div style="margin-top: 10px;">Chargement des données...</div>
+                        <td colspan="9" style="text-align: center; padding: 40px; color: #6b6b6b;">
+                            <div style="margin-top: 10px;">Chargement des donnees...</div>
                         </td>
                     </tr>
                             </tbody>
@@ -279,7 +271,7 @@
         async function chargerVendeurs() {
             try {
                 stores = await adminAuth.getStores();
-                
+
                 // Enrichir avec le nombre de produits
                 for (let store of stores) {
                     const { count } = await supabase
@@ -289,7 +281,7 @@
                         .eq('is_active', true);
                     store.nombreProduits = count || 0;
                 }
-                
+
                 calculerStats();
                 afficherVendeurs(stores);
             } catch (error) {
@@ -297,9 +289,8 @@
                 document.getElementById('vendeursTable').innerHTML = `
                     <tr>
                         <td colspan="9" style="text-align: center; padding: 40px;">
-                            <div style="color: #ff4757; font-size: 3em; margin-bottom: 15px;">❌</div>
-                            <div style="color: #ff4757; font-weight: 700; font-size: 18px; margin-bottom: 8px;">Erreur lors du chargement</div>
-                            <div style="color: #718096; font-size: 14px;">${error.message}</div>
+                            <div style="color: #ff4757; font-weight: 600; font-size: 15px; margin-bottom: 8px;">Erreur lors du chargement</div>
+                            <div style="color: #6b6b6b; font-size: 13px;">${error.message}</div>
                         </td>
                     </tr>
                 `;
@@ -311,7 +302,7 @@
             stats.total = stores.length;
             stats.actifs = stores.filter(s => s.is_active).length;
             stats.pro = stores.filter(s => s.subscription_plan === 'pro' || s.subscription_plan === 'entreprise').length;
-            
+
             document.getElementById('totalVendeurs').textContent = stats.total;
             document.getElementById('vendeursActifs').textContent = stats.actifs;
             document.getElementById('vendeursPro').textContent = stats.pro;
@@ -320,14 +311,14 @@
         // Calculer le statut en ligne/hors ligne basé sur last_login
         function calculerStatutEnLigne(lastLogin) {
             if (!lastLogin) return { isOnline: false, label: 'Hors ligne', badgeClass: 'badge-offline' };
-            
+
             const maintenant = new Date();
             const derniereConnexion = new Date(lastLogin);
             const diffMinutes = (maintenant - derniereConnexion) / (1000 * 60);
-            
+
             // En ligne si dernière connexion < 5 minutes
             const isOnline = diffMinutes < 5;
-            
+
             return {
                 isOnline,
                 label: isOnline ? 'En ligne' : 'Hors ligne',
@@ -338,15 +329,15 @@
         // Formater la date de dernière connexion
         function formaterDerniereConnexion(lastLogin) {
             if (!lastLogin) return 'Jamais';
-            
+
             const date = new Date(lastLogin);
             const maintenant = new Date();
             const diffMinutes = Math.floor((maintenant - date) / (1000 * 60));
-            
+
             if (diffMinutes < 1) return 'À l\'instant';
             if (diffMinutes < 60) return `Il y a ${diffMinutes} min`;
             if (diffMinutes < 1440) return `Il y a ${Math.floor(diffMinutes / 60)} h`;
-            
+
             return date.toLocaleDateString('fr-FR', {
                 day: '2-digit',
                 month: '2-digit',
@@ -362,7 +353,7 @@
                 document.getElementById('vendeursTable').innerHTML = `
                     <tr>
                         <td colspan="9" style="text-align: center; padding: 40px;">
-                            ${afficherEtatVide("Aucune boutique trouvée", "🔍")}
+                            ${afficherEtatVide("Aucune boutique trouvée")}
                         </td>
                     </tr>
                 `;
@@ -373,53 +364,53 @@
                 const owner = Array.isArray(store.owner) ? store.owner[0] : store.owner;
                 const statutEnLigne = calculerStatutEnLigne(owner?.last_login);
                 const derniereConnexion = formaterDerniereConnexion(owner?.last_login);
-                const localisation = [store.city, store.region].filter(Boolean).join(', ') || 'Non renseigné';
-                
+                const localisation = [store.city, store.region].filter(Boolean).join(', ') || 'Non renseigne';
+
                 return `
                 <tr>
                     <td>
-                        <div style="font-weight: 700; color: #2d3748; font-size: 15px; margin-bottom: 4px;">${owner?.full_name || store.name}</div>
-                        <div style="color: #718096; font-size: 13px;">
-                            ${store.activity_category || 'Non catégorisé'}
+                        <div style="font-weight: 600; color: #37352f; font-size: 14px; margin-bottom: 2px;">${owner?.full_name || store.name}</div>
+                        <div style="color: #6b6b6b; font-size: 12px;">
+                            ${store.activity_category || 'Non categorise'}
                         </div>
                     </td>
                     <td>
-                        <div style="color: #2d3748; font-size: 14px; font-weight: 500;">📍 ${localisation}</div>
+                        <div style="color: #37352f; font-size: 13px; font-weight: 500;">${localisation}</div>
                     </td>
                     <td>
-                        <div style="color: #2d3748; font-size: 14px; font-weight: 500;">${owner?.phone || 'N/A'}</div>
-                        <div style="color: #718096; font-size: 12px; margin-top: 4px;">@${store.slug}</div>
+                        <div style="color: #37352f; font-size: 13px; font-weight: 500;">${owner?.phone || 'N/A'}</div>
+                        <div style="color: #6b6b6b; font-size: 12px; margin-top: 2px;">@${store.slug}</div>
                     </td>
                     <td>
-                        <select onchange="changerPlan('${store.id}', this.value, this)" 
-                                class="form-control" 
-                                style="padding: 10px 14px; border-radius: 10px; border: 2px solid #e2e8f0; background: white; font-size: 14px; font-weight: 500; cursor: pointer;">
-                            <option value="free" ${store.subscription_plan === 'free' ? 'selected' : ''}>🎁 Free</option>
-                            <option value="pro" ${store.subscription_plan === 'pro' ? 'selected' : ''}>⭐ Pro</option>
-                            <option value="entreprise" ${store.subscription_plan === 'entreprise' ? 'selected' : ''}>🏢 Entreprise</option>
+                        <select onchange="changerPlan('${store.id}', this.value, this)"
+                                class="form-control"
+                                style="padding: 8px 12px; border-radius: 6px; border: 1px solid #e5e5e3; background: white; font-size: 13px; font-weight: 500; cursor: pointer;">
+                            <option value="free" ${store.subscription_plan === 'free' ? 'selected' : ''}>Free</option>
+                            <option value="pro" ${store.subscription_plan === 'pro' ? 'selected' : ''}>Pro</option>
+                            <option value="entreprise" ${store.subscription_plan === 'entreprise' ? 'selected' : ''}>Entreprise</option>
                         </select>
                     </td>
                     <td style="text-align: center;">
-                        <span style="font-weight: 700; color: #667eea; font-size: 16px;">${store.nombreProduits || 0}</span>
+                        <span style="font-weight: 600; color: #2383e2; font-size: 14px;">${store.nombreProduits || 0}</span>
                     </td>
                     <td style="text-align: center;">
-                        <span class="badge ${statutEnLigne.badgeClass}" style="padding: 8px 14px; font-size: 13px; font-weight: 600;">
-                            ${statutEnLigne.isOnline ? '🟢' : '🔴'} ${statutEnLigne.label}
+                        <span class="badge ${statutEnLigne.badgeClass}" style="padding: 4px 10px; font-size: 12px; font-weight: 600;">
+                            ${statutEnLigne.label}
                         </span>
                     </td>
-                    <td style="text-align: center; font-size: 13px; color: #718096;">
+                    <td style="text-align: center; font-size: 12px; color: #6b6b6b;">
                         ${derniereConnexion}
                     </td>
                     <td style="text-align: center;">
-                        <span class="badge ${store.is_active ? 'badge-active' : 'badge-inactive'}" style="padding: 8px 14px; font-size: 13px; font-weight: 600;">
-                            ${store.is_active ? '✓ Actif' : '✗ Inactif'}
+                        <span class="badge ${store.is_active ? 'badge-active' : 'badge-inactive'}" style="padding: 4px 10px; font-size: 12px; font-weight: 600;">
+                            ${store.is_active ? 'Actif' : 'Inactif'}
                         </span>
                     </td>
                     <td style="text-align: center;">
-                        <button class="btn ${store.is_active ? 'btn-danger' : 'btn-success'}" 
+                        <button class="btn ${store.is_active ? 'btn-danger' : 'btn-success'}"
                                 onclick="${store.is_active ? 'desactiverVendeur' : 'activerVendeur'}('${store.id}', this)"
-                                style="padding: 10px 16px; font-size: 13px;">
-                            ${store.is_active ? '🚫 Désactiver' : '✓ Activer'}
+                                style="padding: 6px 12px; font-size: 12px; min-height: 32px;">
+                            ${store.is_active ? 'Desactiver' : 'Activer'}
                         </button>
                     </td>
                 </tr>
@@ -432,14 +423,14 @@
             const store = stores.find(s => s.id === storeId);
             const ancienPlan = store?.subscription_plan || 'free';
             selectElement.disabled = true;
-            
+
             try {
                 await adminAuth.changerPlan(storeId, nouveauPlan);
-                const planNames = { free: 'Free 🎁', pro: 'Pro ⭐', entreprise: 'Entreprise 🏢' };
-                alert(`✅ Plan modifié avec succès vers ${planNames[nouveauPlan] || nouveauPlan} !`);
+                const planNames = { free: 'Free', pro: 'Pro', entreprise: 'Entreprise' };
+                alert(`Plan modifie avec succes vers ${planNames[nouveauPlan] || nouveauPlan} !`);
                 await chargerVendeurs();
             } catch (error) {
-                alert('❌ Erreur lors de la modification du plan: ' + error.message);
+                alert('Erreur lors de la modification du plan: ' + error.message);
                 console.error(error);
                 selectElement.value = ancienPlan;
                 selectElement.disabled = false;
@@ -448,62 +439,62 @@
 
         // Désactiver une boutique
         window.desactiverVendeur = async (storeId, btnElement) => {
-            if (!confirm('⚠️ Êtes-vous sûr de vouloir désactiver cette boutique ?\n\nSon catalogue ne sera plus accessible publiquement.')) {
+            if (!confirm('Etes-vous sur de vouloir desactiver cette boutique ?\n\nSon catalogue ne sera plus accessible publiquement.')) {
                 return;
             }
-            
+
             btnElement.disabled = true;
-            btnElement.textContent = '⏳ Désactivation...';
-            
+            btnElement.textContent = 'Desactivation...';
+
             try {
                 await adminAuth.toggleStore(storeId, false);
-                alert('✅ Boutique désactivée avec succès !');
+                alert('Boutique desactivee avec succes !');
                 await chargerVendeurs();
             } catch (error) {
-                alert('❌ Erreur lors de la désactivation: ' + error.message);
+                alert('Erreur lors de la desactivation: ' + error.message);
                 console.error(error);
                 btnElement.disabled = false;
-                btnElement.textContent = '🚫 Désactiver';
+                btnElement.textContent = 'Desactiver';
             }
         };
 
         // Activer une boutique
         window.activerVendeur = async (storeId, btnElement) => {
             btnElement.disabled = true;
-            btnElement.textContent = '⏳ Activation...';
-            
+            btnElement.textContent = 'Activation...';
+
             try {
                 await adminAuth.toggleStore(storeId, true);
-                alert('✅ Boutique activée avec succès !');
+                alert('Boutique activee avec succes !');
                 await chargerVendeurs();
             } catch (error) {
-                alert('❌ Erreur lors de l\'activation: ' + error.message);
+                alert('Erreur lors de l\'activation: ' + error.message);
                 console.error(error);
                 btnElement.disabled = false;
-                btnElement.textContent = '✓ Activer';
+                btnElement.textContent = 'Activer';
             }
         };
 
         // Fonction de recherche
         document.getElementById('searchInput').addEventListener('input', (e) => {
             const terme = e.target.value.toLowerCase().trim();
-            
+
             if (!terme) {
                 afficherVendeurs(stores);
                 return;
             }
-            
+
             const filtres = stores.filter(store => {
                 const owner = Array.isArray(store.owner) ? store.owner[0] : store.owner;
                 const localisation = [store.city, store.region].filter(Boolean).join(' ').toLowerCase();
-                return store.name.toLowerCase().includes(terme) || 
+                return store.name.toLowerCase().includes(terme) ||
                        store.slug.toLowerCase().includes(terme) ||
                        (store.activity_category && store.activity_category.toLowerCase().includes(terme)) ||
                        localisation.includes(terme) ||
                        (owner?.phone && owner.phone.includes(terme)) ||
                        (owner?.full_name && owner.full_name.toLowerCase().includes(terme));
             });
-            
+
             afficherVendeurs(filtres);
         });
 

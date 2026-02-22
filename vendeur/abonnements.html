@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -21,17 +21,17 @@
         <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
-            
+
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link active">💳 Abonnements</a>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link active">Abonnements</a>
+                <a href="profil.html" class="sidebar-nav-link">Profil</a>
             </nav>
 
             <div class="sidebar-footer">
@@ -43,9 +43,9 @@
         <main class="dashboard-main">
             <div class="dashboard-main-content">
         <!-- Section hero -->
-        <div class="pricing-hero" style="text-align: center; padding: 3rem 1rem; background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%); color: white; border-radius: 16px; margin-bottom: 3rem;">
-            <h1 style="font-size: 3rem; font-weight: 900; margin-bottom: 1rem;">💳 Choisissez votre Plan</h1>
-            <p style="font-size: 1.25rem; opacity: 0.9;">Optez pour le plan qui correspond le mieux à vos besoins</p>
+        <div style="text-align: center; padding: 2rem 1rem; margin-bottom: 2rem;">
+            <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: #37352f;">Choisissez votre Plan</h1>
+            <p style="font-size: 1rem; color: #718096;">Optez pour le plan qui correspond le mieux a vos besoins</p>
         </div>
 
         <!-- Plans cards grid -->
@@ -55,8 +55,8 @@
 
         <!-- Section fonctionnalités détaillées -->
         <div class="features-section">
-            <h2 style="text-align: center; font-size: 2.5rem; font-weight: 900; margin-bottom: 3rem;">✨ Fonctionnalités</h2>
-            
+            <h2 style="text-align: center; font-size: 1.25rem; font-weight: 700; margin-bottom: 2rem; color: #37352f;">Fonctionnalités</h2>
+
             <div class="features-comparison" style="overflow-x: auto;">
                 <table class="features-table" style="width: 100%; border-collapse: collapse;" id="featuresTable">
                     <thead>
@@ -90,7 +90,7 @@
             const sidebar = document.getElementById('dashboardSidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const isOpen = sidebar.classList.contains('open');
-            
+
             if (isOpen) {
                 closeSidebar();
             } else {
@@ -125,13 +125,13 @@
             const equipeLink = document.createElement('a');
             equipeLink.href = 'equipe.html';
             equipeLink.className = 'sidebar-nav-link';
-            equipeLink.textContent = '👥 Équipe';
+            equipeLink.textContent = 'Equipe';
             nav.insertBefore(equipeLink, nav.lastElementChild);
-            
+
             const multiLink = document.createElement('a');
             multiLink.href = 'multi-boutiques.html';
             multiLink.className = 'sidebar-nav-link';
-            multiLink.textContent = '🏪 Multi-Boutiques';
+            multiLink.textContent = 'Multi-Boutiques';
             nav.insertBefore(multiLink, nav.lastElementChild);
         }
 
@@ -154,36 +154,35 @@
                 document.getElementById('plansGrid').innerHTML = allPlans.map(plan => {
                     const isCurrent = plan.name === currentPlanName;
                     const features = plan.features || {};
-                    
+
                     return `
-                        <div class="pricing-card ${isCurrent ? 'current-plan' : ''}" style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; transition: all 0.3s; ${isCurrent ? 'border: 3px solid var(--color-primary); transform: scale(1.05);' : 'border: 2px solid transparent;'}">
-                            ${isCurrent ? '<div class="badge badge-success" style="position: absolute; top: 1rem; right: 1rem; background: var(--color-primary); color: white; padding: 0.5rem 1rem; border-radius: 8px; font-weight: bold;">Plan Actuel</div>' : ''}
-                            <h3 style="font-size: 2rem; font-weight: 900; margin-bottom: 1rem;">
-                                ${plan.name === 'free' ? '🎁' : plan.name === 'pro' ? '⭐' : '🏢'} 
+                        <div style="background: white; border-radius: 12px; padding: 2rem; position: relative; border: 1px solid ${isCurrent ? '#2383e2' : '#e2e8f0'};">
+                            ${isCurrent ? '<div style="position: absolute; top: 1rem; right: 1rem; background: #2383e2; color: white; padding: 0.25rem 0.75rem; border-radius: 6px; font-weight: 600; font-size: 0.85em;">Plan Actuel</div>' : ''}
+                            <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: #37352f;">
                                 ${plan.name.toUpperCase()}
                             </h3>
-                            <div style="font-size: 3rem; font-weight: 900; color: var(--color-primary); margin-bottom: 1rem;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #2383e2; margin-bottom: 1rem;">
                                 ${plan.annual_price === 0 ? 'Gratuit' : `${(plan.annual_price / 1000).toLocaleString()} FCFA/an`}
                             </div>
-                            <ul style="list-style: none; padding: 0; margin: 2rem 0;">
+                            <ul style="list-style: none; padding: 0; margin: 1.5rem 0;">
                                 <li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
-                                    <span style="color: var(--color-primary); font-weight: bold;">✓</span> 
+                                    <span style="color: #2383e2; font-weight: bold;">✓</span>
                                     ${plan.max_products === -1 ? 'Produits illimités' : `${plan.max_products} produits max`}
                                 </li>
                                 <li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
-                                    <span style="color: var(--color-primary); font-weight: bold;">✓</span> 
+                                    <span style="color: #2383e2; font-weight: bold;">✓</span>
                                     ${plan.max_photos_per_product} photos/produit
                                 </li>
-                                ${features.whatsapp ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-primary); font-weight: bold;">✓</span> Intégration WhatsApp</li>' : ''}
-                                ${features.crm ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-primary); font-weight: bold;">✓</span> CRM Clients</li>' : ''}
-                                ${features.relance ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-primary); font-weight: bold;">✓</span> Relance automatique</li>' : ''}
-                                ${features.multi_store ? `<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-primary); font-weight: bold;">✓</span> ${plan.max_stores} boutiques</li>` : ''}
-                                ${features.trend_radar ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-primary); font-weight: bold;">✓</span> Trend Radar</li>' : ''}
-                                ${features.geo_analytics ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--color-primary); font-weight: bold;">✓</span> Analytics géographiques</li>' : ''}
+                                ${features.whatsapp ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: #2383e2; font-weight: bold;">✓</span> Intégration WhatsApp</li>' : ''}
+                                ${features.crm ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: #2383e2; font-weight: bold;">✓</span> CRM Clients</li>' : ''}
+                                ${features.relance ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: #2383e2; font-weight: bold;">✓</span> Relance automatique</li>' : ''}
+                                ${features.multi_store ? `<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: #2383e2; font-weight: bold;">✓</span> ${plan.max_stores} boutiques</li>` : ''}
+                                ${features.trend_radar ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: #2383e2; font-weight: bold;">✓</span> Trend Radar</li>' : ''}
+                                ${features.geo_analytics ? '<li style="padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;"><span style="color: #2383e2; font-weight: bold;">✓</span> Analytics géographiques</li>' : ''}
                             </ul>
-                            <button class="btn btn-primary w-full ${isCurrent ? 'disabled' : ''}" 
+                            <button class="btn btn-primary w-full ${isCurrent ? 'disabled' : ''}"
                                     onclick="upgradeToPlan('${plan.name}')"
-                                    ${isCurrent ? 'disabled style="opacity: 0.6; cursor: not-allowed;"' : ''}>
+                                    ${isCurrent ? 'disabled style="opacity: 0.6; cursor: not-allowed; min-height: 40px;"' : 'style="min-height: 40px;"'}>
                                 ${isCurrent ? 'Plan actuel' : plan.annual_price === 0 ? 'Gratuit' : 'Choisir ce plan'}
                             </button>
                         </div>
@@ -237,7 +236,3 @@
     </script>
 </body>
 </html>
-
-
-
-

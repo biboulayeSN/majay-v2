@@ -7,82 +7,79 @@
     <link rel="stylesheet" href="../css/output.css">
     <style>
         .admin-header {
-            background: linear-gradient(135deg, #1a5490 0%, #2d7fc4 50%, #2d5016 100%);
-            color: white;
+            background: #ffffff;
+            color: #37352f;
+            border-bottom: 1px solid #e5e5e3;
         }
-        .admin-nav a { color: white; }
-        .admin-nav a.active { background: rgba(255,255,255,0.2); }
+        .admin-nav a { color: #37352f; }
+        .admin-nav a.active { background: #f7f7f5; }
     </style>
 </head>
 <body class="dashboard-page">
     <header class="dashboard-header admin-header">
         <div class="dashboard-header-content">
-            <div class="dashboard-logo">💼📋 ADMIN COMMERCIAL & GESTIONNAIRE</div>
+            <div class="dashboard-logo" style="color: #37352f; font-weight: 700;">ADMIN COMMERCIAL & GESTIONNAIRE</div>
             <nav class="dashboard-nav admin-nav">
-                <a href="commercial.html" class="nav-link">👥 Vendeurs</a>
-                <a href="gestionnaire.html" class="nav-link">🏪 Boutiques</a>
-                <a href="commercial-gestionnaire.html" class="nav-link active">📊 Vue d'ensemble</a>
+                <a href="commercial.html" class="nav-link">Vendeurs</a>
+                <a href="gestionnaire.html" class="nav-link">Boutiques</a>
+                <a href="commercial-gestionnaire.html" class="nav-link active">Vue d'ensemble</a>
             </nav>
-            <button onclick="deconnexionAdmin()" class="btn btn-outline btn-sm" style="color: white; border-color: rgba(255,255,255,0.3);">🚪 Déconnexion</button>
+            <button onclick="deconnexionAdmin()" class="btn btn-outline btn-sm" style="color: #37352f; border-color: #e5e5e3;">Deconnexion</button>
         </div>
     </header>
 
     <div class="dashboard-container">
         <div class="page-header">
             <div>
-                <h1 class="page-title">Vue d'ensemble Commercial & Gestionnaire</h1>
-                <p class="page-subtitle">Gestion complète des vendeurs et boutiques</p>
+                <h1 class="page-title" style="color: #37352f; font-weight: 700;">Vue d'ensemble Commercial & Gestionnaire</h1>
+                <p class="page-subtitle" style="color: #6b6b6b; font-size: 14px;">Gestion complete des vendeurs et boutiques</p>
             </div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">👥</div>
-                <div class="stat-label">Vendeurs actifs</div>
-                <div class="stat-value" id="vendorsCount">-</div>
+        <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+            <div class="stat-card" style="border: 1px solid #e5e5e3; border-radius: 8px; padding: 16px; background: white;">
+                <div class="stat-label" style="color: #6b6b6b; font-size: 13px;">Vendeurs actifs</div>
+                <div class="stat-value" id="vendorsCount" style="font-size: 1.8em; font-weight: 700; color: #37352f;">-</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">🏪</div>
-                <div class="stat-label">Boutiques actives</div>
-                <div class="stat-value" id="storesCount">-</div>
+            <div class="stat-card" style="border: 1px solid #e5e5e3; border-radius: 8px; padding: 16px; background: white;">
+                <div class="stat-label" style="color: #6b6b6b; font-size: 13px;">Boutiques actives</div>
+                <div class="stat-value" id="storesCount" style="font-size: 1.8em; font-weight: 700; color: #37352f;">-</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">📦</div>
-                <div class="stat-label">Produits actifs</div>
-                <div class="stat-value" id="productsCount">-</div>
+            <div class="stat-card" style="border: 1px solid #e5e5e3; border-radius: 8px; padding: 16px; background: white;">
+                <div class="stat-label" style="color: #6b6b6b; font-size: 13px;">Produits actifs</div>
+                <div class="stat-value" id="productsCount" style="font-size: 1.8em; font-weight: 700; color: #37352f;">-</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">🚫</div>
-                <div class="stat-label">Boutiques bannies</div>
-                <div class="stat-value" id="bannedStores">-</div>
+            <div class="stat-card" style="border: 1px solid #e5e5e3; border-radius: 8px; padding: 16px; background: white;">
+                <div class="stat-label" style="color: #6b6b6b; font-size: 13px;">Boutiques bannies</div>
+                <div class="stat-value" id="bannedStores" style="font-size: 1.8em; font-weight: 700; color: #37352f;">-</div>
             </div>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: var(--spacing-lg); margin-top: var(--spacing-xl);">
-            <div class="card">
+            <div class="card" style="border: 1px solid #e5e5e3; border-radius: 8px; box-shadow: none;">
                 <div class="card-header">
-                    <h3>Actions rapides - Vendeurs</h3>
+                    <h3 style="color: #37352f; font-weight: 600;">Actions rapides - Vendeurs</h3>
                 </div>
                 <div class="card-body">
-                    <a href="commercial.html" class="btn btn-primary" style="width: 100%; margin-bottom: var(--spacing-sm);">
-                        👥 Gérer les vendeurs
+                    <a href="commercial.html" class="btn btn-primary" style="width: 100%; margin-bottom: var(--spacing-sm); background: #2383e2; min-height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: white; text-decoration: none;">
+                        Gerer les vendeurs
                     </a>
-                    <a href="commercial.html#inactive" class="btn btn-outline" style="width: 100%;">
-                        📋 Vendeurs inactifs
+                    <a href="commercial.html#inactive" class="btn btn-outline" style="width: 100%; min-height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid #e5e5e3; color: #37352f; text-decoration: none;">
+                        Vendeurs inactifs
                     </a>
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" style="border: 1px solid #e5e5e3; border-radius: 8px; box-shadow: none;">
                 <div class="card-header">
-                    <h3>Actions rapides - Boutiques</h3>
+                    <h3 style="color: #37352f; font-weight: 600;">Actions rapides - Boutiques</h3>
                 </div>
                 <div class="card-body">
-                    <a href="gestionnaire.html" class="btn btn-primary" style="width: 100%; margin-bottom: var(--spacing-sm);">
-                        🏪 Gérer les boutiques
+                    <a href="gestionnaire.html" class="btn btn-primary" style="width: 100%; margin-bottom: var(--spacing-sm); background: #2383e2; min-height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: white; text-decoration: none;">
+                        Gerer les boutiques
                     </a>
-                    <a href="gestionnaire.html#banned" class="btn btn-outline" style="width: 100%;">
-                        🚫 Boutiques bannies
+                    <a href="gestionnaire.html#banned" class="btn btn-outline" style="width: 100%; min-height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid #e5e5e3; color: #37352f; text-decoration: none;">
+                        Boutiques bannies
                     </a>
                 </div>
             </div>
@@ -149,5 +146,3 @@
     </script>
 </body>
 </html>
-
-

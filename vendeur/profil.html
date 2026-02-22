@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -23,23 +23,22 @@
         <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
 
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="profil.html" class="sidebar-nav-link active">⚙️ Profil</a>
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">Abonnements</a>
+                <a href="profil.html" class="sidebar-nav-link active">Profil</a>
             </nav>
 
             <div class="sidebar-footer">
                 <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan"
                     title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
-                <!-- Bouton déconnecter masqué sur la page profil -->
             </div>
         </aside>
 
@@ -57,7 +56,6 @@
                 <!-- Carte principale profil -->
                 <div class="card profile-main-card">
                     <div class="profile-header-section">
-                        <div class="profile-avatar">👤</div>
                         <div class="profile-info-header">
                             <h2 id="vendeurNom" class="profile-name">Ma Boutique</h2>
                             <span class="badge badge-info" id="vendeurPlan">FREE</span>
@@ -97,13 +95,13 @@
                             <div class="input-with-prefix">
                                 <input type="text" id="shopLink" class="form-control" readonly>
                                 <button type="button" class="btn btn-primary btn-sm" onclick="copierLien()"
-                                    style="margin-left: 10px; min-width: 100px;">📋 Copier</button>
+                                    style="margin-left: 10px; min-width: 100px;">Copier</button>
                             </div>
                             <span class="form-hint">Partagez ce lien avec vos clients</span>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-lg w-full mt-4">
-                            <span class="btn-text">💾 Enregistrer les modifications</span>
+                        <button type="submit" class="btn btn-primary w-full mt-4" style="min-height: 40px;">
+                            <span class="btn-text">Enregistrer les modifications</span>
                         </button>
                     </form>
                 </div>
@@ -111,13 +109,13 @@
                 <!-- Section Paramètres -->
                 <div class="card profile-settings-card">
                     <div class="card-header">
-                        <h2 class="card-title">⚙️ Paramètres</h2>
+                        <h2 class="card-title">Paramètres</h2>
                         <p class="card-subtitle">Gestion de votre compte</p>
                     </div>
                     <div class="card-body">
                         <div class="settings-actions">
-                            <button onclick="deconnexion()" class="btn btn-outline btn-lg w-full mb-4">
-                                🚪 Se déconnecter
+                            <button onclick="deconnexion()" class="btn btn-outline w-full mb-4" style="min-height: 40px;">
+                                Se déconnecter
                             </button>
                         </div>
                     </div>
@@ -126,12 +124,12 @@
                 <!-- Zone dangereuse -->
                 <div class="card profile-danger-zone">
                     <div class="card-header">
-                        <h2 class="card-title" style="color: var(--color-danger);">⚠️ Zone dangereuse</h2>
+                        <h2 class="card-title" style="color: var(--color-danger);">Zone dangereuse</h2>
                         <p class="card-subtitle" style="color: var(--color-text-light);">Actions irréversibles</p>
                     </div>
                     <div class="card-body">
-                        <button onclick="supprimerCompte()" class="btn btn-danger btn-lg w-full">
-                            🗑️ Supprimer mon compte
+                        <button onclick="supprimerCompte()" class="btn btn-danger w-full" style="min-height: 40px;">
+                            Supprimer mon compte
                         </button>
                     </div>
                 </div>
@@ -160,13 +158,13 @@
             const equipeLink = document.createElement('a');
             equipeLink.href = 'equipe.html';
             equipeLink.className = 'sidebar-nav-link';
-            equipeLink.textContent = '👥 Équipe';
+            equipeLink.textContent = 'Equipe';
             nav.insertBefore(equipeLink, nav.lastElementChild);
 
             const multiLink = document.createElement('a');
             multiLink.href = 'multi-boutiques.html';
             multiLink.className = 'sidebar-nav-link';
-            multiLink.textContent = '🏪 Multi-Boutiques';
+            multiLink.textContent = 'Multi-Boutiques';
             nav.insertBefore(multiLink, nav.lastElementChild);
         }
 
@@ -252,7 +250,7 @@
             const originalText = btnText.textContent;
 
             submitBtn.disabled = true;
-            btnText.textContent = '⏳ Enregistrement...';
+            btnText.textContent = 'Enregistrement...';
 
             const { error } = await supabase
                 .from('stores')
@@ -282,7 +280,7 @@
         });
 
         window.supprimerCompte = async function () {
-            if (!confirm('⚠️ ATTENTION ! Cette action est irréversible. Voulez-vous vraiment supprimer votre compte ?')) return;
+            if (!confirm('ATTENTION ! Cette action est irréversible. Voulez-vous vraiment supprimer votre compte ?')) return;
             if (!confirm('Toutes vos données (produits, commandes) seront perdues. Continuer ?')) return;
 
             // Soft delete : désactiver la boutique

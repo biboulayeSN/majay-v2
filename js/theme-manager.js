@@ -1,5 +1,6 @@
 /**
  * Gestionnaire de thème (Mode sombre/clair)
+ * Style Notion dark
  */
 export class ThemeManager {
     constructor() {
@@ -8,7 +9,6 @@ export class ThemeManager {
     }
 
     init() {
-        // Appliquer le thème au chargement
         this.applyTheme(this.currentTheme);
     }
 
@@ -16,9 +16,9 @@ export class ThemeManager {
         if (document.getElementById('themeToggle')) return;
 
         const toggleHTML = `
-            <button id="themeToggle" class="theme-toggle" onclick="window.themeManager?.toggle()" 
-                    title="Basculer le thème" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--color-gray-200); background: white; color: var(--color-text); font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-center; transition: all 0.2s;">
-                <span id="themeIcon">${this.currentTheme === 'dark' ? '☀️' : '🌙'}</span>
+            <button id="themeToggle" class="theme-toggle" onclick="window.themeManager?.toggle()"
+                    title="Basculer le thème">
+                <span id="themeIcon">${this.currentTheme === 'dark' ? '\u2600' : '\u263E'}</span>
             </button>
         `;
 
@@ -32,13 +32,11 @@ export class ThemeManager {
         this.currentTheme = theme;
         localStorage.setItem('theme', theme);
 
-        // Mettre à jour l'icône
         const icon = document.getElementById('themeIcon');
         if (icon) {
-            icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            icon.textContent = theme === 'dark' ? '\u2600' : '\u263E';
         }
 
-        // Déclencher un événement
         window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme } }));
     }
 

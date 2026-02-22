@@ -1,6 +1,6 @@
 /**
  * Composant Sidebar réutilisable pour toutes les pages admin
- * Design moderne avec effet relief
+ * Design minimal Notion
  */
 import { adminAuth } from "../admin-auth.js";
 import { ADMIN_ROLES } from "../admin-roles.js";
@@ -14,66 +14,66 @@ export function initAdminNav(activePage = '') {
 
     // Déterminer les liens selon le rôle
     let navLinks = [
-        { route: 'dashboard.html', label: 'Dashboard', icon: '📊' }
+        { route: 'dashboard.html', label: 'Dashboard' }
     ];
 
     if (role === ADMIN_ROLES.SUPER_ADMIN) {
         navLinks.push(
-            { route: 'admins.html', label: 'Admins', icon: '👥' },
-            { route: 'vendeur.html', label: 'Vendeurs', icon: '👤' },
-            { route: 'stores.html', label: 'Boutiques', icon: '🏪' },
-            { route: 'analytics.html', label: 'Analytics', icon: '📈' },
-            { route: 'subscriptions.html', label: 'Abonnements', icon: '💳' }
+            { route: 'admins.html', label: 'Admins' },
+            { route: 'vendeur.html', label: 'Vendeurs' },
+            { route: 'stores.html', label: 'Boutiques' },
+            { route: 'analytics.html', label: 'Analytics' },
+            { route: 'subscriptions.html', label: 'Abonnements' }
         );
     } else if (role === ADMIN_ROLES.COMMERCIAL || role === ADMIN_ROLES.COMMERCIAL_GESTIONNAIRE) {
         navLinks.push(
-            { route: 'commercial.html', label: 'Vendeurs', icon: '👥' }
+            { route: 'commercial.html', label: 'Vendeurs' }
         );
     }
 
     if (role === ADMIN_ROLES.GESTIONNAIRE || role === ADMIN_ROLES.COMMERCIAL_GESTIONNAIRE) {
         navLinks.push(
-            { route: 'gestionnaire.html', label: 'Boutiques', icon: '🏪' }
+            { route: 'gestionnaire.html', label: 'Boutiques' }
         );
     }
 
     if (role === ADMIN_ROLES.COMMERCIAL_GESTIONNAIRE) {
         navLinks.push(
-            { route: 'commercial-gestionnaire.html', label: 'Vue d\'ensemble', icon: '📊' }
+            { route: 'commercial-gestionnaire.html', label: 'Vue d\'ensemble' }
         );
     }
 
     if (role === ADMIN_ROLES.ANALYTICS) {
         navLinks.push(
-            { route: 'analytics.html', label: 'Analytics', icon: '📊' }
+            { route: 'analytics.html', label: 'Analytics' }
         );
     }
 
     if (role === ADMIN_ROLES.FINANCIAL) {
         navLinks.push(
-            { route: 'financial.html', label: 'Financial', icon: '💰' }
+            { route: 'financial.html', label: 'Financial' }
         );
     }
 
-    // Générer le HTML du sidebar avec design relief
+    const initials = (session.nom || 'A').charAt(0).toUpperCase();
+
     const sidebarHTML = `
         <aside class="dashboard-sidebar admin-sidebar" id="adminSidebar">
             <div class="sidebar-header admin-sidebar-header">
-                <div class="sidebar-logo admin-sidebar-logo">🛡️ ADMIN</div>
+                <div class="sidebar-logo admin-sidebar-logo">ADMIN</div>
                 <div class="admin-sidebar-subtitle">SAMASTORE</div>
             </div>
-            
+
             <nav class="sidebar-nav admin-sidebar-nav" id="adminMainNav">
                 ${navLinks.map(link => {
         const linkPageName = link.route.replace('.html', '');
         const isActive = pageName === linkPageName ||
             (pageName === 'dashboard' && link.route === 'dashboard.html');
         return `
-                        <a href="#" 
-                           data-route="${link.route}" 
+                        <a href="#"
+                           data-route="${link.route}"
                            class="sidebar-nav-link admin-sidebar-link ${isActive ? 'active' : ''}"
                            title="${link.label}">
-                            <span class="admin-nav-icon">${link.icon}</span>
                             <span class="admin-nav-label">${link.label}</span>
                         </a>
                     `;
@@ -82,20 +82,19 @@ export function initAdminNav(activePage = '') {
 
             <div class="sidebar-footer admin-sidebar-footer">
                 <div class="admin-info">
-                    <div class="admin-avatar">👤</div>
+                    <div class="admin-avatar">${initials}</div>
                     <div class="admin-details">
                         <div class="admin-name" id="adminName">${session.nom || 'Admin'}</div>
                         <div class="admin-role">${getRoleLabel(role)}</div>
                     </div>
                 </div>
                 <button onclick="window.deconnexionAdmin()" class="btn-admin-logout">
-                    🚪 Déconnexion
+                    Déconnexion
                 </button>
             </div>
         </aside>
     `;
 
-    // Remplacer ou insérer le sidebar
     const existingSidebar = document.querySelector('.dashboard-sidebar.admin-sidebar');
     const wrapper = document.querySelector('.dashboard-wrapper.admin-wrapper');
 
@@ -104,7 +103,6 @@ export function initAdminNav(activePage = '') {
     } else if (wrapper) {
         wrapper.insertAdjacentHTML('afterbegin', sidebarHTML);
     } else {
-        // Si pas de wrapper, créer la structure complète
         const bodyContent = document.body.innerHTML;
         document.body.innerHTML = `
             <div class="dashboard-wrapper admin-wrapper">
@@ -118,7 +116,6 @@ export function initAdminNav(activePage = '') {
         `;
     }
 
-    // Initialiser la navigation SPA
     initAdminNavListeners();
 }
 

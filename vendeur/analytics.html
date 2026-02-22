@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -20,7 +20,7 @@
             justify-content: space-between;
             align-items: center;
         }
-        .dashboard-logo { font-size: 1.5em; font-weight: 900; color: #667eea; }
+        .dashboard-logo { font-size: 1.5em; font-weight: 900; color: #2383e2; }
         .dashboard-nav { display: flex; gap: 20px; }
         .nav-link {
             color: #718096;
@@ -29,7 +29,7 @@
             padding: 10px 15px;
             border-radius: 8px;
         }
-        .nav-link.active { background: #edf2f7; color: #667eea; }
+        .nav-link.active { background: #edf2f7; color: #2383e2; }
         .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
         .stats-grid {
             display: grid;
@@ -39,13 +39,12 @@
         }
         .stat-card {
             background: white;
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
         }
-        .stat-icon { font-size: 2.5em; margin-bottom: 10px; }
         .stat-label { color: #718096; font-size: 0.9em; margin-bottom: 8px; }
-        .stat-value { font-size: 2em; font-weight: 800; color: #2d3748; }
+        .stat-value { font-size: 1.5em; font-weight: 800; color: #37352f; }
     </style>
 </head>
 <body class="dashboard-page">
@@ -62,17 +61,17 @@
         <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
-            
+
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link active">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link active">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">Abonnements</a>
+                <a href="profil.html" class="sidebar-nav-link">Profil</a>
             </nav>
 
             <div class="sidebar-footer">
@@ -83,7 +82,7 @@
         <!-- Main Content -->
         <main class="dashboard-main">
             <div class="dashboard-main-content">
-        <h1 style="font-size: 2em; margin-bottom: 30px;">Analytics</h1>
+        <h1 style="font-size: 1.5em; margin-bottom: 30px; color: #37352f;">Analytics</h1>
 
         <div class="stats-grid" id="statsGrid">
             <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
@@ -96,7 +95,7 @@
         <div class="card">
             <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                 <div>
-                    <h2 class="card-title">📊 Détails des Produits</h2>
+                    <h2 class="card-title">Details des Produits</h2>
                     <p class="card-subtitle">Performance détaillée de chaque produit</p>
                 </div>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
@@ -104,7 +103,7 @@
                         <option value="">Toutes les catégories</option>
                     </select>
                     <button onclick="exporterCSV()" class="btn btn-primary btn-sm">
-                        📥 Exporter CSV
+                        Exporter CSV
                     </button>
                 </div>
             </div>
@@ -148,7 +147,7 @@
             const sidebar = document.getElementById('dashboardSidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const isOpen = sidebar.classList.contains('open');
-            
+
             if (isOpen) {
                 closeSidebar();
             } else {
@@ -183,13 +182,13 @@
             const equipeLink = document.createElement('a');
             equipeLink.href = 'equipe.html';
             equipeLink.className = 'sidebar-nav-link';
-            equipeLink.textContent = '👥 Équipe';
+            equipeLink.textContent = 'Equipe';
             nav.insertBefore(equipeLink, nav.lastElementChild);
-            
+
             const multiLink = document.createElement('a');
             multiLink.href = 'multi-boutiques.html';
             multiLink.className = 'sidebar-nav-link';
-            multiLink.textContent = '🏪 Multi-Boutiques';
+            multiLink.textContent = 'Multi-Boutiques';
             nav.insertBefore(multiLink, nav.lastElementChild);
         }
 
@@ -203,22 +202,18 @@
                 const stats = result.data;
                 document.getElementById('statsGrid').innerHTML = `
                     <div class="stat-card">
-                        <div class="stat-icon">🛒</div>
                         <div class="stat-label">Commandes</div>
                         <div class="stat-value">${stats.total_orders}</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">💰</div>
                         <div class="stat-label">Revenus</div>
                         <div class="stat-value">${stats.total_revenue.toLocaleString()} XOF</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">👁️</div>
                         <div class="stat-label">Vues</div>
                         <div class="stat-value">${stats.total_views}</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">🛒</div>
                         <div class="stat-label">Ajouts panier</div>
                         <div class="stat-value">${stats.total_cart_adds}</div>
                     </div>
@@ -258,7 +253,7 @@
                 // Calculer les statistiques par produit
                 productsData = products.map(product => {
                     const views = viewsData?.filter(v => v.product_id === product.id).length || product.views_count || 0;
-                    
+
                     // Calculer quantités commandées depuis les commandes
                     let quantitesCommandees = 0;
                     if (ordersData) {
@@ -297,7 +292,7 @@
 
         function afficherTableProduits(produits) {
             const tbody = document.getElementById('productsTableBody');
-            
+
             if (!produits || produits.length === 0) {
                 tbody.innerHTML = `
                     <tr>
@@ -318,7 +313,7 @@
                     <td>${p.quantites_restantes}</td>
                     <td>
                         <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); voirDetailsProduit('${p.id}')">
-                            👁️ Voir détails
+                            Voir details
                         </button>
                     </td>
                 </tr>
@@ -328,9 +323,9 @@
         function chargerCategories(produits) {
             const categories = [...new Set(produits.map(p => p.category).filter(Boolean))];
             const select = document.getElementById('filterCategory');
-            select.innerHTML = '<option value="">Toutes les catégories</option>' + 
+            select.innerHTML = '<option value="">Toutes les catégories</option>' +
                 categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
-            
+
             select.addEventListener('change', function() {
                 const category = this.value;
                 filteredProductsData = category ? productsData.filter(p => p.category === category) : [...productsData];
@@ -347,12 +342,12 @@
                 p.quantites_commandees,
                 p.quantites_restantes
             ]);
-            
+
             const csv = [
                 headers.join(','),
                 ...rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
             ].join('\n');
-            
+
             try {
                 const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
                 const link = document.createElement('a');
@@ -379,7 +374,3 @@
     </div>
 </body>
 </html>
-
-
-
-

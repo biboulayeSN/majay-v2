@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -12,7 +12,7 @@
 <body class="dashboard-page">
     <!-- Sidebar Toggle Button (Mobile) -->
     <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-        <span id="toggleIcon">☰</span>
+        <span id="toggleIcon">&#9776;</span>
     </button>
 
     <!-- Sidebar Overlay (Mobile) -->
@@ -23,16 +23,14 @@
         <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
-
             <nav class="sidebar-nav" id="mainNav">
-                <!-- Le sidebar sera injecté par initSidebar() -->
             </nav>
-
             <div class="sidebar-footer">
-                <a href="#" data-route="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan"
-                    title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <a href="#" data-route="abonnements.html" class="sidebar-plan-badge" id="userPlan"
+                    title="Gerer mon abonnement" aria-label="Plan actuel"
+                    style="background: #f7f7f5; color: #37352f; border: 1px solid #e5e5e3;">FREE</a>
             </div>
         </aside>
 
@@ -41,61 +39,43 @@
             <div class="dashboard-main-content">
                 <div class="page-header">
                     <div>
-                        <h1 class="page-title">TABLEAU DE BORD - <span id="userName">Vendeur</span> 👋</h1>
-                        <p class="page-subtitle">Voici un aperçu de votre activité</p>
+                        <h1 class="page-title">Tableau de bord</h1>
+                        <p class="page-subtitle">Bienvenue, <span id="userName">Vendeur</span></p>
                     </div>
                 </div>
 
                 <div class="stats-grid" id="statsGrid">
-                    <div style="grid-column: 1/-1; text-align: center; padding: var(--spacing-2xl);" class="fade-in">
-                        <div class="loader"></div>
-                        <p style="margin-top: var(--spacing-md); color: var(--color-text-light);">Chargement des
-                            statistiques...</p>
+                    <div style="grid-column: 1/-1; text-align: center; padding: 32px;">
+                        <p class="text-text-secondary text-sm">Chargement des statistiques...</p>
                     </div>
                 </div>
 
                 <div class="actions-grid">
                     <a href="#" data-route="produits.html" class="action-card" role="button"
-                        aria-label="Gérer mes produits">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="text-lg font-bold text-text mb-2">Gérer mes produits</h3>
-                                <p class="text-text-light text-base">Ajouter, modifier ou supprimer</p>
-                            </div>
-                            <div class="text-5xl">📦</div>
-                        </div>
+                        aria-label="Gerer mes produits">
+                        <h3 class="text-sm font-semibold text-text mb-1">Gerer mes produits</h3>
+                        <p class="text-text-secondary text-xs">Ajouter, modifier ou supprimer</p>
                     </a>
 
-                    <button type="button" onclick="copierLien()" class="action-card" aria-label="Partager ma boutique">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="text-lg font-bold text-text mb-2">Partager ma boutique</h3>
-                                <p class="text-text-light text-base">Copier le lien</p>
-                            </div>
-                            <div class="text-5xl">🔗</div>
-                        </div>
+                    <button type="button" onclick="copierLien()" class="action-card text-left" aria-label="Partager ma boutique">
+                        <h3 class="text-sm font-semibold text-text mb-1">Partager ma boutique</h3>
+                        <p class="text-text-secondary text-xs">Copier le lien</p>
                     </button>
 
                     <a href="#" data-route="commandes.html" class="action-card" role="button"
                         aria-label="Mes commandes">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="text-lg font-bold text-text mb-2">Mes commandes</h3>
-                                <p class="text-text-light text-base">Historique et suivi</p>
-                            </div>
-                            <div class="text-5xl">🛒</div>
-                        </div>
+                        <h3 class="text-sm font-semibold text-text mb-1">Mes commandes</h3>
+                        <p class="text-text-secondary text-xs">Historique et suivi</p>
                     </a>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
-                        <h2>📈 Commandes récentes</h2>
+                        <h2 class="text-base font-semibold text-text">Commandes recentes</h2>
                     </div>
                     <div class="card-body" id="commandesRecentes">
                         <div class="empty-state">
-                            <div class="loader"></div>
-                            <p style="margin-top: var(--spacing-md);">Chargement...</p>
+                            <p class="text-text-secondary text-sm">Chargement...</p>
                         </div>
                     </div>
                 </div>
@@ -103,7 +83,6 @@
         </main>
     </div>
 
-    <!-- Initialiser le sidebar et le router -->
     <script type="module">
         import { initVendorApp } from "../js/vendor-app.js";
         initVendorApp();
@@ -122,7 +101,7 @@ Bonjour,
 Je souhaite passer au plan ${plan.toUpperCase()}.
 
 Boutique : ${session.store_name}
-Téléphone : ${session.phone}
+Telephone : ${session.phone}
 Slug : ${session.store_slug}
 `;
             window.open(
@@ -134,22 +113,16 @@ Slug : ${session.store_slug}
         document.getElementById('userName').textContent = session.store_name || session.full_name;
 
         async function chargerStats() {
-            // Afficher la barre de chargement pendant 5 secondes minimum
-            const startTime = Date.now();
-            const minLoadTime = 5000; // 5 secondes
-
-            // Afficher la barre de progression
             document.getElementById('statsGrid').innerHTML = `
-                <div style="grid-column: 1/-1; padding: var(--spacing-2xl); text-align: center;">
+                <div style="grid-column: 1/-1; padding: 32px; text-align: center;">
                     <div class="loading-progress">
                         <div class="loading-progress-bar"></div>
                     </div>
-                    <p style="margin-top: var(--spacing-md); color: var(--color-text-light); font-size: var(--font-size-base);">Chargement des statistiques...</p>
+                    <p class="text-text-secondary text-sm mt-3">Chargement des statistiques...</p>
                 </div>
             `;
 
             try {
-                // Lancer les requêtes en parallèle
                 const [produitsResult, commandesResult, vuesResult] = await Promise.all([
                     supabase
                         .from('products')
@@ -175,45 +148,31 @@ Slug : ${session.store_slug}
                 const nbCommandes = commandes.length || 0;
                 const totalVentes = commandes.reduce((sum, c) => sum + (parseInt(c.total) || 0), 0) || 0;
 
-                // Calculer le temps écoulé et attendre si nécessaire pour atteindre 5 secondes
-                const elapsedTime = Date.now() - startTime;
-                const remainingTime = Math.max(0, minLoadTime - elapsedTime);
-
-                if (remainingTime > 0) {
-                    await new Promise(resolve => setTimeout(resolve, remainingTime));
-                }
-
-                // Vérifier si toutes les stats sont à zéro
                 const allStatsZero = nbProduits === 0 && nbCommandes === 0 && totalVentes === 0 && totalVues === 0;
 
                 if (allStatsZero) {
                     document.getElementById('statsGrid').innerHTML = `
-                        <div style="grid-column: 1/-1; text-align: center; padding: var(--spacing-3xl);" class="fade-in">
-                            <div style="font-size: 4rem; margin-bottom: var(--spacing-md);">📊</div>
-                            <h3 style="font-size: var(--font-size-xl); font-weight: 700; color: var(--color-text); margin-bottom: var(--spacing-sm);">Aucune transaction enregistrée</h3>
-                            <p style="color: var(--color-text-light); font-size: var(--font-size-base);">Vos statistiques apparaîtront ici une fois que vous aurez des produits et des commandes.</p>
+                        <div style="grid-column: 1/-1; text-align: center; padding: 48px 24px;">
+                            <h3 class="text-base font-semibold text-text mb-2">Aucune transaction enregistree</h3>
+                            <p class="text-text-secondary text-sm">Vos statistiques apparaitront ici une fois que vous aurez des produits et des commandes.</p>
                         </div>
                     `;
                 } else {
                     document.getElementById('statsGrid').innerHTML = `
-                        <div class="stat-card slide-up" style="animation-delay: 0.1s;">
-                            <div class="stat-icon">📦</div>
+                        <div class="stat-card">
                             <div class="stat-label">Produits actifs</div>
                             <div class="stat-value">${nbProduits}</div>
                         </div>
-                        <div class="stat-card slide-up" style="animation-delay: 0.2s;">
-                            <div class="stat-icon">🛒</div>
+                        <div class="stat-card">
                             <div class="stat-label">Commandes</div>
                             <div class="stat-value">${nbCommandes}</div>
                         </div>
-                        <div class="stat-card slide-up" style="animation-delay: 0.3s;">
-                            <div class="stat-icon">💰</div>
+                        <div class="stat-card">
                             <div class="stat-label">Ventes totales</div>
                             <div class="stat-value">${totalVentes.toLocaleString()}</div>
-                            <div style="font-size: var(--font-size-sm); color: var(--color-text-light); margin-top: var(--spacing-xs);">FCFA</div>
+                            <div class="text-xs text-text-secondary mt-1">FCFA</div>
                         </div>
-                        <div class="stat-card slide-up" style="animation-delay: 0.4s;">
-                            <div class="stat-icon">👁️</div>
+                        <div class="stat-card">
                             <div class="stat-label">Vues catalogue</div>
                             <div class="stat-value">${totalVues}</div>
                         </div>
@@ -221,15 +180,9 @@ Slug : ${session.store_slug}
                 }
             } catch (error) {
                 console.error(error);
-                // En cas d'erreur, attendre quand même 5 secondes puis afficher un message
-                const elapsedTime = Date.now() - startTime;
-                const remainingTime = Math.max(0, minLoadTime - elapsedTime);
-                if (remainingTime > 0) {
-                    await new Promise(resolve => setTimeout(resolve, remainingTime));
-                }
                 document.getElementById('statsGrid').innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: var(--spacing-2xl);" class="fade-in">
-                        <p style="color: var(--color-danger);">Erreur lors du chargement des statistiques</p>
+                    <div style="grid-column: 1/-1; text-align: center; padding: 32px;">
+                        <p class="text-danger text-sm">Erreur lors du chargement des statistiques</p>
                     </div>
                 `;
             }
@@ -246,9 +199,7 @@ Slug : ${session.store_slug}
             if (!data || data.length === 0) {
                 document.getElementById('commandesRecentes').innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">🛒</div>
-                        <h3>Aucune commande</h3>
-                        <p>Vos commandes apparaîtront ici une fois que vos clients commenceront à commander</p>
+                        <p class="text-text-secondary text-sm">Aucune commande. Vos commandes apparaitront ici.</p>
                     </div>
                 `;
                 return;
@@ -256,13 +207,13 @@ Slug : ${session.store_slug}
 
             document.getElementById('commandesRecentes').innerHTML = `
                 <div style="overflow-x: auto;">
-                    <table class="table">
-                        <thead>
+                    <table class="w-full text-sm">
+                        <thead class="bg-bg-secondary">
                             <tr>
-                                <th>Date</th>
-                                <th>Produits</th>
-                                <th>Total</th>
-                                <th>Statut</th>
+                                <th class="text-left py-2 px-3 text-xs font-semibold text-text-secondary uppercase">Date</th>
+                                <th class="text-left py-2 px-3 text-xs font-semibold text-text-secondary uppercase">Produits</th>
+                                <th class="text-left py-2 px-3 text-xs font-semibold text-text-secondary uppercase">Total</th>
+                                <th class="text-left py-2 px-3 text-xs font-semibold text-text-secondary uppercase">Statut</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -273,18 +224,18 @@ Slug : ${session.store_slug}
                         cmd.status === 'cancelled' ? 'danger' : 'warning';
                 const statusNames = {
                     pending: 'En attente',
-                    confirmed: 'Confirmée',
-                    preparing: 'En préparation',
-                    ready: 'Prête',
-                    delivered: 'Livrée',
-                    cancelled: 'Annulée'
+                    confirmed: 'Confirmee',
+                    preparing: 'En preparation',
+                    ready: 'Prete',
+                    delivered: 'Livree',
+                    cancelled: 'Annulee'
                 };
                 return `
-                                <tr>
-                                    <td>${new Date(cmd.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
-                                    <td>${itemsCount} article(s)</td>
-                                    <td style="font-weight: 700; color: var(--color-success);">${parseInt(cmd.total || 0).toLocaleString()} ${cmd.currency || 'XOF'}</td>
-                                    <td><span class="badge badge-${statusClass}">${statusNames[cmd.status] || cmd.status || 'pending'}</span></td>
+                                <tr class="border-b border-border">
+                                    <td class="py-2 px-3">${new Date(cmd.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+                                    <td class="py-2 px-3">${itemsCount} article(s)</td>
+                                    <td class="py-2 px-3 font-semibold">${parseInt(cmd.total || 0).toLocaleString()} ${cmd.currency || 'XOF'}</td>
+                                    <td class="py-2 px-3"><span class="badge badge-${statusClass}">${statusNames[cmd.status] || cmd.status || 'pending'}</span></td>
                                 </tr>
                             `;
             }).join('')}
@@ -295,22 +246,19 @@ Slug : ${session.store_slug}
         }
 
         window.copierLien = async function () {
-            // Nouveau format : www.site.com/slug-boutique
             const lien = 'https://www.nayatoo.com/' + session.store_slug;
 
             try {
-                // Méthode moderne avec Clipboard API (nécessite HTTPS ou localhost)
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     await navigator.clipboard.writeText(lien);
                     const { showSuccess } = await import('../js/notifications.js');
-                    showSuccess('Lien copié ! Partagez-le avec vos clients');
+                    showSuccess('Lien copie ! Partagez-le avec vos clients');
                     return;
                 }
             } catch (err) {
-                console.warn('Clipboard API non disponible, utilisation du fallback');
+                console.warn('Clipboard API non disponible');
             }
 
-            // Fallback : méthode ancienne avec execCommand (fonctionne en HTTP)
             try {
                 const textArea = document.createElement('textarea');
                 textArea.value = lien;
@@ -326,14 +274,13 @@ Slug : ${session.store_slug}
 
                 if (successful) {
                     const { showSuccess } = await import('../js/notifications.js');
-                    showSuccess('Lien copié ! Partagez-le avec vos clients');
+                    showSuccess('Lien copie ! Partagez-le avec vos clients');
                 } else {
                     throw new Error('execCommand failed');
                 }
             } catch (err) {
-                console.error('Erreur lors de la copie:', err);
                 const { showError } = await import('../js/notifications.js');
-                showError('Impossible de copier le lien. Veuillez le sélectionner manuellement.');
+                showError('Impossible de copier le lien.');
             }
         };
 

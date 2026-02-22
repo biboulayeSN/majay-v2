@@ -7,24 +7,25 @@
     <link rel="stylesheet" href="../css/output.css">
     <style>
         .admin-header {
-            background: linear-gradient(135deg, var(--color-bg-dark) 0%, #16213e 100%);
-            color: white;
+            background: #ffffff;
+            color: #37352f;
+            border-bottom: 1px solid #e5e5e3;
         }
-        .admin-nav a { color: white; }
-        .admin-nav a.active { background: rgba(255,255,255,0.2); }
+        .admin-nav a { color: #37352f; }
+        .admin-nav a.active { background: #f7f7f5; }
     </style>
 </head>
 <body class="dashboard-page">
     <header class="dashboard-header admin-header">
         <div class="dashboard-header-content">
-            <div class="dashboard-logo">🛡️ ADMIN MAJAY</div>
+            <div class="dashboard-logo" style="color: #37352f; font-weight: 700;">ADMIN MAJAY</div>
             <nav class="dashboard-nav admin-nav">
-                <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
-                <a href="admins.html" class="nav-link active">👥 Admins</a>
-                <a href="vendeur.html" class="nav-link">👤 Vendeurs</a>
-                <a href="stores.html" class="nav-link">🏪 Boutiques</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="admins.html" class="nav-link active">Admins</a>
+                <a href="vendeur.html" class="nav-link">Vendeurs</a>
+                <a href="stores.html" class="nav-link">Boutiques</a>
             </nav>
-            <button onclick="deconnexionAdmin()" class="btn btn-outline btn-sm" style="color: white; border-color: rgba(255,255,255,0.3);">🚪 Déconnexion</button>
+            <button onclick="deconnexionAdmin()" class="btn btn-outline btn-sm" style="color: #37352f; border-color: #e5e5e3;">Deconnexion</button>
         </div>
     </header>
 
@@ -32,25 +33,25 @@
         <div class="page-header">
             <div>
                 <h1 class="page-title">Gestion des Administrateurs</h1>
-                <p class="page-subtitle">Créer et gérer les administrateurs de la plateforme</p>
+                <p class="page-subtitle">Creer et gerer les administrateurs de la plateforme</p>
             </div>
-            <button onclick="ouvrirModalAjout()" class="btn btn-primary btn-lg" id="btnAddAdmin" style="display: none;">+ Créer un admin</button>
+            <button onclick="ouvrirModalAjout()" class="btn btn-primary btn-lg" id="btnAddAdmin" style="display: none; background: #2383e2; min-height: 40px;">+ Creer un admin</button>
         </div>
 
-        <div class="card">
+        <div class="card" style="border: 1px solid #e5e5e3; border-radius: 8px; box-shadow: none;">
             <div class="card-body">
                 <div style="overflow-x: auto;">
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Téléphone</th>
-                                <th>Email</th>
-                                <th>Rôle</th>
-                                <th>Statut</th>
-                                <th>Créé par</th>
-                                <th>Dernière connexion</th>
-                                <th>Actions</th>
+                            <tr style="background: #f7f7f5;">
+                                <th style="color: #37352f;">Nom</th>
+                                <th style="color: #37352f;">Telephone</th>
+                                <th style="color: #37352f;">Email</th>
+                                <th style="color: #37352f;">Role</th>
+                                <th style="color: #37352f;">Statut</th>
+                                <th style="color: #37352f;">Cree par</th>
+                                <th style="color: #37352f;">Derniere connexion</th>
+                                <th style="color: #37352f;">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="adminsTable">
@@ -63,11 +64,11 @@
     </div>
 
     <!-- Modal Ajout Admin -->
-    <div class="modal-backdrop" id="adminModalBackdrop"></div>
+    <div class="modal-backdrop" id="adminModalBackdrop" style="background: rgba(0,0,0,0.4);"></div>
     <div class="modal" id="adminModal">
-        <div class="modal-content">
+        <div class="modal-content" style="border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
             <div class="modal-header">
-                <h2 id="modalTitle">Créer un administrateur</h2>
+                <h2 id="modalTitle">Creer un administrateur</h2>
                 <button class="modal-close" onclick="fermerModal()">&times;</button>
             </div>
             <form id="adminForm" class="auth-form">
@@ -76,7 +77,7 @@
                     <input type="text" id="fullName" required placeholder="Ex: Jean Dupont">
                 </div>
                 <div class="form-group">
-                    <label>Numéro de téléphone *</label>
+                    <label>Numero de telephone *</label>
                     <input type="tel" id="phone" required placeholder="780181144">
                 </div>
                 <div class="form-group">
@@ -84,25 +85,25 @@
                     <input type="email" id="email" placeholder="admin@example.com">
                 </div>
                 <div class="form-group">
-                    <label>Rôle *</label>
+                    <label>Role *</label>
                     <select id="adminRole" required>
-                        <option value="">Sélectionner un rôle</option>
+                        <option value="">Selectionner un role</option>
                         <option value="super_admin">Super Administrateur</option>
                         <option value="admin_commercial">Admin Commercial</option>
                         <option value="admin_gestionnaire">Admin Gestionnaire</option>
-                        <option value="admin_commercial_gestionnaire">Admin Commercial & Gestionnaire (Combiné)</option>
+                        <option value="admin_commercial_gestionnaire">Admin Commercial & Gestionnaire (Combine)</option>
                         <option value="admin_analytics">Admin Analytics</option>
                         <option value="admin_financial">Admin Financial</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Mot de passe *</label>
-                    <input type="password" id="password" required placeholder="••••••">
-                    <span class="form-hint">Le mot de passe sera hashé et stocké de manière sécurisée</span>
+                    <input type="password" id="password" required placeholder="------">
+                    <span class="form-hint">Le mot de passe sera hashe et stocke de maniere securisee</span>
                 </div>
                 <div style="display: flex; gap: var(--spacing-md); margin-top: var(--spacing-lg);">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">💾 Créer l'admin</button>
-                    <button type="button" class="btn btn-outline" style="flex: 1;" onclick="fermerModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1; background: #2383e2; min-height: 40px;">Creer l'admin</button>
+                    <button type="button" class="btn btn-outline" style="flex: 1; min-height: 40px;" onclick="fermerModal()">Annuler</button>
                 </div>
             </form>
         </div>
@@ -126,11 +127,10 @@
         async function chargerAdmins() {
             try {
                 const admins = await getAllAdmins();
-                
+
                 if (admins.length === 0) {
                     document.getElementById('adminsTable').innerHTML = `
                         <tr><td colspan="8" class="empty-state">
-                            <div class="empty-state-icon">👥</div>
                             <h3>Aucun administrateur</h3>
                             <p>Créez votre premier administrateur</p>
                         </td></tr>
@@ -139,19 +139,19 @@
                 }
 
                 const roleLabels = {
-                    'super_admin': '🛡️ Super Admin',
-                    'admin_commercial': '💼 Commercial',
-                    'admin_gestionnaire': '📋 Gestionnaire',
-                    'admin_commercial_gestionnaire': '💼📋 Commercial & Gestionnaire',
-                    'admin_analytics': '📊 Analytics',
-                    'admin_financial': '💰 Financial'
+                    'super_admin': 'Super Admin',
+                    'admin_commercial': 'Commercial',
+                    'admin_gestionnaire': 'Gestionnaire',
+                    'admin_commercial_gestionnaire': 'Commercial & Gestionnaire',
+                    'admin_analytics': 'Analytics',
+                    'admin_financial': 'Financial'
                 };
 
                 document.getElementById('adminsTable').innerHTML = admins.map(admin => {
-                    const lastLogin = admin.last_login 
+                    const lastLogin = admin.last_login
                         ? new Date(admin.last_login).toLocaleDateString('fr-FR')
                         : 'Jamais';
-                    
+
                     return `
                         <tr>
                             <td><strong>${admin.full_name || 'N/A'}</strong></td>
@@ -166,7 +166,7 @@
                             <td>${admin.created_by_name || 'Système'}</td>
                             <td>${lastLogin}</td>
                             <td>
-                                <button onclick="toggleAdminStatus('${admin.id}', ${!admin.is_active})" 
+                                <button onclick="toggleAdminStatus('${admin.id}', ${!admin.is_active})"
                                         class="btn btn-sm ${admin.is_active ? 'btn-danger' : 'btn-success'}">
                                     ${admin.is_active ? 'Désactiver' : 'Activer'}
                                 </button>
@@ -205,10 +205,10 @@
 
         document.getElementById('adminForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const btn = e.target.querySelector('button[type="submit"]');
             btn.disabled = true;
-            btn.textContent = '⏳ Création...';
+            btn.textContent = 'Création...';
 
             try {
                 const adminData = {
@@ -227,7 +227,7 @@
                 showError('Erreur: ' + error.message);
             } finally {
                 btn.disabled = false;
-                btn.textContent = '💾 Créer l\'admin';
+                btn.textContent = 'Créer l\'admin';
             }
         });
 
@@ -235,5 +235,3 @@
     </script>
 </body>
 </html>
-
-

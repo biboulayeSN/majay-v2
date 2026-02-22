@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -12,15 +12,15 @@
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-header">
-            <h1 class="logo">🛍️ <span class="text-primary">SAMASTORE</span></h1>
-            <p class="tagline">Créez votre boutique en ligne en 2 minutes</p>
+            <h1 class="logo">SAMASTORE</h1>
+            <p class="tagline">Creez votre boutique en ligne en 2 minutes</p>
         </div>
 
         <div class="auth-card">
             <h2>Inscription Vendeur</h2>
-            <p class="auth-subtitle">Commencez à vendre en 2 minutes</p>
+            <p class="auth-subtitle">Commencez a vendre en 2 minutes</p>
 
-            <!-- Étape 1 : Informations boutique -->
+            <!-- Etape 1 : Informations boutique -->
             <form id="inscriptionForm" class="auth-form" style="display: block;">
                 <div class="form-group">
                     <label for="nom" class="form-label">Nom de votre boutique *</label>
@@ -37,7 +37,7 @@
                             aria-describedby="slugHint slugExample">
                     </div>
                     <span class="form-hint" id="slugHint">Lettres minuscules, chiffres et tirets uniquement</span>
-                    <span class="form-hint text-success font-semibold mt-1 block" id="slugExample">
+                    <span class="form-hint text-success font-medium mt-1 block" id="slugExample">
                         Exemple : www.nayatoo.com/<span id="slugPreview">ma-boutique</span>
                     </span>
                 </div>
@@ -50,67 +50,63 @@
 
                 <div class="form-group">
                     <label for="country" class="form-label">Pays *</label>
-                    <div id="countrySelectContainer" role="group" aria-label="Sélection du pays"></div>
+                    <div id="countrySelectContainer" role="group" aria-label="Selection du pays"></div>
                 </div>
 
                 <div class="form-group">
-                    <label for="telephone" class="form-label">Numéro de téléphone *</label>
+                    <label for="telephone" class="form-label">Numero de telephone *</label>
                     <div class="input-with-prefix">
                         <span class="prefix" id="phonePrefix" aria-hidden="true"></span>
                         <input type="tel" id="telephone" class="form-control" required placeholder="77 123 45 67"
-                            aria-required="true" aria-label="Numéro de téléphone" aria-describedby="phoneHint">
+                            aria-required="true" aria-label="Numero de telephone" aria-describedby="phoneHint">
                     </div>
-                    <span class="form-hint" id="phoneHint">Le préfixe est détecté automatiquement selon votre
-                        pays</span>
+                    <span class="form-hint" id="phoneHint">Le prefixe est detecte automatiquement selon votre pays</span>
                 </div>
 
                 <div class="form-group">
                     <label for="whatsapp" class="form-label">WhatsApp</label>
-                    <input type="tel" id="whatsapp" class="form-control" placeholder="Même numéro ou autre"
-                        aria-label="Numéro WhatsApp">
+                    <input type="tel" id="whatsapp" class="form-control" placeholder="Meme numero ou autre"
+                        aria-label="Numero WhatsApp">
                 </div>
 
-                <div class="form-group checkbox-group">
-                    <label for="cgu" class="flex items-center gap-3 cursor-pointer min-h-[44px]">
-                        <input type="checkbox" id="cgu" required aria-required="true" class="w-5 h-5 cursor-pointer"
-                            style="min-width: 20px; min-height: 20px;">
-                        <span class="text-base">J'accepte les <a href="../cgu.html" target="_blank"
-                                class="text-primary font-semibold underline hover:text-primary-dark">conditions
-                                d'utilisation</a></span>
+                <div class="form-group">
+                    <label for="cgu" class="flex items-center gap-3 cursor-pointer min-h-[36px]">
+                        <input type="checkbox" id="cgu" required aria-required="true" class="w-4 h-4 cursor-pointer">
+                        <span class="text-sm">J'accepte les <a href="../cgu.html" target="_blank"
+                                class="text-primary font-medium underline">conditions d'utilisation</a></span>
                     </label>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg" id="btnSubmit"
-                    style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
-                    <span class="btn-text">📱 Envoyer le code</span>
-                    <span class="btn-loader" style="display:none">⏳</span>
+                <button type="submit" class="btn btn-primary w-full" id="btnSubmit"
+                    style="min-height: 40px;">
+                    <span class="btn-text">Envoyer le code</span>
+                    <span class="btn-loader" style="display:none">...</span>
                 </button>
             </form>
 
-            <!-- Étape 2 : Code OTP -->
+            <!-- Etape 2 : Code OTP -->
             <form id="otpForm" class="auth-form" style="display: none;">
                 <div class="form-group">
-                    <label for="otpCode" class="form-label">Code de vérification</label>
+                    <label for="otpCode" class="form-label">Code de verification</label>
                     <input type="text" id="otpCode" class="form-control" required placeholder="123456" maxlength="6"
-                        pattern="[0-9]{6}" aria-required="true" aria-label="Code de vérification"
+                        pattern="[0-9]{6}" aria-required="true" aria-label="Code de verification"
                         aria-describedby="otpHint">
-                    <span class="form-hint" id="otpHint">Entrez le code reçu par SMS</span>
+                    <span class="form-hint" id="otpHint">Entrez le code recu par SMS</span>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg" id="btnVerify"
-                    style="width: 100%; padding: 18px 30px; font-size: 1.1em; min-height: 60px; font-weight: 700;">
-                    <span class="btn-text">🚀 Créer ma boutique</span>
-                    <span class="btn-loader" style="display:none">⏳</span>
+                <button type="submit" class="btn btn-primary w-full" id="btnVerify"
+                    style="min-height: 40px;">
+                    <span class="btn-text">Creer ma boutique</span>
+                    <span class="btn-loader" style="display:none">...</span>
                 </button>
 
-                <button type="button" class="btn btn-secondary" onclick="retourInfos()"
-                    style="margin-top: 15px; width: 100%; padding: 14px 24px; min-height: 48px;">
-                    ← Retour
+                <button type="button" class="btn btn-secondary w-full mt-3" onclick="retourInfos()">
+                    Retour
                 </button>
             </form>
 
-            <div class="auth-footer">
-                <p>Vous avez déjà un compte ? <a href="connexion.html">Se connecter</a></p>
+            <div class="auth-footer mt-4">
+                <p>Vous avez deja un compte ? <a href="connexion.html">Se connecter</a></p>
             </div>
         </div>
     </div>
@@ -118,39 +114,28 @@
         import { authSAMASTORE } from "../js/auth.js";
         import { detectUserLocation, createCountrySelector, formatPhoneWithPrefix, saveUserLocation } from "../js/geolocation.js";
 
-        // Variables globales pour la géolocalisation
         let userLocation = null;
 
-        // Initialiser la détection de géolocalisation au chargement
         (async function initGeolocation() {
             try {
-                // Détecter la localisation
                 userLocation = await detectUserLocation();
 
-                // Créer le sélecteur de pays
                 const countryContainer = document.getElementById('countrySelectContainer');
                 countryContainer.innerHTML = createCountrySelector(userLocation.country);
 
-                // Afficher le préfixe dans le champ téléphone
-                const phoneInput = document.getElementById('telephone');
-                // Utiliser l'élément existant au lieu d'en créer un nouveau
                 const phonePrefix = document.getElementById('phonePrefix');
 
                 if (phonePrefix) {
-                    phonePrefix.className = 'absolute left-4 top-1/2 -translate-y-1/2 font-bold text-success text-base pointer-events-none z-10';
                     phonePrefix.textContent = userLocation.prefix;
-                    // Note: L'élément est déjà dans le DOM, pas besoin de insertBefore
                 }
 
-                // Mettre à jour le placeholder
+                const phoneInput = document.getElementById('telephone');
                 phoneInput.placeholder = 'Ex: 77 123 45 67';
 
-                // Mettre à jour le hint
                 document.getElementById('phoneHint').innerHTML = `
-            <span class="text-success">✓</span> Pays détecté: ${userLocation.flag} ${userLocation.countryName}
+            <span style="color: #4daa57;">&#10003;</span> Pays detecte: ${userLocation.flag} ${userLocation.countryName}
         `;
 
-                // Gérer le changement de pays
                 const countrySelector = document.getElementById('countrySelector');
                 countrySelector.addEventListener('change', (e) => {
                     const selected = e.target.selectedOptions[0];
@@ -160,11 +145,10 @@
                 });
 
             } catch (error) {
-                console.error('Erreur initialisation géolocalisation:', error);
+                console.error('Erreur initialisation geolocalisation:', error);
             }
         })();
 
-        // Prévisualisation de l'URL de la boutique en temps réel
         document.getElementById('slug').addEventListener('input', function (e) {
             const slugPreview = document.getElementById('slugPreview');
             const value = e.target.value.trim();
@@ -175,16 +159,15 @@
                 slugPreview.textContent = 'ma-boutique';
             }
 
-            // Validation en temps réel : seulement lettres minuscules, chiffres et tirets
             const validPattern = /^[a-z0-9-]*$/;
             if (!validPattern.test(value)) {
-                e.target.style.borderColor = '#ff4757';
-                document.getElementById('slugHint').style.color = '#ff4757';
-                document.getElementById('slugHint').textContent = '⚠️ Uniquement lettres minuscules, chiffres et tirets';
+                e.target.style.borderColor = '#e03e3e';
+                document.getElementById('slugHint').style.color = '#e03e3e';
+                document.getElementById('slugHint').textContent = 'Uniquement lettres minuscules, chiffres et tirets';
             } else {
-                e.target.style.borderColor = '#25D366';
-                document.getElementById('slugHint').style.color = '#25D366';
-                document.getElementById('slugHint').textContent = '✓ Adresse valide';
+                e.target.style.borderColor = '#4daa57';
+                document.getElementById('slugHint').style.color = '#4daa57';
+                document.getElementById('slugHint').textContent = 'Adresse valide';
             }
         });
 
@@ -197,26 +180,18 @@
             btn.querySelector('.btn-loader').style.display = 'inline';
 
             try {
-                // Récupérer les valeurs
                 let telephone = document.getElementById('telephone').value.trim();
                 const whatsapp = document.getElementById('whatsapp').value.trim() || telephone;
 
-                // Formater le numéro avec le préfixe du pays sélectionné
                 const countrySelector = document.getElementById('countrySelector');
                 if (countrySelector) {
                     const selectedCountry = countrySelector.value;
                     const selectedPrefix = countrySelector.selectedOptions[0].dataset.prefix;
 
-                    // Debug log removed
-
-                    // Ajouter le préfixe si nécessaire
                     if (!telephone.startsWith('+')) {
                         telephone = selectedPrefix + telephone.replace(/^0+/, '');
                     }
 
-                    // Debug log removed
-
-                    // Sauvegarder la localisation pour analytics
                     if (userLocation) {
                         localStorage.setItem('user_signup_location', JSON.stringify({
                             country: selectedCountry,
@@ -244,16 +219,10 @@
 
                 if (result.success) {
                     const { showSuccess } = await import("../js/notifications.js");
-                    showSuccess("Code envoyé ! Vérifiez votre téléphone.");
+                    showSuccess("Code envoye ! Verifiez votre telephone.");
 
-                    // Debug log removed
-
-                    // Stocker le numéro formaté pour la vérification OTP
                     sessionStorage.setItem('SAMASTORE_otp_phone', result.phone);
 
-                    // Debug log removed
-
-                    // Afficher le formulaire OTP
                     document.getElementById("inscriptionForm").style.display = 'none';
                     document.getElementById("otpForm").style.display = 'block';
                     document.getElementById("otpCode").focus();
@@ -279,17 +248,14 @@
             btn.querySelector('.btn-loader').style.display = 'inline';
 
             try {
-                // Récupérer le numéro formaté utilisé lors de l'envoi du code
                 const telephone = sessionStorage.getItem('SAMASTORE_otp_phone') || document.getElementById('telephone').value.trim();
                 const code = document.getElementById('otpCode').value.trim();
-
-                // Debug log removed
 
                 const result = await authSAMASTORE.finaliserInscription(telephone, code);
 
                 if (result.success) {
                     const { showSuccess } = await import("../js/notifications.js");
-                    showSuccess('Boutique créée avec succès ! Redirection...');
+                    showSuccess('Boutique creee avec succes ! Redirection...');
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
                     }, 1500);
@@ -312,7 +278,6 @@
             document.getElementById("otpCode").value = '';
         };
     </script>
-
 </body>
 
 </html>

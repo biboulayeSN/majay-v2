@@ -7,59 +7,60 @@
     <link rel="stylesheet" href="../css/output.css">
     <style>
         .admin-header {
-            background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
-            color: white;
+            background: #ffffff;
+            color: #37352f;
+            border-bottom: 1px solid #e5e5e3;
         }
-        .admin-nav a { color: white; }
-        .admin-nav a.active { background: rgba(255,255,255,0.2); }
+        .admin-nav a { color: #37352f; }
+        .admin-nav a.active { background: #f7f7f5; }
     </style>
 </head>
 <body class="dashboard-page">
     <header class="dashboard-header admin-header">
         <div class="dashboard-header-content">
-            <div class="dashboard-logo">💰 ADMIN FINANCIAL</div>
+            <div class="dashboard-logo" style="color: #37352f; font-weight: 700;">ADMIN FINANCIAL</div>
             <nav class="dashboard-nav admin-nav">
-                <a href="financial.html" class="nav-link active">💳 Paiements</a>
-                <a href="financial-invoices.html" class="nav-link">📄 Factures</a>
-                <a href="financial-subscriptions.html" class="nav-link">🔄 Abonnements</a>
+                <a href="financial.html" class="nav-link active">Paiements</a>
+                <a href="financial-invoices.html" class="nav-link">Factures</a>
+                <a href="financial-subscriptions.html" class="nav-link">Abonnements</a>
             </nav>
-            <button onclick="deconnexionAdmin()" class="btn btn-outline btn-sm" style="color: white; border-color: rgba(255,255,255,0.3);">🚪 Déconnexion</button>
+            <button onclick="deconnexionAdmin()" class="btn btn-outline btn-sm" style="color: #37352f; border-color: #e5e5e3;">Deconnexion</button>
         </div>
     </header>
 
     <div class="dashboard-container">
         <div class="page-header">
             <div>
-                <h1 class="page-title">Gestion des Paiements</h1>
-                <p class="page-subtitle">Vérification et conformité des paiements</p>
+                <h1 class="page-title" style="color: #37352f; font-weight: 700;">Gestion des Paiements</h1>
+                <p class="page-subtitle" style="color: #6b6b6b; font-size: 14px;">Verification et conformite des paiements</p>
             </div>
         </div>
 
         <div class="filters-bar">
-            <select class="filter-select" id="statusFilter">
+            <select class="filter-select" id="statusFilter" style="border: 1px solid #e5e5e3; border-radius: 6px;">
                 <option value="">Tous les statuts</option>
-                <option value="paid">Payés</option>
-                <option value="unpaid">Non payés</option>
+                <option value="paid">Payes</option>
+                <option value="unpaid">Non payes</option>
                 <option value="partial">Partiels</option>
                 <option value="overdue">En retard</option>
             </select>
-            <input type="date" class="filter-select" id="dateFrom" placeholder="Date début">
-            <input type="date" class="filter-select" id="dateTo" placeholder="Date fin">
+            <input type="date" class="filter-select" id="dateFrom" placeholder="Date debut" style="border: 1px solid #e5e5e3; border-radius: 6px;">
+            <input type="date" class="filter-select" id="dateTo" placeholder="Date fin" style="border: 1px solid #e5e5e3; border-radius: 6px;">
         </div>
 
-        <div class="card">
+        <div class="card" style="border: 1px solid #e5e5e3; border-radius: 8px; box-shadow: none;">
             <div class="card-body">
                 <div style="overflow-x: auto;">
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>Facture</th>
-                                <th>Boutique</th>
-                                <th>Montant</th>
-                                <th>Statut</th>
-                                <th>Date</th>
-                                <th>Vérification</th>
-                                <th>Actions</th>
+                            <tr style="background: #f7f7f5;">
+                                <th style="color: #37352f;">Facture</th>
+                                <th style="color: #37352f;">Boutique</th>
+                                <th style="color: #37352f;">Montant</th>
+                                <th style="color: #37352f;">Statut</th>
+                                <th style="color: #37352f;">Date</th>
+                                <th style="color: #37352f;">Verification</th>
+                                <th style="color: #37352f;">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="paymentsTable">
@@ -109,7 +110,6 @@
                 if (!invoices || invoices.length === 0) {
                     document.getElementById('paymentsTable').innerHTML = `
                         <tr><td colspan="7" class="empty-state">
-                            <div class="empty-state-icon">💳</div>
                             <h3>Aucun paiement</h3>
                         </td></tr>
                     `;
@@ -117,11 +117,11 @@
                 }
 
                 const statusLabels = {
-                    'paid': 'Payé',
-                    'unpaid': 'Non payé',
+                    'paid': 'Paye',
+                    'unpaid': 'Non paye',
                     'partial': 'Partiel',
                     'overdue': 'En retard',
-                    'refunded': 'Remboursé'
+                    'refunded': 'Rembourse'
                 };
 
                 const statusClasses = {
@@ -140,12 +140,12 @@
                             <td>${parseInt(invoice.amount || 0).toLocaleString()} XOF</td>
                             <td><span class="badge ${statusClasses[invoice.status]}">${statusLabels[invoice.status] || invoice.status}</span></td>
                             <td>${new Date(invoice.due_date).toLocaleDateString('fr-FR')}</td>
-                            <td>${invoice.paid_at ? '✅ Vérifié' : '⏳ En attente'}</td>
+                            <td>${invoice.paid_at ? 'Verifie' : 'En attente'}</td>
                             <td>
                                 ${invoice.status !== 'paid' ? `
-                                    <button onclick="verifierPaiement('${invoice.id}')" 
-                                            class="btn btn-sm btn-success">
-                                        Vérifier
+                                    <button onclick="verifierPaiement('${invoice.id}')"
+                                            class="btn btn-sm btn-success" style="min-height: 32px; font-size: 13px;">
+                                        Verifier
                                     </button>
                                 ` : ''}
                             </td>
@@ -159,11 +159,11 @@
 
         window.verifierPaiement = async function(invoiceId) {
             if (!await requirePermission('verify_payments')) return;
-            
+
             try {
                 const { error } = await supabase
                     .from('invoices')
-                    .update({ 
+                    .update({
                         status: 'paid',
                         paid_at: new Date().toISOString(),
                         updated_at: new Date().toISOString()
@@ -182,5 +182,3 @@
     </script>
 </body>
 </html>
-
-

@@ -13,327 +13,172 @@
     <meta property="og:image" content="assets/favicon.png">
     <link rel="stylesheet" href="css/output.css">
     <style>
-        /* Effets complexes personnalisés pour pricing cards */
-        .pricing-card-hover::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(37, 211, 102, 0.08);
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease;
-            pointer-events: none;
-        }
-
-        .pricing-card-hover:hover::after {
-            width: 400px;
-            height: 400px;
-        }
-
-        .pricing-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease;
-            pointer-events: none;
-        }
-
-        .pricing-btn:hover::before {
-            width: 250px;
-            height: 250px;
-        }
-
         .plan-feature::before {
-            content: '✓';
-            color: #25D366;
-            font-weight: 900;
+            content: '\2713';
+            color: #2383e2;
+            font-weight: 700;
             margin-right: 8px;
-            font-size: 1.2em;
             flex-shrink: 0;
-            transition: all 0.2s ease;
-        }
-
-        .pricing-card-hover:hover .plan-feature::before {
-            transform: scale(1.2);
         }
     </style>
 </head>
 
-<body class="overflow-x-hidden font-sans">
-    <!-- NAVBAR COLLANTE (Apparaît au scroll) -->
+<body class="overflow-x-hidden font-sans bg-white text-text">
+    <!-- NAVBAR COLLANTE -->
     <nav id="main-nav"
-        class="fixed top-0 left-0 w-full z-[99999] bg-white border-b border-gray-200 py-4 px-6 transition-all duration-500 -translate-y-full opacity-0 pointer-events-none">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <!-- Logo à gauche -->
-            <a href="#" class="text-2xl font-black text-gray-900 tracking-tighter flex items-center gap-2">
-                🛍️ <span class="text-primary">SAMASTORE</span>
-            </a>
-            <!-- Bouton rapide à droite -->
-            <div class="flex items-center gap-4">
+        class="fixed top-0 left-0 w-full z-[99999] bg-white border-b border-border py-3 px-6 transition-all duration-150 -translate-y-full opacity-0 pointer-events-none">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <a href="#" class="text-base font-bold text-text">SAMASTORE</a>
+            <div class="flex items-center gap-3">
                 <a href="demo-shop.html"
-                    class="hidden md:block text-gray-600 font-medium hover:text-primary transition-colors">Démo</a>
+                    class="hidden md:block text-sm text-text-secondary font-medium hover:text-text">Demo</a>
                 <a href="vendeur/inscription.html"
-                    class="bg-primary text-white px-5 py-2 rounded-full font-bold text-sm hover:bg-primary-dark transition-all shadow-md hover:shadow-lg">
-                    Créer ma boutique
+                    class="bg-primary text-white px-4 py-1.5 rounded-md font-medium text-sm hover:bg-primary-hover">
+                    Creer ma boutique
                 </a>
             </div>
         </div>
     </nav>
 
-    <!-- HERO - Nouvelle Version Split Layout -->
-    <section class="min-h-screen relative flex items-center justify-center py-12 px-4 md:px-8 overflow-hidden bg-white">
-        <!-- Fond vert très subtil -->
-        <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10"></div>
-
-        <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <!-- TEXTE (Gauche) -->
-            <div class="text-center lg:text-left order-2 lg:order-1">
-                <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 text-gray-900 tracking-tight leading-tight">
-                    🛍️ <span class="text-primary">SAMASTORE</span>
-                </h1>
-                <p
-                    class="text-xl md:text-2xl mb-10 text-gray-700 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                    La plateforme tout-en-un pour booster vos ventes sur <span
-                        class="text-primary font-bold">WhatsApp</span> et <span
-                        class="text-blue-500 font-bold">Telegram</span>.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
-                    <a href="vendeur/connexion.html"
-                        class="bg-primary hover:bg-primary-dark text-white font-bold text-lg px-8 py-4 rounded-full transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl flex items-center justify-center gap-2">
-                        🚀 Accéder à ma Boutique
-                    </a>
-                    <a href="demo-shop.html" id="demo-btn-ref"
-                        class="bg-white text-gray-700 border-2 border-gray-200 hover:border-primary hover:text-primary px-8 py-4 text-lg rounded-full transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-md">
-                        👀 Voir une démo
-                    </a>
-                </div>
-            </div>
-
-            <!-- ANIMATION LOTTIE (Droite) -->
-            <div class="relative order-1 lg:order-2 flex justify-center pointer-events-none">
-                <!-- Halo lumineux décoratif derrière l'animation -->
-                <div class="absolute -z-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
-                <!-- Conteneur de l'animation -->
-                <div id="lottie-bg" class="w-full max-w-[500px] h-[400px] md:h-[550px]"></div>
+    <!-- HERO -->
+    <section class="min-h-[80vh] flex items-center justify-center py-16 px-4 bg-white">
+        <div class="max-w-3xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 text-text leading-tight">
+                SAMASTORE
+            </h1>
+            <p class="text-lg md:text-xl mb-10 text-text-secondary max-w-2xl mx-auto leading-relaxed">
+                La plateforme tout-en-un pour booster vos ventes sur
+                <span class="text-text font-semibold">WhatsApp</span> et
+                <span class="text-text font-semibold">Telegram</span>.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="vendeur/connexion.html"
+                    class="bg-primary text-white font-medium text-base px-6 py-3 rounded-md hover:bg-primary-hover inline-flex items-center justify-center">
+                    Acceder a ma Boutique
+                </a>
+                <a href="demo-shop.html" id="demo-btn-ref"
+                    class="bg-white text-text border border-border px-6 py-3 text-base rounded-md hover:bg-bg-secondary inline-flex items-center justify-center">
+                    Voir une demo
+                </a>
             </div>
         </div>
     </section>
 
     <!-- FEATURES -->
-    <section class="py-16 px-4 bg-white">
-        <h2 class="text-center text-3xl md:text-4xl mb-12 text-text font-black">Pourquoi choisir SAMASTORE ?</h2>
-        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div
-                class="text-center p-6 rounded-xl bg-gradient-to-br from-bg to-gray-100 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-                <div class="text-5xl mb-4">⚡</div>
-                <h3 class="text-xl mb-3 text-text font-bold">Rapide à créer</h3>
-                <p class="text-text-light text-base leading-relaxed">Créez votre boutique en ligne en moins de 2
-                    minutes. Aucune compétence technique requise.</p>
+    <section class="py-16 px-4 bg-white border-t border-border">
+        <h2 class="text-center text-2xl mb-12 text-text font-bold">Pourquoi choisir SAMASTORE ?</h2>
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="p-5 rounded-lg border border-border">
+                <h3 class="text-base mb-2 text-text font-semibold">Rapide a creer</h3>
+                <p class="text-text-secondary text-sm leading-relaxed">Creez votre boutique en ligne en moins de 2 minutes. Aucune competence technique requise.</p>
             </div>
-
-            <div
-                class="text-center p-6 rounded-xl bg-gradient-to-br from-bg to-gray-100 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-                <div class="text-5xl mb-4">📱</div>
-                <h3 class="text-xl mb-3 text-text font-bold">WhatsApp & Telegram</h3>
-                <p class="text-text-light text-base leading-relaxed">Vos clients commandent directement via WhatsApp ou
-                    Telegram. Pas de paiement en ligne compliqué.</p>
+            <div class="p-5 rounded-lg border border-border">
+                <h3 class="text-base mb-2 text-text font-semibold">WhatsApp & Telegram</h3>
+                <p class="text-text-secondary text-sm leading-relaxed">Vos clients commandent directement via WhatsApp ou Telegram. Pas de paiement en ligne complique.</p>
             </div>
-
-            <div
-                class="text-center p-6 rounded-xl bg-gradient-to-br from-bg to-gray-100 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-                <div class="text-5xl mb-4">🔗</div>
-                <h3 class="text-xl mb-3 text-text font-bold">Lien unique</h3>
-                <p class="text-text-light text-base leading-relaxed">Partagez un seul lien pour votre catalogue complet.
-                    Parfait pour Instagram, Facebook, TikTok.</p>
+            <div class="p-5 rounded-lg border border-border">
+                <h3 class="text-base mb-2 text-text font-semibold">Lien unique</h3>
+                <p class="text-text-secondary text-sm leading-relaxed">Partagez un seul lien pour votre catalogue complet. Parfait pour Instagram, Facebook, TikTok.</p>
             </div>
-
-            <div
-                class="text-center p-6 rounded-xl bg-gradient-to-br from-bg to-gray-100 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-                <div class="text-5xl mb-4">📊</div>
-                <h3 class="text-xl mb-3 text-text font-bold">Statistiques</h3>
-                <p class="text-text-light text-base leading-relaxed">Suivez vos ventes, vos produits les plus populaires
-                    et l'évolution de votre activité.</p>
+            <div class="p-5 rounded-lg border border-border">
+                <h3 class="text-base mb-2 text-text font-semibold">Statistiques</h3>
+                <p class="text-text-secondary text-sm leading-relaxed">Suivez vos ventes, vos produits les plus populaires et l'evolution de votre activite.</p>
             </div>
-
-            <div
-                class="text-center p-6 rounded-xl bg-gradient-to-br from-bg to-gray-100 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-                <div class="text-5xl mb-4">💰</div>
-                <h3 class="text-xl mb-3 text-text font-bold">Sans commission</h3>
-                <p class="text-text-light text-base leading-relaxed">Gardez 100% de vos ventes. Pas de frais cachés, pas
-                    de commission sur les transactions.</p>
+            <div class="p-5 rounded-lg border border-border">
+                <h3 class="text-base mb-2 text-text font-semibold">Sans commission</h3>
+                <p class="text-text-secondary text-sm leading-relaxed">Gardez 100% de vos ventes. Pas de frais caches, pas de commission sur les transactions.</p>
             </div>
-
-            <div
-                class="text-center p-6 rounded-xl bg-gradient-to-br from-bg to-gray-100 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-                <div class="text-5xl mb-4">🌍</div>
-                <h3 class="text-xl mb-3 text-text font-bold">Multi-plateforme</h3>
-                <p class="text-text-light text-base leading-relaxed">Fonctionne sur mobile, tablette et ordinateur.
-                    Accessible partout, tout le temps.</p>
+            <div class="p-5 rounded-lg border border-border">
+                <h3 class="text-base mb-2 text-text font-semibold">Multi-plateforme</h3>
+                <p class="text-text-secondary text-sm leading-relaxed">Fonctionne sur mobile, tablette et ordinateur. Accessible partout, tout le temps.</p>
             </div>
         </div>
     </section>
 
     <!-- PRICING -->
-    <section class="py-16 px-4 bg-gradient-to-br from-primary via-primary-light to-secondary text-white">
-        <h2 class="text-center text-3xl md:text-4xl lg:text-5xl mb-12 font-black drop-shadow-lg animate-fade-in-down">
-            Choisissez votre plan</h2>
-        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+    <section class="py-16 px-4 bg-bg-secondary border-t border-border">
+        <h2 class="text-center text-2xl mb-12 text-text font-bold">Choisissez votre plan</h2>
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
             <!-- FREE -->
-            <div class="pricing-card-hover bg-white text-text rounded-2xl p-6 text-center transition-all duration-200 flex flex-col shadow-lg relative overflow-hidden animate-fade-in-up hover:-translate-y-1 hover:shadow-xl"
-                style="animation-delay: 0.1s; animation-fill-mode: backwards;">
-                <div
-                    class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transition-all duration-200">
-                </div>
-                <div
-                    class="text-2xl font-extrabold mb-4 text-text tracking-wide transition-all duration-200 relative z-10">
-                    🎁 FREE</div>
-                <div
-                    class="text-4xl font-black mb-2 bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent leading-tight transition-all duration-200 relative z-10">
-                    0 FCFA</div>
-                <div class="text-text-light mb-6 text-sm font-medium relative z-10">Gratuit pour toujours</div>
-                <ul class="list-none mb-auto text-left px-2 relative z-10">
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        07 produits maximum</li>
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Catalogue en ligne</li>
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Lien unique</li>
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Commandes WhatsApp/Telegram</li>
-                    <li class="plan-feature py-2.5 text-text text-base flex items-center transition-all duration-200">
-                        Support par email uniquement</li>
+            <div class="bg-white rounded-lg p-6 text-center flex flex-col border border-border">
+                <div class="text-lg font-bold mb-3 text-text">FREE</div>
+                <div class="text-3xl font-bold mb-1 text-text">0 FCFA</div>
+                <div class="text-text-secondary mb-6 text-sm">Gratuit pour toujours</div>
+                <ul class="list-none mb-auto text-left">
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">07 produits maximum</li>
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Catalogue en ligne</li>
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Lien unique</li>
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Commandes WhatsApp/Telegram</li>
+                    <li class="plan-feature py-2 text-text text-sm flex items-center">Support par email</li>
                 </ul>
                 <a href="vendeur/inscription.html"
-                    class="pricing-btn mt-6 w-full px-6 py-3 text-base font-bold rounded-xl min-h-[44px] relative z-10 overflow-hidden bg-accent hover:bg-accent-dark text-white transition-all duration-200 inline-flex items-center justify-center">Commencer
-                    gratuitement</a>
+                    class="mt-6 w-full px-4 py-2.5 text-sm font-medium rounded-md bg-primary text-white hover:bg-primary-hover inline-flex items-center justify-center">
+                    Commencer gratuitement
+                </a>
             </div>
 
             <!-- PRO -->
-            <div class="pricing-card-hover bg-white text-text rounded-2xl p-6 text-center transition-all duration-200 flex flex-col shadow-lg relative overflow-hidden border-3 border-accent scale-[1.02] animate-fade-in-up hover:-translate-y-1 hover:shadow-xl"
-                style="animation-delay: 0.2s; animation-fill-mode: backwards; box-shadow: 0 12px 40px rgba(37, 211, 102, 0.25);">
-                <div
-                    class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-accent to-accent-dark transition-all duration-200">
-                </div>
-                <div
-                    class="text-2xl font-extrabold mb-4 text-text tracking-wide transition-all duration-200 relative z-10">
-                    ⭐ PRO</div>
-                <div
-                    class="text-4xl font-black mb-2 bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent leading-tight transition-all duration-200 relative z-10">
-                    25 000 FCFA</div>
-                <div class="text-text-light mb-6 text-sm font-medium relative z-10">par année</div>
-                <ul class="list-none mb-auto text-left px-2 relative z-10">
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Produits illimités</li>
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Statistiques avancées</li>
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Factures personnalisées</li>
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Historique des commandes</li>
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Top clients</li>
-                    <li class="plan-feature py-2.5 text-text text-base flex items-center transition-all duration-200">
-                        Support WhatsApp ou email</li>
+            <div class="bg-white rounded-lg p-6 text-center flex flex-col border-2 border-primary">
+                <div class="text-lg font-bold mb-3 text-primary">PRO</div>
+                <div class="text-3xl font-bold mb-1 text-text">25 000 FCFA</div>
+                <div class="text-text-secondary mb-6 text-sm">par annee</div>
+                <ul class="list-none mb-auto text-left">
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Produits illimites</li>
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Statistiques avancees</li>
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Factures personnalisees</li>
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Historique des commandes</li>
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Top clients</li>
+                    <li class="plan-feature py-2 text-text text-sm flex items-center">Support WhatsApp ou email</li>
                 </ul>
                 <a href="vendeur/inscription.html"
-                    class="pricing-btn mt-6 w-full px-6 py-3 text-base font-bold rounded-xl min-h-[44px] relative z-10 overflow-hidden bg-accent hover:bg-accent-dark text-white transition-all duration-200 inline-flex items-center justify-center">Démarrer
-                    avec Pro</a>
+                    class="mt-6 w-full px-4 py-2.5 text-sm font-medium rounded-md bg-primary text-white hover:bg-primary-hover inline-flex items-center justify-center">
+                    Demarrer avec Pro
+                </a>
             </div>
 
             <!-- ENTREPRISE -->
-            <div class="pricing-card-hover bg-white text-text rounded-2xl p-6 text-center transition-all duration-200 flex flex-col shadow-lg relative overflow-hidden animate-fade-in-up hover:-translate-y-1 hover:shadow-xl"
-                style="animation-delay: 0.3s; animation-fill-mode: backwards;">
-                <div
-                    class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transition-all duration-200">
-                </div>
-                <div
-                    class="text-2xl font-extrabold mb-4 text-text tracking-wide transition-all duration-200 relative z-10">
-                    🏢 ENTREPRISE</div>
-                <div
-                    class="text-4xl font-black mb-2 bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent leading-tight transition-all duration-200 relative z-10">
-                    250 000 FCFA</div>
-                <div class="text-text-light mb-6 text-sm font-medium relative z-10">par année</div>
-                <ul class="list-none mb-auto text-left px-2 relative z-10">
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Tout du plan Pro</li>
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Multi-boutiques (max 4)</li>
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Statistiques marché</li>
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Produits tendances</li>
-                    <li
-                        class="plan-feature py-2.5 border-b border-border text-text text-base flex items-center transition-all duration-200">
-                        Publicité ciblée</li>
-                    <li class="plan-feature py-2.5 text-text text-base flex items-center transition-all duration-200">
-                        Support WhatsApp ou email</li>
+            <div class="bg-white rounded-lg p-6 text-center flex flex-col border border-border">
+                <div class="text-lg font-bold mb-3 text-text">ENTREPRISE</div>
+                <div class="text-3xl font-bold mb-1 text-text">250 000 FCFA</div>
+                <div class="text-text-secondary mb-6 text-sm">par annee</div>
+                <ul class="list-none mb-auto text-left">
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Tout du plan Pro</li>
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Multi-boutiques (max 4)</li>
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Statistiques marche</li>
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Produits tendances</li>
+                    <li class="plan-feature py-2 border-b border-border text-text text-sm flex items-center">Publicite ciblee</li>
+                    <li class="plan-feature py-2 text-text text-sm flex items-center">Support WhatsApp ou email</li>
                 </ul>
                 <a href="vendeur/inscription.html"
-                    class="pricing-btn mt-6 w-full px-6 py-3 text-base font-bold rounded-xl min-h-[44px] relative z-10 overflow-hidden bg-accent hover:bg-accent-dark text-white transition-all duration-200 inline-flex items-center justify-center">Démarrer
-                    avec Entreprise</a>
+                    class="mt-6 w-full px-4 py-2.5 text-sm font-medium rounded-md bg-primary text-white hover:bg-primary-hover inline-flex items-center justify-center">
+                    Demarrer avec Entreprise
+                </a>
             </div>
         </div>
     </section>
 
     <!-- CTA FINAL -->
-    <section class="py-16 px-4 bg-gray-900 text-white text-center">
-        <h2 class="text-3xl md:text-4xl mb-4 font-bold">Prêt à booster vos ventes ?</h2>
-        <p class="text-lg md:text-xl mb-8 opacity-90">Rejoignez des milliers de vendeurs qui utilisent SAMASTORE</p>
+    <section class="py-16 px-4 bg-text text-white text-center">
+        <h2 class="text-2xl mb-3 font-bold">Pret a booster vos ventes ?</h2>
+        <p class="text-base mb-8 opacity-80">Rejoignez des milliers de vendeurs qui utilisent SAMASTORE</p>
         <a href="vendeur/inscription.html"
-            class="bg-accent hover:bg-accent-dark text-white font-bold text-lg md:text-xl px-8 py-3 rounded-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg inline-flex items-center justify-center min-h-[44px]">🚀
-            Créer ma boutique maintenant</a>
+            class="bg-primary text-white font-medium text-base px-6 py-3 rounded-md hover:bg-primary-hover inline-flex items-center justify-center">
+            Creer ma boutique maintenant
+        </a>
     </section>
 
-    <!-- Bibliothèque Lottie -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
-
-    <!-- Initialisation de l'animation -->
+    <!-- Script navbar scroll (pas de Lottie) -->
     <script>
-        // Initialisation de l'animation Lottie
-        const animation = lottie.loadAnimation({
-            container: document.getElementById('lottie-bg'),
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: 'assets/Ecommerce.json'
-        });
-
-        // GESTION DE LA NAVBAR AU SCROLL
         const nav = document.getElementById('main-nav');
         const demoBtn = document.getElementById('demo-btn-ref');
 
         window.addEventListener('scroll', () => {
-            // Récupérer la position du bouton démo par rapport à l'écran
             const rect = demoBtn.getBoundingClientRect();
-
-            // Si le BAS du bouton est sorti de l'écran (rect.bottom < 0)
             if (rect.bottom < 0) {
                 nav.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
-                nav.classList.add('translate-y-0', 'opacity-100', 'shadow-md');
+                nav.classList.add('translate-y-0', 'opacity-100');
             } else {
-                nav.classList.remove('translate-y-0', 'opacity-100', 'shadow-md');
+                nav.classList.remove('translate-y-0', 'opacity-100');
                 nav.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
             }
         });

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -20,7 +20,7 @@
             justify-content: space-between;
             align-items: center;
         }
-        .dashboard-logo { font-size: 1.5em; font-weight: 900; color: #667eea; }
+        .dashboard-logo { font-size: 1.5em; font-weight: 900; color: #2383e2; }
         .dashboard-nav { display: flex; gap: 20px; }
         .nav-link {
             color: #718096;
@@ -29,20 +29,21 @@
             padding: 10px 15px;
             border-radius: 8px;
         }
-        .nav-link.active { background: #edf2f7; color: #667eea; }
+        .nav-link.active { background: #edf2f7; color: #2383e2; }
         .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
         .filters-bar {
             background: white;
             padding: 20px;
-            border-radius: 16px;
+            border-radius: 12px;
             margin-bottom: 20px;
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
+            border: 1px solid #e2e8f0;
         }
         .filter-select {
             padding: 10px 15px;
-            border: 2px solid #e2e8f0;
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
             background: white;
         }
@@ -50,7 +51,7 @@
             flex: 1;
             min-width: 200px;
             padding: 10px 15px;
-            border: 2px solid #e2e8f0;
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
         }
         .customers-grid {
@@ -60,9 +61,9 @@
         }
         .customer-card {
             background: white;
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
         }
         .customer-header {
             display: flex;
@@ -71,13 +72,13 @@
             margin-bottom: 15px;
         }
         .customer-name {
-            font-size: 1.2em;
+            font-size: 1.1em;
             font-weight: 700;
-            color: #2d3748;
+            color: #37352f;
         }
         .badge-segment {
             padding: 4px 12px;
-            border-radius: 12px;
+            border-radius: 8px;
             font-size: 0.8em;
             font-weight: 600;
         }
@@ -103,17 +104,17 @@
         <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
-            
+
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link active">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link active">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">Abonnements</a>
+                <a href="profil.html" class="sidebar-nav-link">Profil</a>
             </nav>
 
             <div class="sidebar-footer">
@@ -124,16 +125,16 @@
         <!-- Main Content -->
         <main class="dashboard-main">
             <div class="dashboard-main-content">
-        <h1 style="font-size: 2em; margin-bottom: 30px;">Mes Clients</h1>
+        <h1 style="font-size: 1.5em; margin-bottom: 30px; color: #37352f;">Mes Clients</h1>
 
         <div class="filters-bar">
-            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Rechercher un client...">
+            <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un client...">
             <select id="segmentFilter" class="filter-select">
                 <option value="">Tous les segments</option>
                 <option value="champion">Champion</option>
                 <option value="loyal">Loyal</option>
                 <option value="potential">Potentiel</option>
-                <option value="at_risk">À risque</option>
+                <option value="at_risk">A risque</option>
                 <option value="lost">Perdu</option>
                 <option value="new">Nouveau</option>
             </select>
@@ -173,7 +174,6 @@
                 console.error(error);
                 document.getElementById('customersGrid').innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #718096;">
-                        <div style="font-size: 3em; margin-bottom: 15px;">❌</div>
                         <p>Erreur lors du chargement des clients</p>
                     </div>
                 `;
@@ -183,7 +183,7 @@
         function mettreAJourFiltres() {
             const cities = [...new Set(allCustomers.map(c => c.city).filter(Boolean))].sort();
             const citySelect = document.getElementById('cityFilter');
-            citySelect.innerHTML = '<option value="">Toutes les villes</option>' + 
+            citySelect.innerHTML = '<option value="">Toutes les villes</option>' +
                 cities.map(city => `<option value="${city}">${city}</option>`).join('');
         }
 
@@ -191,7 +191,6 @@
             if (customers.length === 0) {
                 document.getElementById('customersGrid').innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #718096;">
-                        <div style="font-size: 4em; margin-bottom: 20px;">👥</div>
                         <h3>Aucun client</h3>
                         <p>Les clients seront ajoutés automatiquement lors des commandes</p>
                     </div>
@@ -202,19 +201,19 @@
             document.getElementById('customersGrid').innerHTML = customers.map(customer => {
                 const segmentClass = `segment-${customer.customer_segment || 'new'}`;
                 const segmentNames = {
-                    champion: '🏆 Champion',
-                    loyal: '⭐ Loyal',
-                    potential: '💎 Potentiel',
-                    at_risk: '⚠️ À risque',
-                    lost: '💔 Perdu',
-                    new: '🆕 Nouveau'
+                    champion: 'Champion',
+                    loyal: 'Loyal',
+                    potential: 'Potentiel',
+                    at_risk: 'A risque',
+                    lost: 'Perdu',
+                    new: 'Nouveau'
                 };
                 return `
                 <div class="customer-card">
                     <div class="customer-header">
                         <div>
                             <div class="customer-name">${customer.first_name} ${customer.last_name || ''}</div>
-                            <div style="color: #718096; font-size: 0.9em; margin-top: 5px;">📞 ${customer.phone}</div>
+                            <div style="color: #718096; font-size: 0.9em; margin-top: 5px;">${customer.phone}</div>
                         </div>
                         <span class="badge-segment ${segmentClass}">${segmentNames[customer.customer_segment || 'new']}</span>
                     </div>
@@ -225,9 +224,9 @@
                         </div>
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                             <span style="color: #718096;">Total dépensé:</span>
-                            <span style="font-weight: 600; color: #25D366;">${parseInt(customer.total_spent || 0).toLocaleString()} XOF</span>
+                            <span style="font-weight: 600; color: #2383e2;">${parseInt(customer.total_spent || 0).toLocaleString()} XOF</span>
                         </div>
-                        ${customer.city ? `<div style="color: #718096; font-size: 0.9em;">📍 ${customer.city}</div>` : ''}
+                        ${customer.city ? `<div style="color: #718096; font-size: 0.9em;">${customer.city}</div>` : ''}
                     </div>
                 </div>
             `;
@@ -253,11 +252,11 @@
             const city = document.getElementById('cityFilter').value;
 
             let filtered = allCustomers.filter(c => {
-                const matchSearch = !search || 
+                const matchSearch = !search ||
                     c.first_name?.toLowerCase().includes(search) ||
                     c.last_name?.toLowerCase().includes(search) ||
                     c.phone?.includes(search);
-                
+
                 const matchSegment = !segment || c.customer_segment === segment;
                 const matchCity = !city || c.city === city;
 
@@ -272,7 +271,7 @@
             const sidebar = document.getElementById('dashboardSidebar');
             const overlay = document.getElementById('sidebarOverlay');
             const isOpen = sidebar.classList.contains('open');
-            
+
             if (isOpen) {
                 closeSidebar();
             } else {
@@ -307,13 +306,13 @@
             const equipeLink = document.createElement('a');
             equipeLink.href = 'equipe.html';
             equipeLink.className = 'sidebar-nav-link';
-            equipeLink.textContent = '👥 Équipe';
+            equipeLink.textContent = 'Equipe';
             nav.insertBefore(equipeLink, nav.lastElementChild);
-            
+
             const multiLink = document.createElement('a');
             multiLink.href = 'multi-boutiques.html';
             multiLink.className = 'sidebar-nav-link';
-            multiLink.textContent = '🏪 Multi-Boutiques';
+            multiLink.textContent = 'Multi-Boutiques';
             nav.insertBefore(multiLink, nav.lastElementChild);
         }
 
@@ -324,7 +323,3 @@
     </div>
 </body>
 </html>
-
-
-
-

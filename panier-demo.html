@@ -9,8 +9,8 @@
 <body class="min-h-screen bg-gradient-to-br from-primary via-primary-light to-secondary py-5 px-5 font-sans">
     <div class="max-w-5xl mx-auto">
         <!-- HEADER -->
-        <div class="bg-white rounded-2xl py-5 px-5 mb-5 shadow-lg flex justify-between items-center flex-wrap gap-4">
-            <h1 class="text-3xl md:text-4xl text-primary flex items-center gap-3 font-black">🛒 Mon Panier</h1>
+        <div class="bg-white rounded-lg py-4 px-4 mb-4 border border-border flex justify-between items-center flex-wrap gap-4">
+            <h1 class="text-2xl text-text font-bold">Mon Panier</h1>
             <a href="javascript:history.back()" class="inline-flex items-center gap-2 py-2.5 px-5 bg-bg text-text no-underline rounded-xl font-semibold transition-all duration-200 hover:bg-border hover:-translate-x-0.5 min-h-[44px]">
                 ← Retour à la boutique
             </a>
@@ -80,9 +80,8 @@
             if (panier.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-12 px-4">
-                        <div class="text-6xl mb-4">🛒</div>
-                        <p class="text-xl text-text-light mb-6">Votre panier est vide</p>
-                        <a href="demo-shop.html" class="inline-flex items-center justify-center py-3 px-8 bg-success text-white no-underline rounded-xl font-bold text-base transition-all duration-200 hover:bg-accent-dark hover:-translate-y-0.5 hover:shadow-lg min-h-[44px]">
+                        <p class="text-lg text-text-secondary mb-6">Votre panier est vide</p>
+                        <a href="demo-shop.html" class="btn btn-primary">
                             Découvrir les boutiques
                         </a>
                     </div>

@@ -77,7 +77,7 @@ if (!document.getElementById('notification-styles')) {
         }
         
         .notification-success {
-            border-left: 4px solid #25D366;
+            border-left: 4px solid #4daa57;
         }
         
         .notification-error {

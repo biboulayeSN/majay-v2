@@ -1,38 +1,38 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comptabilité - SAMASTORE</title>
+    <title>Comptabilite - SAMASTORE</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
 </head>
 <body class="dashboard-page">
-    <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar"><span id="toggleIcon">☰</span></button>
+    <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar"><span id="toggleIcon">&#9776;</span></button>
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <div class="dashboard-wrapper">
         <aside class="dashboard-sidebar" id="dashboardSidebar">
-            <div class="sidebar-header"><div class="sidebar-logo">🛍️ SAMASTORE</div></div>
+            <div class="sidebar-header"><div class="sidebar-logo">SAMASTORE</div></div>
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="equipe.html" class="sidebar-nav-link">👥 Équipe</a>
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">Abonnements</a>
+                <a href="equipe.html" class="sidebar-nav-link">Equipe</a>
                 <div class="sidebar-menu-item">
-                    <div class="sidebar-nav-link has-submenu open">🏪 Mes Boutiques</div>
+                    <div class="sidebar-nav-link has-submenu open">Mes Boutiques</div>
                     <div class="sidebar-submenu open">
-                        <a href="agents.html" class="sidebar-submenu-link">👤 Agents</a>
-                        <a href="creation-boutique.html" class="sidebar-submenu-link">➕ Créer une boutique</a>
-                        <a href="depot.html" class="sidebar-submenu-link">📦 Dépôt</a>
-                        <a href="transferts.html" class="sidebar-submenu-link">🚚 Transferts</a>
-                        <a href="comptabilite.html" class="sidebar-submenu-link active">💰 Comptabilité</a>
-                        <a href="rapports.html" class="sidebar-submenu-link">📊 Rapports</a>
+                        <a href="agents.html" class="sidebar-submenu-link">Agents</a>
+                        <a href="creation-boutique.html" class="sidebar-submenu-link">Creer une boutique</a>
+                        <a href="depot.html" class="sidebar-submenu-link">Depot</a>
+                        <a href="transferts.html" class="sidebar-submenu-link">Transferts</a>
+                        <a href="comptabilite.html" class="sidebar-submenu-link active">Comptabilite</a>
+                        <a href="rapports.html" class="sidebar-submenu-link">Rapports</a>
                     </div>
                 </div>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <a href="profil.html" class="sidebar-nav-link">Profil</a>
             </nav>
             <div class="sidebar-footer">
                 <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan">FREE</a>
@@ -41,9 +41,19 @@
         <main class="dashboard-main">
             <div class="dashboard-main-content">
                 <div class="page-header">
-                    <div><h1 class="page-title">💰 Mini Comptabilité</h1><p class="page-subtitle">Revenus, dépenses et bilan simplifié par boutique</p></div>
+                    <div>
+                        <h1 class="page-title">Mini Comptabilite</h1>
+                        <p class="page-subtitle">Revenus, depenses et bilan simplifie par boutique</p>
+                    </div>
                 </div>
-                <div class="card"><div class="card-body"><div class="text-center p-8"><p class="text-lg mb-4">🚧 Fonctionnalité en cours de développement</p><p class="text-text-light">Visualisez vos revenus, dépenses et bilans financiers par boutique.</p></div></div></div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-center p-8">
+                            <p class="text-lg mb-4 text-text">Fonctionnalite en cours de developpement</p>
+                            <p class="text-text-secondary">Visualisez vos revenus, depenses et bilans financiers par boutique.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -53,10 +63,8 @@
         if (!session) window.location.href = 'connexion.html';
         if ((session.subscription_plan || 'free') !== 'entreprise') window.location.href = 'dashboard.html';
         document.getElementById('userPlan').textContent = (session.subscription_plan || 'free').toUpperCase();
-        window.toggleSidebar = function() { const s = document.getElementById('dashboardSidebar'); const o = document.getElementById('sidebarOverlay'); const open = s.classList.contains('open'); if (open) { s.classList.remove('open'); o.classList.remove('active'); document.getElementById('toggleIcon').textContent = '☰'; } else { s.classList.add('open'); o.classList.add('active'); document.getElementById('toggleIcon').textContent = '✕'; } };
-        window.closeSidebar = function() { document.getElementById('dashboardSidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('active'); document.getElementById('toggleIcon').textContent = '☰'; };
+        window.toggleSidebar = function() { const s = document.getElementById('dashboardSidebar'); const o = document.getElementById('sidebarOverlay'); if (s.classList.contains('open')) { s.classList.remove('open'); o.classList.remove('active'); document.getElementById('toggleIcon').textContent = '\u2630'; } else { s.classList.add('open'); o.classList.add('active'); document.getElementById('toggleIcon').textContent = '\u2715'; } };
+        window.closeSidebar = function() { document.getElementById('dashboardSidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('active'); document.getElementById('toggleIcon').textContent = '\u2630'; };
     </script>
 </body>
 </html>
-
-

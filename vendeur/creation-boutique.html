@@ -1,63 +1,53 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer une Boutique - SAMASTORE</title>
+    <title>Creer une Boutique - SAMASTORE</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
 </head>
 <body class="dashboard-page">
-    <!-- Sidebar Toggle Button (Mobile) -->
     <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-        <span id="toggleIcon">☰</span>
+        <span id="toggleIcon">&#9776;</span>
     </button>
-
-    <!-- Sidebar Overlay (Mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-    <!-- Dashboard Wrapper -->
     <div class="dashboard-wrapper">
-        <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
-            
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="equipe.html" class="sidebar-nav-link">👥 Équipe</a>
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">Abonnements</a>
+                <a href="equipe.html" class="sidebar-nav-link">Equipe</a>
                 <div class="sidebar-menu-item">
-                    <div class="sidebar-nav-link has-submenu open">🏪 Mes Boutiques</div>
+                    <div class="sidebar-nav-link has-submenu open">Mes Boutiques</div>
                     <div class="sidebar-submenu open">
-                        <a href="agents.html" class="sidebar-submenu-link">👤 Agents</a>
-                        <a href="creation-boutique.html" class="sidebar-submenu-link active">➕ Créer une boutique</a>
-                        <a href="depot.html" class="sidebar-submenu-link">📦 Dépôt</a>
-                        <a href="transferts.html" class="sidebar-submenu-link">🚚 Transferts</a>
-                        <a href="comptabilite.html" class="sidebar-submenu-link">💰 Comptabilité</a>
-                        <a href="rapports.html" class="sidebar-submenu-link">📊 Rapports</a>
+                        <a href="agents.html" class="sidebar-submenu-link">Agents</a>
+                        <a href="creation-boutique.html" class="sidebar-submenu-link active">Creer une boutique</a>
+                        <a href="depot.html" class="sidebar-submenu-link">Depot</a>
+                        <a href="transferts.html" class="sidebar-submenu-link">Transferts</a>
+                        <a href="comptabilite.html" class="sidebar-submenu-link">Comptabilite</a>
+                        <a href="rapports.html" class="sidebar-submenu-link">Rapports</a>
                     </div>
                 </div>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <a href="profil.html" class="sidebar-nav-link">Profil</a>
             </nav>
-
             <div class="sidebar-footer">
-                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan">FREE</a>
             </div>
         </aside>
-
-        <!-- Main Content -->
         <main class="dashboard-main">
             <div class="dashboard-main-content">
                 <div class="page-header">
                     <div>
-                        <h1 class="page-title">➕ Créer une Nouvelle Boutique</h1>
-                        <p class="page-subtitle">Créez jusqu'à 4 boutiques avec le plan Entreprise</p>
+                        <h1 class="page-title">Creer une Nouvelle Boutique</h1>
+                        <p class="page-subtitle">Creez jusqu'a 4 boutiques avec le plan Entreprise</p>
                     </div>
                 </div>
 
@@ -72,47 +62,43 @@
                                 <input type="text" id="storeName" class="form-control" required placeholder="Ex: Ma Boutique Dakar">
                                 <span class="form-hint">Le nom visible par vos clients</span>
                             </div>
-
                             <div class="form-group">
                                 <label for="storeSlug" class="form-label">Slug (URL) *</label>
                                 <div class="input-with-prefix">
-                                    <span class="prefix" style="position: static; color: var(--color-text-light);">www.site.com/</span>
-                                    <input type="text" id="storeSlug" class="form-control" required placeholder="ma-boutique-dakar" pattern="[a-z0-9-]+" style="margin-left: 10px;">
+                                    <span class="prefix">www.site.com/</span>
+                                    <input type="text" id="storeSlug" class="form-control" required placeholder="ma-boutique-dakar" pattern="[a-z0-9-]+">
                                 </div>
                                 <span class="form-hint">Uniquement lettres minuscules, chiffres et tirets</span>
                             </div>
-
                             <div class="form-group">
-                                <label for="storeWhatsApp" class="form-label">Numéro WhatsApp *</label>
+                                <label for="storeWhatsApp" class="form-label">Numero WhatsApp *</label>
                                 <input type="tel" id="storeWhatsApp" class="form-control" required placeholder="+221 77 123 45 67">
-                                <span class="form-hint">Numéro pour recevoir les commandes</span>
+                                <span class="form-hint">Numero pour recevoir les commandes</span>
                             </div>
-
                             <div class="form-group">
                                 <label for="storeDescription" class="form-label">Description</label>
-                                <textarea id="storeDescription" class="form-control" rows="3" placeholder="Décrivez votre boutique..."></textarea>
+                                <textarea id="storeDescription" class="form-control" rows="3" placeholder="Decrivez votre boutique..."></textarea>
                             </div>
-
-                            <button type="submit" class="btn btn-primary btn-lg w-full">
-                                <span class="btn-text">✨ Créer la boutique</span>
+                            <button type="submit" class="btn btn-primary w-full">
+                                <span class="btn-text">Creer la boutique</span>
                             </button>
                         </form>
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card mt-4">
                     <div class="card-header">
-                        <h2>📊 Limites du plan Entreprise</h2>
+                        <h2>Limites du plan Entreprise</h2>
                     </div>
                     <div class="card-body">
-                        <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="stat-card">
-                                <div class="stat-label">Boutiques créées</div>
+                                <div class="stat-label">Boutiques creees</div>
                                 <div class="stat-value" id="storesCount">0</div>
                                 <div class="stat-label">sur 4 max</div>
                             </div>
                             <div class="stat-card">
-                                <div class="stat-label">Dépôts</div>
+                                <div class="stat-label">Depots</div>
                                 <div class="stat-value">1</div>
                                 <div class="stat-label">inclus</div>
                             </div>
@@ -122,7 +108,6 @@
             </div>
         </main>
     </div>
-
     <script type="module">
         import { supabase } from "../js/config.js";
         import { authSAMASTORE } from "../js/auth.js";
@@ -141,29 +126,23 @@
             userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
         }
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isOpen = sidebar.classList.contains('open');
-            if (isOpen) {
-                closeSidebar();
+        window.toggleSidebar = function() {
+            const s = document.getElementById('dashboardSidebar');
+            const o = document.getElementById('sidebarOverlay');
+            if (s.classList.contains('open')) {
+                s.classList.remove('open'); o.classList.remove('active');
+                document.getElementById('toggleIcon').textContent = '\u2630';
             } else {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
-                document.getElementById('toggleIcon').textContent = '✕';
+                s.classList.add('open'); o.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '\u2715';
             }
-        }
-        function closeSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            document.getElementById('toggleIcon').textContent = '☰';
-        }
-        window.toggleSidebar = toggleSidebar;
-        window.closeSidebar = closeSidebar;
+        };
+        window.closeSidebar = function() {
+            document.getElementById('dashboardSidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '\u2630';
+        };
 
-        // Charger le nombre de boutiques existantes
         async function chargerNombreBoutiques() {
             const { data, error } = await supabase
                 .from('stores')
@@ -173,13 +152,13 @@
 
             const count = data?.length || 0;
             document.getElementById('storesCount').textContent = count;
-            
+
             if (count >= 4) {
                 document.getElementById('createStoreForm').style.opacity = '0.5';
                 document.getElementById('createStoreForm').style.pointerEvents = 'none';
                 const formBtn = document.querySelector('#createStoreForm button');
                 formBtn.disabled = true;
-                formBtn.innerHTML = '<span class="btn-text">❌ Limite atteinte (4/4)</span>';
+                formBtn.querySelector('.btn-text').textContent = 'Limite atteinte (4/4)';
             }
         }
 
@@ -188,9 +167,9 @@
             const submitBtn = e.target.querySelector('button');
             const btnText = submitBtn.querySelector('.btn-text');
             const originalText = btnText.textContent;
-            
+
             submitBtn.disabled = true;
-            btnText.textContent = '⏳ Création...';
+            btnText.textContent = 'Creation en cours...';
 
             const storeName = document.getElementById('storeName').value.trim();
             const storeSlug = document.getElementById('storeSlug').value.trim().toLowerCase();
@@ -198,7 +177,6 @@
             const storeDescription = document.getElementById('storeDescription').value.trim();
 
             try {
-                // Vérifier si le slug existe déjà
                 const { data: existing } = await supabase
                     .from('stores')
                     .select('id')
@@ -207,7 +185,7 @@
 
                 if (existing) {
                     const { showError } = await import('../js/notifications.js');
-                    showError('Ce slug est déjà utilisé. Choisissez-en un autre.');
+                    showError('Ce slug est deja utilise. Choisissez-en un autre.');
                     submitBtn.disabled = false;
                     btnText.textContent = originalText;
                     return;
@@ -230,14 +208,14 @@
                 if (error) throw error;
 
                 const { showSuccess } = await import('../js/notifications.js');
-                showSuccess('Boutique créée avec succès !');
-                
+                showSuccess('Boutique creee avec succes !');
+
                 setTimeout(() => {
                     window.location.href = 'multi-boutiques.html';
                 }, 1500);
             } catch (error) {
                 const { showError } = await import('../js/notifications.js');
-                showError(error.message || 'Erreur lors de la création de la boutique');
+                showError(error.message || 'Erreur lors de la creation de la boutique');
                 submitBtn.disabled = false;
                 btnText.textContent = originalText;
             }
@@ -247,5 +225,3 @@
     </script>
 </body>
 </html>
-
-

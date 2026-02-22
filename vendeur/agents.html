@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -8,66 +8,55 @@
     <link rel="stylesheet" href="../css/output.css">
 </head>
 <body class="dashboard-page">
-    <!-- Sidebar Toggle Button (Mobile) -->
     <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-        <span id="toggleIcon">☰</span>
+        <span id="toggleIcon">&#9776;</span>
     </button>
-
-    <!-- Sidebar Overlay (Mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-    <!-- Dashboard Wrapper -->
     <div class="dashboard-wrapper">
-        <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
-            
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="equipe.html" class="sidebar-nav-link">👥 Équipe</a>
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">Abonnements</a>
+                <a href="equipe.html" class="sidebar-nav-link">Equipe</a>
                 <div class="sidebar-menu-item">
-                    <div class="sidebar-nav-link has-submenu open">🏪 Mes Boutiques</div>
+                    <div class="sidebar-nav-link has-submenu open">Mes Boutiques</div>
                     <div class="sidebar-submenu open">
-                        <a href="agents.html" class="sidebar-submenu-link active">👤 Agents</a>
-                        <a href="creation-boutique.html" class="sidebar-submenu-link">➕ Créer une boutique</a>
-                        <a href="depot.html" class="sidebar-submenu-link">📦 Dépôt</a>
-                        <a href="transferts.html" class="sidebar-submenu-link">🚚 Transferts</a>
-                        <a href="comptabilite.html" class="sidebar-submenu-link">💰 Comptabilité</a>
-                        <a href="rapports.html" class="sidebar-submenu-link">📊 Rapports</a>
+                        <a href="agents.html" class="sidebar-submenu-link active">Agents</a>
+                        <a href="creation-boutique.html" class="sidebar-submenu-link">Creer une boutique</a>
+                        <a href="depot.html" class="sidebar-submenu-link">Depot</a>
+                        <a href="transferts.html" class="sidebar-submenu-link">Transferts</a>
+                        <a href="comptabilite.html" class="sidebar-submenu-link">Comptabilite</a>
+                        <a href="rapports.html" class="sidebar-submenu-link">Rapports</a>
                     </div>
                 </div>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <a href="profil.html" class="sidebar-nav-link">Profil</a>
             </nav>
-
             <div class="sidebar-footer">
-                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan">FREE</a>
             </div>
         </aside>
-
-        <!-- Main Content -->
         <main class="dashboard-main">
             <div class="dashboard-main-content">
                 <div class="page-header">
                     <div>
-                        <h1 class="page-title">👤 Gestion des Agents</h1>
-                        <p class="page-subtitle">Gérez vos agents et leurs habilitations (max 10 agents)</p>
+                        <h1 class="page-title">Gestion des Agents</h1>
+                        <p class="page-subtitle">Gerez vos agents et leurs habilitations (max 10 agents)</p>
                     </div>
-                    <button class="btn btn-primary" onclick="ouvrirModalAgent()">➕ Ajouter un agent</button>
+                    <button class="btn btn-primary" onclick="ouvrirModalAgent()">Ajouter un agent</button>
                 </div>
-
                 <div class="card">
                     <div class="card-body">
                         <div id="agentsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             <div class="text-center p-8">
                                 <div class="loader"></div>
-                                <p class="mt-4 text-text-light">Chargement des agents...</p>
+                                <p class="mt-4 text-text-secondary">Chargement des agents...</p>
                             </div>
                         </div>
                     </div>
@@ -75,7 +64,6 @@
             </div>
         </main>
     </div>
-
     <script type="module">
         import { supabase } from "../js/config.js";
         import { authSAMASTORE } from "../js/auth.js";
@@ -83,43 +71,34 @@
         const session = authSAMASTORE.getSession();
         if (!session) window.location.href = 'connexion.html';
 
-        // Vérifier le plan
         const plan = session.subscription_plan || 'free';
         if (plan !== 'entreprise') {
             window.location.href = 'dashboard.html';
         }
 
-        // Mettre à jour le badge du plan
         const userPlan = document.getElementById('userPlan');
         if (userPlan) {
             userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
             userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
         }
 
-        // Sidebar toggle functions
-        function toggleSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isOpen = sidebar.classList.contains('open');
-            if (isOpen) {
-                closeSidebar();
+        window.toggleSidebar = function() {
+            const s = document.getElementById('dashboardSidebar');
+            const o = document.getElementById('sidebarOverlay');
+            if (s.classList.contains('open')) {
+                s.classList.remove('open'); o.classList.remove('active');
+                document.getElementById('toggleIcon').textContent = '\u2630';
             } else {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
-                document.getElementById('toggleIcon').textContent = '✕';
+                s.classList.add('open'); o.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '\u2715';
             }
-        }
-        function closeSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            document.getElementById('toggleIcon').textContent = '☰';
-        }
-        window.toggleSidebar = toggleSidebar;
-        window.closeSidebar = closeSidebar;
+        };
+        window.closeSidebar = function() {
+            document.getElementById('dashboardSidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '\u2630';
+        };
 
-        // Charger les agents
         async function chargerAgents() {
             try {
                 const { data: agents, error } = await supabase
@@ -133,10 +112,9 @@
                 if (!agents || agents.length === 0) {
                     agentsList.innerHTML = `
                         <div class="col-span-full text-center p-8">
-                            <div class="text-5xl mb-4">👤</div>
-                            <h3 class="text-xl font-bold mb-2">Aucun agent</h3>
-                            <p class="text-text-light mb-4">Ajoutez votre premier agent pour commencer</p>
-                            <button class="btn btn-primary" onclick="ouvrirModalAgent()">➕ Ajouter un agent</button>
+                            <h3 class="text-lg font-bold mb-2">Aucun agent</h3>
+                            <p class="text-text-secondary mb-4">Ajoutez votre premier agent pour commencer</p>
+                            <button class="btn btn-primary" onclick="ouvrirModalAgent()">Ajouter un agent</button>
                         </div>
                     `;
                     return;
@@ -146,10 +124,10 @@
                     <div class="card">
                         <div class="card-body">
                             <h3 class="font-bold text-lg mb-2">${agent.full_name || 'Agent'}</h3>
-                            <p class="text-text-light text-sm mb-4">${agent.phone || agent.email || 'Pas de contact'}</p>
+                            <p class="text-text-secondary text-sm mb-4">${agent.phone || agent.email || 'Pas de contact'}</p>
                             <div class="flex gap-2">
-                                <button class="btn btn-outline btn-sm" onclick="editerAgent('${agent.id}')">✏️ Modifier</button>
-                                <button class="btn btn-danger btn-sm" onclick="supprimerAgent('${agent.id}')">🗑️ Supprimer</button>
+                                <button class="btn btn-outline btn-sm" onclick="editerAgent('${agent.id}')">Modifier</button>
+                                <button class="btn btn-danger btn-sm" onclick="supprimerAgent('${agent.id}')">Supprimer</button>
                             </div>
                         </div>
                     </div>
@@ -165,16 +143,14 @@
         }
 
         window.ouvrirModalAgent = function() {
-            alert('Fonctionnalité en cours de développement');
+            alert('Fonctionnalite en cours de developpement');
         };
-
         window.editerAgent = function(id) {
-            alert('Fonctionnalité en cours de développement');
+            alert('Fonctionnalite en cours de developpement');
         };
-
         window.supprimerAgent = function(id) {
             if (confirm('Voulez-vous vraiment supprimer cet agent ?')) {
-                alert('Fonctionnalité en cours de développement');
+                alert('Fonctionnalite en cours de developpement');
             }
         };
 
@@ -182,5 +158,3 @@
     </script>
 </body>
 </html>
-
-

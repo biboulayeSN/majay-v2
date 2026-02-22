@@ -7,80 +7,56 @@
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
     <style>
-        .dashboard-page { background: #f7fafc; }
-        .dashboard-header {
-            background: white;
-            padding: 20px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .dashboard-header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .dashboard-logo { font-size: 1.5em; font-weight: 900; color: #2383e2; }
-        .dashboard-nav { display: flex; gap: 20px; }
-        .nav-link {
-            color: #718096;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 10px 15px;
-            border-radius: 8px;
-        }
-        .nav-link.active { background: #edf2f7; color: #2383e2; }
-        .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
         .filters-bar {
             background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
             display: flex;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #e5e5e3;
         }
         .filter-select {
-            padding: 10px 15px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid #e5e5e3;
+            border-radius: 6px;
             background: white;
         }
         .search-input {
             flex: 1;
             min-width: 200px;
-            padding: 10px 15px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid #e5e5e3;
+            border-radius: 6px;
         }
         .customers-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            gap: 16px;
         }
         .customer-card {
             background: white;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid #e5e5e3;
         }
         .customer-header {
             display: flex;
             justify-content: space-between;
             align-items: start;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         .customer-name {
-            font-size: 1.1em;
-            font-weight: 700;
+            font-size: 1em;
+            font-weight: 600;
             color: #37352f;
         }
         .badge-segment {
-            padding: 4px 12px;
-            border-radius: 8px;
-            font-size: 0.8em;
-            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 500;
         }
         .segment-champion { background: #d4edda; color: #155724; }
         .segment-loyal { background: #cce5ff; color: #004085; }

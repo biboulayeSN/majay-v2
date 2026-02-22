@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -6,89 +6,55 @@
     <title>Multi-Boutiques - SAMASTORE</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
-    <style>
-        .dashboard-page { background: #f7fafc; }
-        .dashboard-header {
-            background: white;
-            padding: 20px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .dashboard-header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .dashboard-logo { font-size: 1.5em; font-weight: 900; color: #667eea; }
-        .dashboard-nav { display: flex; gap: 20px; }
-        .nav-link {
-            color: #718096;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 10px 15px;
-            border-radius: 8px;
-        }
-        .nav-link.active { background: #edf2f7; color: #667eea; }
-        .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
-        .store-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 15px;
-            cursor: pointer;
-        }
-        .store-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-    </style>
 </head>
 <body class="dashboard-page">
-    <!-- Sidebar Toggle Button (Mobile) -->
     <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-        <span id="toggleIcon">☰</span>
+        <span id="toggleIcon">&#9776;</span>
     </button>
-
-    <!-- Sidebar Overlay (Mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-    <!-- Dashboard Wrapper -->
     <div class="dashboard-wrapper">
-        <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
-            
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="equipe.html" class="sidebar-nav-link">👥 Équipe</a>
-                <a href="multi-boutiques.html" class="sidebar-nav-link active">🏪 Multi-Boutiques</a>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">Abonnements</a>
+                <a href="equipe.html" class="sidebar-nav-link">Equipe</a>
+                <a href="multi-boutiques.html" class="sidebar-nav-link active">Multi-Boutiques</a>
+                <a href="profil.html" class="sidebar-nav-link">Profil</a>
             </nav>
-
             <div class="sidebar-footer">
-                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan">FREE</a>
             </div>
         </aside>
-
-        <!-- Main Content -->
         <main class="dashboard-main">
             <div class="dashboard-main-content">
-        <h1 style="font-size: 2em; margin-bottom: 30px;">Mes Boutiques</h1>
-        <div id="planWarning" style="display: none; background: #fff3cd; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-            ⚠️ Cette fonctionnalité est disponible uniquement avec le plan Entreprise
-        </div>
-        <div id="storesList">
-            <div class="loader"></div>
-        </div>
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Mes Boutiques</h1>
+                        <p class="page-subtitle">Gerez vos differentes boutiques</p>
+                    </div>
+                </div>
+                <div id="planWarning" class="card mb-4" style="display: none;">
+                    <div class="card-body">
+                        <p class="text-warning font-medium">Cette fonctionnalite est disponible uniquement avec le plan Entreprise</p>
+                    </div>
+                </div>
+                <div id="storesList">
+                    <div class="card">
+                        <div class="card-body text-center p-8">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-
     <script type="module">
         import { storesUtils } from "../js/stores.js";
         import { authSAMASTORE } from "../js/auth.js";
@@ -96,33 +62,23 @@
         const session = authSAMASTORE.getSession();
         if (!session) window.location.href = 'connexion.html';
 
-        // Sidebar toggle functions
-        function toggleSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isOpen = sidebar.classList.contains('open');
-            
-            if (isOpen) {
-                closeSidebar();
+        window.toggleSidebar = function() {
+            const s = document.getElementById('dashboardSidebar');
+            const o = document.getElementById('sidebarOverlay');
+            if (s.classList.contains('open')) {
+                s.classList.remove('open'); o.classList.remove('active');
+                document.getElementById('toggleIcon').textContent = '\u2630';
             } else {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
-                document.getElementById('toggleIcon').textContent = '✕';
+                s.classList.add('open'); o.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '\u2715';
             }
-        }
+        };
+        window.closeSidebar = function() {
+            document.getElementById('dashboardSidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '\u2630';
+        };
 
-        function closeSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            document.getElementById('toggleIcon').textContent = '☰';
-        }
-
-        window.toggleSidebar = toggleSidebar;
-        window.closeSidebar = closeSidebar;
-
-        // Mettre à jour le badge du plan dans la sidebar
         const userPlan = document.getElementById('userPlan');
         if (userPlan) {
             userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
@@ -143,9 +99,10 @@
                 const stores = result.data || [];
                 if (stores.length === 0) {
                     document.getElementById('storesList').innerHTML = `
-                        <div style="text-align: center; padding: 60px; color: #718096;">
-                            <div style="font-size: 4em; margin-bottom: 20px;">🏪</div>
-                            <p>Aucune boutique</p>
+                        <div class="card">
+                            <div class="card-body text-center p-8">
+                                <p class="text-text-secondary">Aucune boutique</p>
+                            </div>
                         </div>
                     `;
                     return;
@@ -154,11 +111,17 @@
                 document.getElementById('storesList').innerHTML = stores.map(store => {
                     const isCurrent = store.store_id === session.store_id;
                     return `
-                    <div class="store-card" ${!isCurrent ? `onclick="switchStore('${store.store_id}')"` : ''} style="${isCurrent ? 'border: 2px solid #667eea;' : ''}">
-                        <h3>${store.store_name} ${isCurrent ? '(Actuelle)' : ''}</h3>
-                        <p>Slug: ${store.slug}</p>
-                        <p>Plan: ${store.subscription_plan}</p>
-                        ${!isCurrent ? '<button class="btn-primary" style="margin-top: 10px;">Basculer vers cette boutique</button>' : ''}
+                    <div class="card mb-3 ${isCurrent ? 'border-primary' : ''}" ${!isCurrent ? `onclick="switchStore('${store.store_id}')" style="cursor:pointer;"` : ''}>
+                        <div class="card-body">
+                            <div class="flex justify-between items-center flex-wrap gap-4">
+                                <div>
+                                    <h3 class="font-bold text-text">${store.store_name} ${isCurrent ? '<span class="badge badge-info ml-2">Actuelle</span>' : ''}</h3>
+                                    <p class="text-sm text-text-secondary mt-1">Slug: ${store.slug}</p>
+                                    <p class="text-sm text-text-secondary">Plan: ${store.subscription_plan}</p>
+                                </div>
+                                ${!isCurrent ? '<button class="btn btn-primary btn-sm">Basculer</button>' : ''}
+                            </div>
+                        </div>
                     </div>
                 `;
                 }).join('');
@@ -179,12 +142,5 @@
 
         chargerBoutiques();
     </script>
-            </div>
-        </main>
-    </div>
 </body>
 </html>
-
-
-
-

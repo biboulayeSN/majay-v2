@@ -1,4 +1,4 @@
-﻿import { supabase } from "./config.js";
+import { supabase } from "./config.js";
 
 // ================= AUTHENTIFICATION SUPABASE PHONE =================
 
@@ -7,7 +7,6 @@
  */
 async function envoyerOTP(telephone) {
   try {
-    // Nettoyer le numéro (enlever espaces, garder +)
     const phone = telephone.replace(/\s/g, '').replace(/^0/, '+221');
     if (!phone.startsWith('+')) {
       throw new Error('Le numéro doit commencer par + (ex: +221771234567)');
@@ -15,9 +14,7 @@ async function envoyerOTP(telephone) {
 
     const { error } = await supabase.auth.signInWithOtp({
       phone: phone,
-      options: {
-        channel: 'sms'
-      }
+      options: { channel: 'sms' }
     });
 
     if (error) throw error;
@@ -33,7 +30,7 @@ async function envoyerOTP(telephone) {
 async function verifierOTP(telephone, code) {
   try {
     const phone = telephone.replace(/\s/g, '').replace(/^0/, '+221');
-    
+
     const { data, error } = await supabase.auth.verifyOtp({
       phone: phone,
       token: code,
@@ -42,23 +39,11 @@ async function verifierOTP(telephone, code) {
 
     if (error) throw error;
 
-    // Récupérer l'utilisateur et sa boutique
     const { data: userData, error: userError } = await supabase
       .from('users')
       .select(`
-        id,
-        phone,
-        email,
-        full_name,
-        role_type,
-        stores!inner (
-          id,
-          name,
-          slug,
-          subscription_plan,
-          whatsapp_number,
-          is_active
-        )
+        id, phone, email, full_name, role_type,
+        stores!inner (id, name, slug, subscription_plan, whatsapp_number, is_active)
       `)
       .eq('id', data.user.id)
       .eq('stores.is_active', true)
@@ -94,6 +79,16 @@ async function verifierOTP(telephone, code) {
   }
 }
 
+// ================= NUMEROS DE DEVELOPPEMENT =================
+
+const DEV_PHONE = '+221706152830';
+const DEV_NUMBERS = ['+221706152830', '706152830', '+2210706152830'];
+
+function isDevNumber(phone) {
+  const normalized = phone.replace(/^\+2210/, '+221');
+  return DEV_NUMBERS.includes(phone) || normalized === DEV_PHONE;
+}
+
 // ================= INSCRIPTION =================
 
 /**
@@ -103,22 +98,12 @@ async function inscrireVendeur(data) {
   try {
     const { nom, slug, telephone, whatsapp, full_name } = data;
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:102',message:'inscrireVendeur ENTRY',data:{telephone_received:telephone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A,B'})}).catch(()=>{});
-    // #endregion
-
-    // Le numéro est déjà formaté depuis inscription.html, on enlève juste les espaces
     const phone = telephone.replace(/\s/g, '');
-    
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:108',message:'Phone AFTER cleanup',data:{phone_cleaned:phone,starts_with_plus:phone.startsWith('+')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A,B'})}).catch(()=>{});
-    // #endregion
-    
+
     if (!phone.startsWith('+')) {
       throw new Error('Le numéro doit commencer par + (ex: +221771234567)');
     }
 
-    // Vérifier que le slug est valide
     if (!/^[a-z0-9-]+$/.test(slug)) {
       throw new Error('Le slug ne peut contenir que des lettres minuscules, chiffres et tirets');
     }
@@ -134,47 +119,46 @@ async function inscrireVendeur(data) {
       throw new Error('Ce nom de boutique est déjà pris. Choisissez-en un autre.');
     }
 
-    // Envoyer OTP pour créer le compte
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:129',message:'BEFORE signInWithOtp',data:{phone_to_send:phone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
-    // #endregion
-    
+    // Stocker les données d'inscription
+    const normalizedPhone = phone.replace(/^\+2210/, '+221');
+    sessionStorage.setItem('SAMASTORE_inscription_temp', JSON.stringify({
+      nom,
+      slug,
+      telephone: normalizedPhone,
+      whatsapp: whatsapp || normalizedPhone,
+      full_name: full_name || nom
+    }));
+
+    // Bypass OTP pour le numéro de développement
+    if (isDevNumber(phone)) {
+      return {
+        success: true,
+        message: 'Mode dev: utilisez le code 123456',
+        phone: normalizedPhone,
+        bypassOTP: true
+      };
+    }
+
+    // Envoyer OTP
     const { error: otpError } = await supabase.auth.signInWithOtp({
-      phone: phone,
+      phone: normalizedPhone,
       options: {
         channel: 'sms',
         data: {
           full_name: full_name || nom,
           store_name: nom,
           store_slug: slug,
-          whatsapp_number: whatsapp || phone
+          whatsapp_number: whatsapp || normalizedPhone
         }
       }
     });
 
     if (otpError) throw otpError;
-    
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:143',message:'OTP sent successfully',data:{phone_used:phone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
-    // #endregion
 
-    // Stocker temporairement les données d'inscription
-    sessionStorage.setItem('SAMASTORE_inscription_temp', JSON.stringify({
-      nom,
-      slug,
-      telephone: phone,
-      whatsapp: whatsapp || phone,
-      full_name: full_name || nom
-    }));
-
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:170',message:'inscrireVendeur EXIT',data:{phone_returned:phone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
-    // #endregion
-
-    return { 
-      success: true, 
+    return {
+      success: true,
       message: 'Code de vérification envoyé par SMS',
-      phone: phone
+      phone: normalizedPhone
     };
   } catch (error) {
     return { success: false, error: error.message };
@@ -186,55 +170,96 @@ async function inscrireVendeur(data) {
  */
 async function finaliserInscription(telephone, code) {
   try {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:166',message:'finaliserInscription ENTRY',data:{telephone_received:telephone,code_length:code.length},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'D,E'})}).catch(()=>{});
-    // #endregion
-    
-    // Nettoyer le numéro (enlever espaces) mais garder le préfixe s'il existe déjà
     let phone = telephone.replace(/\s/g, '');
-    
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:175',message:'Phone BEFORE prefix check',data:{phone_before:phone,starts_with_plus:phone.startsWith('+')},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'E'})}).catch(()=>{});
-    // #endregion
-    
-    // Ajouter le préfixe seulement si le numéro ne commence pas par +
+
     if (!phone.startsWith('+')) {
       phone = phone.replace(/^0/, '+221');
       if (!phone.startsWith('+')) {
         phone = '+221' + phone;
       }
     }
-    
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:188',message:'Phone AFTER formatting for verifyOtp',data:{phone_final:phone},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'E'})}).catch(()=>{});
-    // #endregion
-    
-    // Vérifier le code OTP
+
+    const tempData = JSON.parse(sessionStorage.getItem('SAMASTORE_inscription_temp') || '{}');
+    if (!tempData.nom) {
+      throw new Error('Données d\'inscription introuvables. Veuillez recommencer.');
+    }
+
+    // Bypass pour numéro de développement : créer directement sans OTP
+    if (isDevNumber(phone)) {
+      // Générer un UUID pour le user dev
+      const devUserId = crypto.randomUUID ? crypto.randomUUID() : 'dev-' + Date.now();
+
+      // Créer l'utilisateur dans public.users
+      const { error: userError } = await supabase
+        .from('users')
+        .insert({
+          id: devUserId,
+          phone: DEV_PHONE,
+          full_name: tempData.full_name || tempData.nom,
+          role_type: 'owner'
+        });
+
+      if (userError && userError.code !== '23505') {
+        throw userError;
+      }
+
+      // Si l'utilisateur existe déjà, récupérer son ID
+      let userId = devUserId;
+      if (userError && userError.code === '23505') {
+        const { data: existingUser } = await supabase
+          .from('users')
+          .select('id')
+          .eq('phone', DEV_PHONE)
+          .single();
+        if (existingUser) userId = existingUser.id;
+      }
+
+      // Créer la boutique
+      const { data: storeData, error: storeError } = await supabase
+        .from('stores')
+        .insert({
+          name: tempData.nom,
+          slug: tempData.slug,
+          owner_id: userId,
+          whatsapp_number: tempData.whatsapp || DEV_PHONE,
+          subscription_plan: 'free',
+          is_active: true
+        })
+        .select()
+        .single();
+
+      if (storeError) throw storeError;
+
+      sessionStorage.removeItem('SAMASTORE_inscription_temp');
+
+      const sessionData = {
+        user_id: userId,
+        store_id: storeData.id,
+        phone: DEV_PHONE,
+        email: null,
+        full_name: tempData.full_name || tempData.nom,
+        store_name: storeData.name,
+        store_slug: storeData.slug,
+        subscription_plan: storeData.subscription_plan,
+        whatsapp_number: storeData.whatsapp_number,
+        role_type: 'owner',
+        timestamp: Date.now()
+      };
+
+      sauvegarderSession(sessionData);
+      return { success: true, data: sessionData };
+    }
+
+    // Flow normal avec OTP
     const { data: authData, error: authError } = await supabase.auth.verifyOtp({
       phone: phone,
       token: code,
       type: 'sms'
     });
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:199',message:'verifyOtp RESULT',data:{has_error:!!authError,error_message:authError?.message,error_code:authError?.code,has_data:!!authData,user_id:authData?.user?.id},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'F,G,H'})}).catch(()=>{});
-    // #endregion
-
     if (authError) throw authError;
 
-    // Récupérer les données temporaires
-    const tempData = JSON.parse(sessionStorage.getItem('SAMASTORE_inscription_temp') || '{}');
-    
-    if (!tempData.nom) {
-      throw new Error('Données d\'inscription introuvables. Veuillez recommencer.');
-    }
-
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:210',message:'Creating user in public.users (RLS disabled)',data:{user_id:authData.user.id,store_name:tempData.nom,store_slug:tempData.slug},timestamp:Date.now(),sessionId:'debug-session',runId:'fix-v4',hypothesisId:'L'})}).catch(()=>{});
-    // #endregion
-
-    // Créer l'utilisateur dans public.users (requis pour la FK de stores)
-    // RLS doit être désactivé sur users pour que ceci fonctionne
+    // Créer l'utilisateur dans public.users
     const { error: userError } = await supabase
       .from('users')
       .insert({
@@ -244,18 +269,11 @@ async function finaliserInscription(telephone, code) {
         role_type: 'owner'
       });
 
-    if (userError && userError.code !== '23505') { // 23505 = duplicate key (user already exists)
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:228',message:'User insert ERROR',data:{error_message:userError.message,error_code:userError.code},timestamp:Date.now(),sessionId:'debug-session',runId:'fix-v4',hypothesisId:'L'})}).catch(()=>{});
-      // #endregion
+    if (userError && userError.code !== '23505') {
       throw userError;
     }
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:235',message:'User created in public.users SUCCESS',data:{user_id:authData.user.id},timestamp:Date.now(),sessionId:'debug-session',runId:'fix-v4',hypothesisId:'L'})}).catch(()=>{});
-    // #endregion
-
-    // Créer la boutique dans la table stores
+    // Créer la boutique
     const { data: storeData, error: storeError } = await supabase
       .from('stores')
       .insert({
@@ -269,25 +287,14 @@ async function finaliserInscription(telephone, code) {
       .select()
       .single();
 
-    if (storeError) {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:253',message:'Store insert ERROR',data:{error_message:storeError.message,error_code:storeError.code},timestamp:Date.now(),sessionId:'debug-session',runId:'fix',hypothesisId:'I'})}).catch(()=>{});
-      // #endregion
-      throw storeError;
-    }
+    if (storeError) throw storeError;
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:260',message:'Store created successfully',data:{store_id:storeData.id,store_slug:storeData.slug},timestamp:Date.now(),sessionId:'debug-session',runId:'fix',hypothesisId:'I'})}).catch(()=>{});
-    // #endregion
-
-    // Nettoyer les données temporaires
     sessionStorage.removeItem('SAMASTORE_inscription_temp');
 
-    // Créer la session avec les données qu'on a déjà (de Auth et Store)
     const sessionData = {
       user_id: authData.user.id,
       store_id: storeData.id,
-      phone: authData.user.phone || phone, // Utiliser le phone de auth.users
+      phone: authData.user.phone || phone,
       email: authData.user.email || null,
       full_name: tempData.full_name || tempData.nom,
       store_name: storeData.name,
@@ -298,16 +305,7 @@ async function finaliserInscription(telephone, code) {
       timestamp: Date.now()
     };
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:278',message:'Session created SUCCESS',data:{user_id:sessionData.user_id,store_id:sessionData.store_id,store_slug:sessionData.store_slug,subscription_plan:sessionData.subscription_plan},timestamp:Date.now(),sessionId:'debug-session',runId:'fix-v3',hypothesisId:'K'})}).catch(()=>{});
-    // #endregion
-
     sauvegarderSession(sessionData);
-    
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/9699f09f-c80e-465a-b118-2ac168d0b2da',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'auth.js:289',message:'finaliserInscription EXIT - SUCCESS',data:{success:true,store_slug:sessionData.store_slug},timestamp:Date.now(),sessionId:'debug-session',runId:'fix-v3',hypothesisId:'K'})}).catch(()=>{});
-    // #endregion
-    
     return { success: true, data: sessionData };
   } catch (error) {
     return { success: false, error: error.message };
@@ -318,45 +316,35 @@ async function finaliserInscription(telephone, code) {
 
 /**
  * Connexion d'un vendeur existant (envoie OTP)
- * IMPORTANT: L'utilisateur doit être préalablement inscrit
  */
 async function connexionVendeur(telephone) {
   try {
-    // Nettoyer le numéro : enlever les espaces
     let phone = telephone.replace(/\s/g, '');
-    
-    // Si le numéro ne commence pas par +, vérifier s'il commence par 0 et le remplacer par +221
-    // Sinon, ajouter +221 au début
+
     if (!phone.startsWith('+')) {
       if (phone.startsWith('0')) {
-        phone = '+221' + phone.substring(1); // Remplace le 0 par +221
+        phone = '+221' + phone.substring(1);
       } else {
-        phone = '+221' + phone; // Ajoute +221 au début
+        phone = '+221' + phone;
       }
     }
-    
-    // Bypass OTP pour le numéro de développement (706152830)
-    const bypassNumbers = ['+221706152830', '706152830', '+2210706152830'];
-    const isBypassNumber = bypassNumbers.includes(phone) || phone.replace(/^\+2210?/, '+221') === '+221706152830';
-    
-    if (isBypassNumber) {
-      // Connexion directe sans OTP pour ce numéro spécifique
-      // D'abord récupérer l'utilisateur
+
+    // Bypass OTP pour le numéro de développement
+    if (isDevNumber(phone)) {
       const { data: user, error: userError } = await supabase
         .from('users')
         .select('id, phone, email, full_name, role_type')
-        .eq('phone', phone)
+        .eq('phone', DEV_PHONE)
         .maybeSingle();
 
       if (userError || !user) {
-        return { 
-          success: false, 
+        return {
+          success: false,
           error: 'Aucun compte trouvé avec ce numéro. Veuillez vous inscrire d\'abord.',
           needsSignup: true
         };
       }
 
-      // Récupérer la première boutique active
       const { data: stores, error: storesError } = await supabase
         .from('stores')
         .select('id, name, slug, subscription_plan, whatsapp_number, is_active')
@@ -365,15 +353,14 @@ async function connexionVendeur(telephone) {
         .limit(1);
 
       if (storesError || !stores || stores.length === 0) {
-        return { 
-          success: false, 
+        return {
+          success: false,
           error: 'Aucune boutique active trouvée. Veuillez vous inscrire pour créer une boutique.',
           needsSignup: true
         };
       }
 
       const store = stores[0];
-
       const sessionData = {
         user_id: user.id,
         store_id: store.id,
@@ -389,16 +376,15 @@ async function connexionVendeur(telephone) {
       };
 
       sauvegarderSession(sessionData);
-      
-      return { 
-        success: true, 
+      return {
+        success: true,
         message: 'Connexion directe réussie (mode développement)',
         data: sessionData,
         bypassOTP: true
       };
     }
-    
-    // Vérifier que l'utilisateur existe dans la table users
+
+    // Vérifier que l'utilisateur existe
     const { data: existingUser, error: userError } = await supabase
       .from('users')
       .select('id, phone')
@@ -406,14 +392,13 @@ async function connexionVendeur(telephone) {
       .single();
 
     if (userError || !existingUser) {
-      return { 
-        success: false, 
+      return {
+        success: false,
         error: 'Aucun compte trouvé avec ce numéro. Veuillez vous inscrire d\'abord.',
         needsSignup: true
       };
     }
 
-    // Vérifier que l'utilisateur a au moins une boutique active
     const { data: stores, error: storesError } = await supabase
       .from('stores')
       .select('id')
@@ -422,24 +407,20 @@ async function connexionVendeur(telephone) {
       .limit(1);
 
     if (storesError || !stores || stores.length === 0) {
-      return { 
-        success: false, 
+      return {
+        success: false,
         error: 'Aucune boutique active trouvée. Veuillez vous inscrire pour créer une boutique.',
         needsSignup: true
       };
     }
-    
+
     // Envoyer OTP
     const result = await envoyerOTP(phone);
-    if (!result.success) {
-      return result;
-    }
+    if (!result.success) return result;
 
-    // Stocker le numéro pour la vérification
     sessionStorage.setItem('SAMASTORE_connexion_phone', phone);
-    
-    return { 
-      success: true, 
+    return {
+      success: true,
       message: 'Code de vérification envoyé par SMS',
       phone: phone
     };
@@ -477,21 +458,16 @@ function sauvegarderSession(session) {
 function getSession() {
   const s = localStorage.getItem("SAMASTORE_session");
   if (!s) return null;
-  
+
   try {
     const data = JSON.parse(s);
-    // Vérifier expiration (30 jours d'inactivité)
     const age = Date.now() - (data.timestamp || 0);
     if (age > 30 * 24 * 60 * 60 * 1000) {
       deconnexion();
       return null;
     }
-    
-    // Renouveler le timestamp à chaque utilisation pour maintenir la session active
-    // Cela garantit que la session persiste tant que l'utilisateur utilise l'application
     data.timestamp = Date.now();
     sauvegarderSession(data);
-    
     return data;
   } catch {
     return null;
@@ -506,19 +482,9 @@ function deconnexion() {
   window.location.href = "connexion.html";
 }
 
-// ================= COMPATIBILITÉ ANCIEN CODE =================
-
-/**
- * @deprecated Utiliser connexionVendeur() puis verifierConnexion()
- * Fonction de compatibilité pour l'ancien code
- */
-async function connexionVendeurAncien(telephone) {
-  // Pour compatibilité, on envoie juste l'OTP
-  return await connexionVendeur(telephone);
-}
+// ================= EXPORT =================
 
 export const authSAMASTORE = {
-  // Nouvelles fonctions
   envoyerOTP,
   verifierOTP,
   inscrireVendeur,
@@ -527,8 +493,5 @@ export const authSAMASTORE = {
   verifierConnexion,
   getSession,
   deconnexion,
-  sauvegarderSession,
-  // Compatibilité
-  connexionVendeurAncien
+  sauvegarderSession
 };
-

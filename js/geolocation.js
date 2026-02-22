@@ -294,7 +294,7 @@ export async function initPhoneAutoDetect(phoneInput, countrySelector = null) {
             top: 50%;
             transform: translateY(-50%);
             font-weight: 600;
-            color: #25D366;
+            color: #787774;
             pointer-events: none;
         `;
         prefix.textContent = location.prefix;

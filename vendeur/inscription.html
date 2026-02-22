@@ -218,10 +218,25 @@
                 btn.querySelector('.btn-loader').style.display = 'none';
 
                 if (result.success) {
+                    sessionStorage.setItem('SAMASTORE_otp_phone', result.phone);
+
+                    if (result.bypassOTP) {
+                        // Mode dev : passer directement a la finalisation avec code 123456
+                        const { showSuccess } = await import("../js/notifications.js");
+                        showSuccess("Mode dev : finalisation en cours...");
+                        const finalResult = await authSAMASTORE.finaliserInscription(result.phone, '123456');
+                        if (finalResult.success) {
+                            showSuccess("Boutique creee ! Redirection...");
+                            setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
+                        } else {
+                            const { showError } = await import("../js/notifications.js");
+                            showError(finalResult.error);
+                        }
+                        return;
+                    }
+
                     const { showSuccess } = await import("../js/notifications.js");
                     showSuccess("Code envoye ! Verifiez votre telephone.");
-
-                    sessionStorage.setItem('SAMASTORE_otp_phone', result.phone);
 
                     document.getElementById("inscriptionForm").style.display = 'none';
                     document.getElementById("otpForm").style.display = 'block';

@@ -1,95 +1,60 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Équipe - SAMASTORE</title>
+    <title>Equipe - SAMASTORE</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
-    <style>
-        .dashboard-page { background: #f7fafc; }
-        .dashboard-header {
-            background: white;
-            padding: 20px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .dashboard-header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .dashboard-logo { font-size: 1.5em; font-weight: 900; color: #667eea; }
-        .dashboard-nav { display: flex; gap: 20px; }
-        .nav-link {
-            color: #718096;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 10px 15px;
-            border-radius: 8px;
-        }
-        .nav-link.active { background: #edf2f7; color: #667eea; }
-        .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .member-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-    </style>
 </head>
 <body class="dashboard-page">
-    <!-- Sidebar Toggle Button (Mobile) -->
     <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-        <span id="toggleIcon">☰</span>
+        <span id="toggleIcon">&#9776;</span>
     </button>
-
-    <!-- Sidebar Overlay (Mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-    <!-- Dashboard Wrapper -->
     <div class="dashboard-wrapper">
-        <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
-            
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="equipe.html" class="sidebar-nav-link active">👥 Équipe</a>
-                <a href="multi-boutiques.html" class="sidebar-nav-link">🏪 Multi-Boutiques</a>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">Abonnements</a>
+                <a href="equipe.html" class="sidebar-nav-link active">Equipe</a>
+                <a href="multi-boutiques.html" class="sidebar-nav-link">Multi-Boutiques</a>
+                <a href="profil.html" class="sidebar-nav-link">Profil</a>
             </nav>
-
             <div class="sidebar-footer">
-                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan">FREE</a>
             </div>
         </aside>
-
-        <!-- Main Content -->
         <main class="dashboard-main">
             <div class="dashboard-main-content">
-        <h1 style="font-size: 2em; margin-bottom: 30px;">Mon Équipe</h1>
-        <div id="planWarning" style="display: none; background: #fff3cd; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-            ⚠️ Cette fonctionnalité est disponible uniquement avec le plan Entreprise
-        </div>
-        <div class="team-grid" id="teamGrid">
-            <div class="loader"></div>
-        </div>
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Mon Equipe</h1>
+                        <p class="page-subtitle">Gerez les membres de votre equipe</p>
+                    </div>
+                </div>
+                <div id="planWarning" class="card mb-4" style="display: none;">
+                    <div class="card-body">
+                        <p class="text-warning font-medium">Cette fonctionnalite est disponible uniquement avec le plan Entreprise</p>
+                    </div>
+                </div>
+                <div id="teamGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="card">
+                        <div class="card-body text-center p-8">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-
     <script type="module">
         import { teamUtils } from "../js/team.js";
         import { authSAMASTORE } from "../js/auth.js";
@@ -97,33 +62,23 @@
         const session = authSAMASTORE.getSession();
         if (!session) window.location.href = 'connexion.html';
 
-        // Sidebar toggle functions
-        function toggleSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isOpen = sidebar.classList.contains('open');
-            
-            if (isOpen) {
-                closeSidebar();
+        window.toggleSidebar = function() {
+            const s = document.getElementById('dashboardSidebar');
+            const o = document.getElementById('sidebarOverlay');
+            if (s.classList.contains('open')) {
+                s.classList.remove('open'); o.classList.remove('active');
+                document.getElementById('toggleIcon').textContent = '\u2630';
             } else {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
-                document.getElementById('toggleIcon').textContent = '✕';
+                s.classList.add('open'); o.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '\u2715';
             }
-        }
+        };
+        window.closeSidebar = function() {
+            document.getElementById('dashboardSidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '\u2630';
+        };
 
-        function closeSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            document.getElementById('toggleIcon').textContent = '☰';
-        }
-
-        window.toggleSidebar = toggleSidebar;
-        window.closeSidebar = closeSidebar;
-
-        // Mettre à jour le badge du plan dans la sidebar
         const userPlan = document.getElementById('userPlan');
         if (userPlan) {
             userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
@@ -144,9 +99,10 @@
                 const members = result.data || [];
                 if (members.length === 0) {
                     document.getElementById('teamGrid').innerHTML = `
-                        <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #718096;">
-                            <div style="font-size: 4em; margin-bottom: 20px;">👥</div>
-                            <p>Aucun membre d'équipe</p>
+                        <div class="col-span-full card">
+                            <div class="card-body text-center p-8">
+                                <p class="text-text-secondary">Aucun membre d'equipe</p>
+                            </div>
                         </div>
                     `;
                     return;
@@ -155,10 +111,12 @@
                 document.getElementById('teamGrid').innerHTML = members.map(m => {
                     const user = Array.isArray(m.user) ? m.user[0] : m.user;
                     return `
-                    <div class="member-card">
-                        <h3>${user?.full_name || 'N/A'}</h3>
-                        <p>📞 ${user?.phone || 'N/A'}</p>
-                        <p>Rôle: ${m.role}</p>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="font-bold text-text mb-2">${user?.full_name || 'N/A'}</h3>
+                            <p class="text-sm text-text-secondary mb-1">${user?.phone || 'N/A'}</p>
+                            <p class="text-sm text-text-secondary">Role: <span class="badge badge-info">${m.role}</span></p>
+                        </div>
                     </div>
                 `;
                 }).join('');
@@ -169,12 +127,5 @@
 
         chargerEquipe();
     </script>
-            </div>
-        </main>
-    </div>
 </body>
 </html>
-
-
-
-

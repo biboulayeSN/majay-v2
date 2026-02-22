@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -6,81 +6,49 @@
     <title>Factures - SAMASTORE</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
-    <style>
-        .dashboard-page { background: #f7fafc; }
-        .dashboard-header {
-            background: white;
-            padding: 20px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .dashboard-header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .dashboard-logo { font-size: 1.5em; font-weight: 900; color: #667eea; }
-        .dashboard-nav { display: flex; gap: 20px; }
-        .nav-link {
-            color: #718096;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 10px 15px;
-            border-radius: 8px;
-        }
-        .nav-link.active { background: #edf2f7; color: #667eea; }
-        .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
-        .invoice-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
-    </style>
 </head>
 <body class="dashboard-page">
-    <!-- Sidebar Toggle Button (Mobile) -->
     <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-        <span id="toggleIcon">☰</span>
+        <span id="toggleIcon">&#9776;</span>
     </button>
-
-    <!-- Sidebar Overlay (Mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-    <!-- Dashboard Wrapper -->
     <div class="dashboard-wrapper">
-        <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
-            
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="factures.html" class="sidebar-nav-link active">📄 Factures</a>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">Abonnements</a>
+                <a href="factures.html" class="sidebar-nav-link active">Factures</a>
+                <a href="profil.html" class="sidebar-nav-link">Profil</a>
             </nav>
-
             <div class="sidebar-footer">
-                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan">FREE</a>
             </div>
         </aside>
-
-        <!-- Main Content -->
         <main class="dashboard-main">
             <div class="dashboard-main-content">
-        <h1 style="font-size: 2em; margin-bottom: 30px;">Mes Factures</h1>
-        <div id="invoicesList">
-            <div class="loader"></div>
-        </div>
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Mes Factures</h1>
+                        <p class="page-subtitle">Historique de vos factures d'abonnement</p>
+                    </div>
+                </div>
+                <div id="invoicesList">
+                    <div class="card">
+                        <div class="card-body text-center p-8">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-
     <script type="module">
         import { subscriptionsUtils } from "../js/subscriptions.js";
         import { authSAMASTORE } from "../js/auth.js";
@@ -88,54 +56,44 @@
         const session = authSAMASTORE.getSession();
         if (!session) window.location.href = 'connexion.html';
 
-        // Sidebar toggle functions
-        function toggleSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isOpen = sidebar.classList.contains('open');
-            
-            if (isOpen) {
-                closeSidebar();
+        window.toggleSidebar = function() {
+            const s = document.getElementById('dashboardSidebar');
+            const o = document.getElementById('sidebarOverlay');
+            if (s.classList.contains('open')) {
+                s.classList.remove('open'); o.classList.remove('active');
+                document.getElementById('toggleIcon').textContent = '\u2630';
             } else {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
-                document.getElementById('toggleIcon').textContent = '✕';
+                s.classList.add('open'); o.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '\u2715';
             }
-        }
+        };
+        window.closeSidebar = function() {
+            document.getElementById('dashboardSidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '\u2630';
+        };
 
-        function closeSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            document.getElementById('toggleIcon').textContent = '☰';
-        }
-
-        window.toggleSidebar = toggleSidebar;
-        window.closeSidebar = closeSidebar;
-
-        // Mettre à jour le badge du plan dans la sidebar
         const userPlan = document.getElementById('userPlan');
         if (userPlan) {
             userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
             userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
         }
 
-        // Afficher les liens conditionnels selon le plan
         const plan = session.subscription_plan || 'free';
         if (plan === 'entreprise') {
             const nav = document.getElementById('mainNav');
+            const profil = nav.querySelector('[href="profil.html"]');
             const equipeLink = document.createElement('a');
             equipeLink.href = 'equipe.html';
             equipeLink.className = 'sidebar-nav-link';
-            equipeLink.textContent = '👥 Équipe';
-            nav.insertBefore(equipeLink, nav.lastElementChild);
-            
+            equipeLink.textContent = 'Equipe';
+            nav.insertBefore(equipeLink, profil);
+
             const multiLink = document.createElement('a');
             multiLink.href = 'multi-boutiques.html';
             multiLink.className = 'sidebar-nav-link';
-            multiLink.textContent = '🏪 Multi-Boutiques';
-            nav.insertBefore(multiLink, nav.lastElementChild);
+            multiLink.textContent = 'Multi-Boutiques';
+            nav.insertBefore(multiLink, profil);
         }
 
         async function chargerFactures() {
@@ -148,9 +106,10 @@
                 const invoices = result.data || [];
                 if (invoices.length === 0) {
                     document.getElementById('invoicesList').innerHTML = `
-                        <div style="text-align: center; padding: 60px; color: #718096;">
-                            <div style="font-size: 4em; margin-bottom: 20px;">📄</div>
-                            <p>Aucune facture</p>
+                        <div class="card">
+                            <div class="card-body text-center p-8">
+                                <p class="text-text-secondary">Aucune facture</p>
+                            </div>
                         </div>
                     `;
                     return;
@@ -158,22 +117,26 @@
 
                 document.getElementById('invoicesList').innerHTML = invoices.map(inv => {
                     const statusNames = {
-                        unpaid: '❌ Non payée',
-                        partial: '⚠️ Partielle',
-                        paid: '✅ Payée',
-                        overdue: '🔴 En retard',
-                        refunded: '↩️ Remboursée'
+                        unpaid: 'Non payee',
+                        partial: 'Partielle',
+                        paid: 'Payee',
+                        overdue: 'En retard',
+                        refunded: 'Remboursee'
                     };
+                    const statusClass = inv.payment_status === 'paid' ? 'badge-success' :
+                                       inv.payment_status === 'overdue' ? 'badge-danger' : 'badge-warning';
                     return `
-                    <div class="invoice-card">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <h3>${inv.invoice_number}</h3>
-                                <p>${new Date(inv.issued_at).toLocaleDateString('fr-FR')}</p>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-size: 1.5em; font-weight: 700; color: #25D366;">${parseInt(inv.amount || 0).toLocaleString()} ${inv.currency || 'XOF'}</div>
-                                <div style="margin-top: 5px;">${statusNames[inv.payment_status] || inv.payment_status}</div>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="flex justify-between items-center flex-wrap gap-4">
+                                <div>
+                                    <h3 class="font-bold text-text">${inv.invoice_number}</h3>
+                                    <p class="text-sm text-text-secondary">${new Date(inv.issued_at).toLocaleDateString('fr-FR')}</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-primary">${parseInt(inv.amount || 0).toLocaleString()} ${inv.currency || 'XOF'}</div>
+                                    <span class="badge ${statusClass} mt-1">${statusNames[inv.payment_status] || inv.payment_status}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -186,12 +149,5 @@
 
         chargerFactures();
     </script>
-            </div>
-        </main>
-    </div>
 </body>
 </html>
-
-
-
-

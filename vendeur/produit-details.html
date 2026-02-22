@@ -1,47 +1,46 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Détails Produit - SAMASTORE</title>
+    <title>Details Produit - SAMASTORE</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <link rel="stylesheet" href="../css/output.css">
 </head>
-<body class="dashboard-page bg-bg">
+<body class="dashboard-page">
     <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-        <span id="toggleIcon">☰</span>
+        <span id="toggleIcon">&#9776;</span>
     </button>
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <div class="dashboard-wrapper">
         <aside class="dashboard-sidebar" id="dashboardSidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">🛍️ SAMASTORE</div>
+                <div class="sidebar-logo">SAMASTORE</div>
             </div>
             <nav class="sidebar-nav" id="mainNav">
-                <a href="dashboard.html" class="sidebar-nav-link">📊 Dashboard</a>
-                <a href="produits.html" class="sidebar-nav-link">📦 Produits</a>
-                <a href="commandes.html" class="sidebar-nav-link">🛒 Commandes</a>
-                <a href="clients.html" class="sidebar-nav-link">👥 Clients</a>
-                <a href="analytics.html" class="sidebar-nav-link">📈 Analytics</a>
-                <a href="abonnements.html" class="sidebar-nav-link">💳 Abonnements</a>
-                <a href="profil.html" class="sidebar-nav-link">⚙️ Profil</a>
+                <a href="dashboard.html" class="sidebar-nav-link">Dashboard</a>
+                <a href="produits.html" class="sidebar-nav-link">Produits</a>
+                <a href="commandes.html" class="sidebar-nav-link">Commandes</a>
+                <a href="clients.html" class="sidebar-nav-link">Clients</a>
+                <a href="analytics.html" class="sidebar-nav-link">Analytics</a>
+                <a href="abonnements.html" class="sidebar-nav-link">Abonnements</a>
+                <a href="profil.html" class="sidebar-nav-link">Profil</a>
             </nav>
             <div class="sidebar-footer">
-                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan" title="Gérer mon abonnement" aria-label="Plan actuel">FREE</a>
+                <a href="abonnements.html" class="sidebar-plan-badge badge-info" id="userPlan">FREE</a>
             </div>
         </aside>
         <main class="dashboard-main">
             <div class="dashboard-main-content">
                 <div class="mb-4">
-                    <button onclick="window.history.back()" class="btn btn-outline btn-sm mb-4">← Retour</button>
-                    <h1 class="text-3xl font-black text-text mb-2" id="productName">Détails du Produit</h1>
-                    <p class="text-text-light">Commandes et factures associées</p>
+                    <button onclick="window.history.back()" class="btn btn-outline btn-sm mb-4">&larr; Retour</button>
+                    <h1 class="text-2xl font-bold text-text mb-1" id="productName">Details du Produit</h1>
+                    <p class="text-text-secondary text-sm">Commandes et factures associees</p>
                 </div>
 
-                <!-- Informations produit -->
-                <div class="card mb-6">
+                <div class="card mb-4">
                     <div class="card-header">
-                        <h2 class="card-title">📦 Informations Produit</h2>
+                        <h2 class="card-title">Informations Produit</h2>
                     </div>
                     <div class="card-body">
                         <div id="productInfo">
@@ -50,10 +49,9 @@
                     </div>
                 </div>
 
-                <!-- Liste des commandes -->
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="card-title">🛒 Commandes contenant ce produit</h2>
+                        <h2 class="card-title">Commandes contenant ce produit</h2>
                     </div>
                     <div class="card-body">
                         <div id="ordersList">
@@ -79,57 +77,46 @@
             window.location.href = 'analytics.html';
         }
 
-        // Sidebar toggle functions
-        function toggleSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isOpen = sidebar.classList.contains('open');
-            
-            if (isOpen) {
-                closeSidebar();
+        window.toggleSidebar = function() {
+            const s = document.getElementById('dashboardSidebar');
+            const o = document.getElementById('sidebarOverlay');
+            if (s.classList.contains('open')) {
+                s.classList.remove('open'); o.classList.remove('active');
+                document.getElementById('toggleIcon').textContent = '\u2630';
             } else {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
-                document.getElementById('toggleIcon').textContent = '✕';
+                s.classList.add('open'); o.classList.add('active');
+                document.getElementById('toggleIcon').textContent = '\u2715';
             }
-        }
+        };
+        window.closeSidebar = function() {
+            document.getElementById('dashboardSidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.getElementById('toggleIcon').textContent = '\u2630';
+        };
 
-        function closeSidebar() {
-            const sidebar = document.getElementById('dashboardSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            document.getElementById('toggleIcon').textContent = '☰';
-        }
-
-        window.toggleSidebar = toggleSidebar;
-        window.closeSidebar = closeSidebar;
-
-        // Mettre à jour le badge du plan dans la sidebar
         const userPlan = document.getElementById('userPlan');
         if (userPlan) {
             userPlan.textContent = (session.subscription_plan || 'free').toUpperCase();
             userPlan.className = `sidebar-plan-badge badge-${session.subscription_plan || 'free'}`;
         }
 
-        // Afficher les liens conditionnels selon le plan
         const plan = session.subscription_plan || 'free';
         if (plan === 'entreprise') {
             const nav = document.getElementById('mainNav');
+            const profil = nav.querySelector('[href="profil.html"]');
             const equipeLink = document.createElement('a');
             equipeLink.href = 'equipe.html';
             equipeLink.className = 'sidebar-nav-link';
-            equipeLink.textContent = '👥 Équipe';
-            nav.insertBefore(equipeLink, nav.lastElementChild);
-            
+            equipeLink.textContent = 'Equipe';
+            nav.insertBefore(equipeLink, profil);
+
             const multiLink = document.createElement('a');
             multiLink.href = 'multi-boutiques.html';
             multiLink.className = 'sidebar-nav-link';
-            multiLink.textContent = '🏪 Multi-Boutiques';
-            nav.insertBefore(multiLink, nav.lastElementChild);
+            multiLink.textContent = 'Multi-Boutiques';
+            nav.insertBefore(multiLink, profil);
         }
 
-        // Charger les détails du produit
         async function chargerDetailsProduit() {
             try {
                 const { data: product, error } = await supabase
@@ -145,8 +132,7 @@
                 }
 
                 document.getElementById('productName').textContent = product.name;
-                
-                // Récupérer les vues
+
                 const { data: viewsData } = await supabase
                     .from('click_events')
                     .select('product_id')
@@ -157,32 +143,31 @@
                 const consultations = viewsData?.length || product.views_count || 0;
 
                 document.getElementById('productInfo').innerHTML = `
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                         <div>
-                            <p class="text-sm text-text-light mb-1">Nom</p>
-                            <p class="font-bold text-lg">${product.name}</p>
+                            <p class="text-xs text-text-secondary mb-1">Nom</p>
+                            <p class="font-bold">${product.name}</p>
                         </div>
                         <div>
-                            <p class="text-sm text-text-light mb-1">Catégorie</p>
-                            <p class="font-bold"><span class="badge badge-info">${product.category || 'Sans catégorie'}</span></p>
+                            <p class="text-xs text-text-secondary mb-1">Categorie</p>
+                            <p><span class="badge badge-info">${product.category || 'Sans categorie'}</span></p>
                         </div>
                         <div>
-                            <p class="text-sm text-text-light mb-1">Prix</p>
-                            <p class="font-bold text-lg">${parseInt(product.price || 0).toLocaleString()} ${product.currency || 'XOF'}</p>
+                            <p class="text-xs text-text-secondary mb-1">Prix</p>
+                            <p class="font-bold">${parseInt(product.price || 0).toLocaleString()} ${product.currency || 'XOF'}</p>
                         </div>
                         <div>
-                            <p class="text-sm text-text-light mb-1">Stock restant</p>
-                            <p class="font-bold text-lg">${product.stock || 0}</p>
+                            <p class="text-xs text-text-secondary mb-1">Stock restant</p>
+                            <p class="font-bold">${product.stock || 0}</p>
                         </div>
                         <div>
-                            <p class="text-sm text-text-light mb-1">Consultations</p>
-                            <p class="font-bold text-lg">${consultations}</p>
+                            <p class="text-xs text-text-secondary mb-1">Consultations</p>
+                            <p class="font-bold">${consultations}</p>
                         </div>
                     </div>
-                    ${product.description ? `<div class="mt-4 pt-4 border-t border-gray-200"><p class="text-text-light">${product.description}</p></div>` : ''}
+                    ${product.description ? `<div class="mt-4 pt-4 border-t border-border"><p class="text-text-secondary text-sm">${product.description}</p></div>` : ''}
                 `;
 
-                // Charger les commandes contenant ce produit
                 chargerCommandesProduit(productId);
             } catch (error) {
                 console.error(error);
@@ -203,7 +188,6 @@
                     return;
                 }
 
-                // Filtrer les commandes contenant ce produit
                 const ordersWithProduct = orders.filter(order => {
                     if (!Array.isArray(order.items)) return false;
                     return order.items.some(item => item.product_id === productId);
@@ -212,7 +196,7 @@
                 if (ordersWithProduct.length === 0) {
                     document.getElementById('ordersList').innerHTML = `
                         <div class="text-center p-8">
-                            <p class="text-text-light">Aucune commande trouvée pour ce produit</p>
+                            <p class="text-text-secondary">Aucune commande trouvee pour ce produit</p>
                         </div>
                     `;
                     return;
@@ -220,52 +204,52 @@
 
                 const statusNames = {
                     pending: 'En attente',
-                    confirmed: 'Confirmée',
-                    delivered: 'Livrée',
-                    cancelled: 'Annulée'
+                    confirmed: 'Confirmee',
+                    delivered: 'Livree',
+                    cancelled: 'Annulee'
                 };
 
                 document.getElementById('ordersList').innerHTML = `
-                    <div class="space-y-4">
+                    <div class="space-y-3">
                         ${ordersWithProduct.map(order => {
                             const item = order.items.find(i => i.product_id === productId);
-                            const statusClass = order.status === 'delivered' ? 'badge-success' : 
+                            const statusClass = order.status === 'delivered' ? 'badge-success' :
                                                order.status === 'cancelled' ? 'badge-danger' : 'badge-warning';
                             return `
-                                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                                <div class="border border-border rounded-lg p-4">
+                                    <div class="flex justify-between items-start mb-3 flex-wrap gap-3">
                                         <div>
-                                            <h3 class="font-bold text-lg">Commande #${order.order_number || order.id.substring(0, 8)}</h3>
-                                            <p class="text-sm text-text-light">${new Date(order.created_at).toLocaleDateString('fr-FR', { 
-                                                year: 'numeric', 
-                                                month: 'long', 
+                                            <h3 class="font-bold text-text">Commande #${order.order_number || order.id.substring(0, 8)}</h3>
+                                            <p class="text-xs text-text-secondary">${new Date(order.created_at).toLocaleDateString('fr-FR', {
+                                                year: 'numeric',
+                                                month: 'long',
                                                 day: 'numeric',
                                                 hour: '2-digit',
                                                 minute: '2-digit'
                                             })}</p>
-                                            <p class="text-sm text-text-light mt-1">Client: ${order.customer_name}</p>
-                                            <p class="text-sm text-text-light">Téléphone: ${order.customer_phone}</p>
+                                            <p class="text-xs text-text-secondary mt-1">Client: ${order.customer_name}</p>
+                                            <p class="text-xs text-text-secondary">Tel: ${order.customer_phone}</p>
                                         </div>
                                         <span class="badge ${statusClass}">
                                             ${statusNames[order.status] || order.status}
                                         </span>
                                     </div>
-                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                                    <div class="grid grid-cols-3 gap-3 mb-3">
                                         <div>
-                                            <p class="text-sm text-text-light">Quantité commandée</p>
-                                            <p class="font-bold">${item.quantity || 0}</p>
+                                            <p class="text-xs text-text-secondary">Quantite</p>
+                                            <p class="font-bold text-sm">${item.quantity || 0}</p>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-text-light">Prix unitaire</p>
-                                            <p class="font-bold">${parseInt(item.price || 0).toLocaleString()} ${order.currency || 'XOF'}</p>
+                                            <p class="text-xs text-text-secondary">Prix unitaire</p>
+                                            <p class="font-bold text-sm">${parseInt(item.price || 0).toLocaleString()} ${order.currency || 'XOF'}</p>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-text-light">Total commande</p>
-                                            <p class="font-bold">${parseInt(order.total || 0).toLocaleString()} ${order.currency || 'XOF'}</p>
+                                            <p class="text-xs text-text-secondary">Total commande</p>
+                                            <p class="font-bold text-sm">${parseInt(order.total || 0).toLocaleString()} ${order.currency || 'XOF'}</p>
                                         </div>
                                     </div>
                                     <button onclick="genererFacturePDF('${order.id}')" class="btn btn-primary btn-sm w-full">
-                                        📄 Générer facture PDF
+                                        Generer facture PDF
                                     </button>
                                 </div>
                             `;
@@ -280,7 +264,6 @@
 
         window.genererFacturePDF = async function(orderId) {
             try {
-                // Récupérer la commande
                 const { data: order, error } = await supabase
                     .from('orders')
                     .select('*')
@@ -294,14 +277,12 @@
                     return;
                 }
 
-                // Récupérer les infos de la boutique
                 const { data: store } = await supabase
                     .from('stores')
                     .select('name, whatsapp_number')
                     .eq('id', session.store_id)
                     .single();
 
-                // Générer le PDF (utiliser une fenêtre d'impression)
                 const printWindow = window.open('', '_blank');
                 const itemsHTML = Array.isArray(order.items) ? order.items.map(item => `
                     <tr>
@@ -317,92 +298,40 @@
                     <html>
                     <head>
                         <title>Facture ${order.order_number || order.id.substring(0, 8)}</title>
-    <link rel="icon" type="image/png" href="../assets/favicon.png">
                         <meta charset="UTF-8">
                         <style>
                             * { margin: 0; padding: 0; box-sizing: border-box; }
-                            body { 
-                                font-family: Arial, sans-serif; 
-                                padding: 40px; 
-                                background: white;
-                                color: #333;
-                            }
-                            .header { 
-                                text-align: center; 
-                                margin-bottom: 40px; 
-                                border-bottom: 2px solid #667eea;
-                                padding-bottom: 20px;
-                            }
-                            .header h1 { 
-                                color: #667eea; 
-                                font-size: 2em; 
-                                margin-bottom: 10px;
-                            }
-                            .details { 
-                                margin: 30px 0; 
-                                display: grid;
-                                grid-template-columns: 1fr 1fr;
-                                gap: 20px;
-                            }
+                            body { font-family: ui-sans-serif, -apple-system, system-ui, sans-serif; padding: 40px; background: white; color: #37352f; }
+                            .header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid #2383e2; padding-bottom: 20px; }
+                            .header h1 { color: #2383e2; font-size: 2em; margin-bottom: 10px; }
+                            .details { margin: 30px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
                             .details p { margin: 8px 0; }
-                            table { 
-                                width: 100%; 
-                                border-collapse: collapse; 
-                                margin: 30px 0; 
-                            }
-                            th, td { 
-                                border: 1px solid #ddd; 
-                                padding: 12px; 
-                                text-align: left; 
-                            }
-                            th { 
-                                background-color: #667eea; 
-                                color: white; 
-                                font-weight: bold;
-                            }
-                            .total-row { 
-                                font-weight: bold; 
-                                font-size: 1.2em; 
-                                background-color: #f7fafc;
-                            }
-                            .footer {
-                                margin-top: 40px;
-                                padding-top: 20px;
-                                border-top: 1px solid #ddd;
-                                text-align: center;
-                                color: #666;
-                                font-size: 0.9em;
-                            }
-                            @media print {
-                                body { padding: 20px; }
-                                .no-print { display: none; }
-                            }
+                            .details h3 { margin-bottom: 10px; color: #2383e2; }
+                            table { width: 100%; border-collapse: collapse; margin: 30px 0; }
+                            th, td { border: 1px solid #e5e5e3; padding: 12px; text-align: left; }
+                            th { background-color: #f7f7f5; color: #37352f; font-weight: 600; }
+                            .total-row { font-weight: bold; font-size: 1.2em; background-color: #f7f7f5; }
+                            .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e5e3; text-align: center; color: #787774; font-size: 0.9em; }
+                            @media print { body { padding: 20px; } }
                         </style>
                     </head>
                     <body>
                         <div class="header">
                             <h1>FACTURE</h1>
                             <p style="font-size: 1.2em; font-weight: bold;">${store?.name || session.store_name || 'SAMASTORE'}</p>
-                            ${store?.whatsapp_number ? `<p>Téléphone: ${store.whatsapp_number}</p>` : ''}
+                            ${store?.whatsapp_number ? `<p>Telephone: ${store.whatsapp_number}</p>` : ''}
                         </div>
                         <div class="details">
                             <div>
-                                <h3 style="margin-bottom: 10px; color: #667eea;">Informations Commande</h3>
-                                <p><strong>Numéro de commande:</strong> ${order.order_number || order.id.substring(0, 8)}</p>
-                                <p><strong>Date:</strong> ${new Date(order.created_at).toLocaleDateString('fr-FR', { 
-                                    year: 'numeric', 
-                                    month: 'long', 
-                                    day: 'numeric'
-                                })}</p>
-                                <p><strong>Heure:</strong> ${new Date(order.created_at).toLocaleTimeString('fr-FR', {
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                })}</p>
+                                <h3>Informations Commande</h3>
+                                <p><strong>Numero:</strong> ${order.order_number || order.id.substring(0, 8)}</p>
+                                <p><strong>Date:</strong> ${new Date(order.created_at).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                                <p><strong>Heure:</strong> ${new Date(order.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</p>
                             </div>
                             <div>
-                                <h3 style="margin-bottom: 10px; color: #667eea;">Informations Client</h3>
+                                <h3>Informations Client</h3>
                                 <p><strong>Nom:</strong> ${order.customer_name}</p>
-                                <p><strong>Téléphone:</strong> ${order.customer_phone}</p>
+                                <p><strong>Telephone:</strong> ${order.customer_phone}</p>
                                 ${order.customer_address ? `<p><strong>Adresse:</strong> ${order.customer_address}</p>` : ''}
                                 ${order.customer_city ? `<p><strong>Ville:</strong> ${order.customer_city}</p>` : ''}
                             </div>
@@ -411,27 +340,15 @@
                             <thead>
                                 <tr>
                                     <th>Produit</th>
-                                    <th style="text-align: center;">Quantité</th>
+                                    <th style="text-align: center;">Quantite</th>
                                     <th style="text-align: right;">Prix unitaire</th>
                                     <th style="text-align: right;">Total</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                ${itemsHTML}
-                            </tbody>
+                            <tbody>${itemsHTML}</tbody>
                             <tfoot>
-                                ${order.delivery_fee > 0 ? `
-                                <tr>
-                                    <td colspan="3" style="text-align: right;">Frais de livraison:</td>
-                                    <td style="text-align: right;">${parseInt(order.delivery_fee || 0).toLocaleString()} ${order.currency || 'XOF'}</td>
-                                </tr>
-                                ` : ''}
-                                ${order.discount_amount > 0 ? `
-                                <tr>
-                                    <td colspan="3" style="text-align: right;">Remise:</td>
-                                    <td style="text-align: right;">-${parseInt(order.discount_amount || 0).toLocaleString()} ${order.currency || 'XOF'}</td>
-                                </tr>
-                                ` : ''}
+                                ${order.delivery_fee > 0 ? `<tr><td colspan="3" style="text-align: right;">Frais de livraison:</td><td style="text-align: right;">${parseInt(order.delivery_fee || 0).toLocaleString()} ${order.currency || 'XOF'}</td></tr>` : ''}
+                                ${order.discount_amount > 0 ? `<tr><td colspan="3" style="text-align: right;">Remise:</td><td style="text-align: right;">-${parseInt(order.discount_amount || 0).toLocaleString()} ${order.currency || 'XOF'}</td></tr>` : ''}
                                 <tr class="total-row">
                                     <td colspan="3" style="text-align: right;">TOTAL:</td>
                                     <td style="text-align: right;">${parseInt(order.total || 0).toLocaleString()} ${order.currency || 'XOF'}</td>
@@ -440,24 +357,21 @@
                         </table>
                         <div class="footer">
                             <p>Merci de votre confiance !</p>
-                            <p>Facture générée le ${new Date().toLocaleDateString('fr-FR')}</p>
+                            <p>Facture generee le ${new Date().toLocaleDateString('fr-FR')}</p>
                         </div>
                     </body>
                     </html>
                 `);
                 printWindow.document.close();
-                
-                // Attendre que le contenu soit chargé avant d'imprimer
-                setTimeout(() => {
-                    printWindow.print();
-                }, 500);
-                
+
+                setTimeout(() => { printWindow.print(); }, 500);
+
                 const { showSuccess } = await import('../js/notifications.js');
-                showSuccess('Facture générée !');
+                showSuccess('Facture generee !');
             } catch (err) {
                 console.error(err);
                 const { showError } = await import('../js/notifications.js');
-                showError('Erreur lors de la génération de la facture');
+                showError('Erreur lors de la generation de la facture');
             }
         };
 
@@ -465,6 +379,3 @@
     </script>
 </body>
 </html>
-
-
-

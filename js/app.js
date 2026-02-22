@@ -824,14 +824,14 @@ function afficherNotification(message) {
         position: fixed;
         top: 100px;
         right: 30px;
-        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        background: #2383e2;
         color: white;
-        padding: 16px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 14px;
         z-index: 9999;
-        animation: slideIn 0.3s ease;
+        animation: slideIn 0.15s ease;
     `;
     notif.textContent = message;
 
@@ -846,20 +846,20 @@ function afficherNotification(message) {
 function afficherErreur(msg) {
     const grid = document.getElementById('productsGrid');
     grid.innerHTML = `
-        <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: white;">
-            <div style="font-size: 4em; margin-bottom: 20px;">⚠️</div>
-            <h3 style="font-size: 1.5em; margin-bottom: 15px;">Erreur</h3>
-            <p>${msg}</p>
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #37352f;">
+            <h3 style="font-size: 1.2em; margin-bottom: 12px;">Erreur</h3>
+            <p style="color: #787774;">${msg}</p>
             <button onclick="location.reload()" style="
-                margin-top: 20px;
-                padding: 12px 24px;
-                background: white;
-                color: #667eea;
+                margin-top: 16px;
+                padding: 8px 16px;
+                background: #2383e2;
+                color: white;
                 border: none;
-                border-radius: 8px;
-                font-weight: 700;
+                border-radius: 6px;
+                font-weight: 500;
+                font-size: 14px;
                 cursor: pointer;
-            ">Réessayer</button>
+            ">Reessayer</button>
         </div>
     `;
 }
@@ -876,12 +876,12 @@ style.textContent = `
         to { transform: translateX(400px); opacity: 0; }
     }
     .btn-success {
-        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%) !important;
+        background: #4daa57 !important;
     }
     .cart-empty {
         text-align: center;
-        padding: 60px 20px;
-        color: #718096;
+        padding: 40px 16px;
+        color: #787774;
     }
     .cart-empty-icon {
         font-size: 4em;
